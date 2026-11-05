@@ -1,0 +1,4 @@
+Edit Image 1 precisely. Image 1 is a finished watercolour CG. Image 2 is the new approved character sheet of M (the tall man in the navy suit standing in front of the windows).
+
+Change ONLY M's head and face so they match Image 2: the younger face (about 26), smooth skin, calm narrow almond eyes, thick straight brows, faint closed-lip smile, dark navy hair swept back. Keep his exact pose, his gaze up toward the floating padlocks, his body, suit, brooch, tablet, hand in pocket, and his size and position.
+Everything else in Image 1 must stay pixel-identical: the other three people, the room, the padlocks, the light, the watercolour style.

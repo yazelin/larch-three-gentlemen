@@ -25,8 +25,8 @@
         "裙子",
         "濃妝"
       ],
-      "canon_version": "T_v1",
-      "approved": "2026-11-05 yazelin 確認頁定稿"
+      "canon_version": "wc_tea（淡水彩）",
+      "approved": "2026-11-05 yazelin 角色淡水彩確認：OK"
     },
     "m": {
       "name": "M 先生（技術總監）",
@@ -47,8 +47,8 @@
         "耳環",
         "捲髮"
       ],
-      "canon_version": "M_v1（M_v2 更年輕版重畫中，確認後替換）",
-      "approved": "2026-11-05 yazelin 確認頁定稿"
+      "canon_version": "wc_m（淡水彩）",
+      "approved": "2026-11-05 yazelin 角色淡水彩確認：OK"
     },
     "c": {
       "name": "C 先生（美術設計・校稿）",
@@ -69,8 +69,8 @@
         "鬍子",
         "直髮"
       ],
-      "canon_version": "C_v1",
-      "approved": "2026-11-05 yazelin 確認頁定稿"
+      "canon_version": "wc_c（淡水彩）",
+      "approved": "2026-11-05 yazelin 角色淡水彩確認：OK"
     },
     "s": {
       "name": "S 先生（音樂創作）",
@@ -91,8 +91,8 @@
         "西裝",
         "短髮"
       ],
-      "canon_version": "S_v1",
-      "approved": "2026-11-05 yazelin 確認頁定稿"
+      "canon_version": "wc_s（淡水彩）",
+      "approved": "2026-11-05 yazelin 角色淡水彩確認：OK"
     }
   },
   "world": {
@@ -289,9 +289,18 @@
       "m": 188,
       "c": 179,
       "tea": 157,
-      "s": 176
+      "s": 175
     },
-    "note": "2026-11-05 yazelin 選 v1；S 外套多一個高音譜記號，以單人定稿為準"
+    "note": "2026-11-05 淡水彩版定稿（yazelin 確認頁）。yazelin 覺得這張的 M 比單人定稿好看，01-5 改用這張的 M 臉修；之後 M 單人定稿可能也照這張更新",
+    "name": "身高對照圖（淡水彩）",
+    "must": [
+      "M 188、C 179、茶語 157、S 176 的比例",
+      "四人長相照淡水彩定稿",
+      "S 胸口只有一個高音譜記號"
+    ],
+    "must_not": [
+      "文字或數字"
+    ]
   },
   "cg": {
     "01-5": {

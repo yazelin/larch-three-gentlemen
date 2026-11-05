@@ -3,7 +3,7 @@ import sys, json, base64, io, html
 from PIL import Image
 out, pairs = sys.argv[1], [a.split("=", 1) for a in sys.argv[2:]]
 import os
-D = json.load(open("canon/cast.json", encoding="utf-8")); cast = {**D["cast"], **D["world"], **D.get("cg", {})}
+D = json.load(open("canon/cast.json", encoding="utf-8")); cast = {**D["cast"], **D["world"], **D.get("cg", {}), "lineup": D["lineup"]}
 TITLE = os.environ.get("REVIEW_TITLE", "四人定稿確認"); INTRO = os.environ.get("REVIEW_INTRO", "")
 notes = json.load(open(os.environ.get("REVIEW_NOTES", "art/gen/review_notes.json"), encoding="utf-8"))
 def b64(p):
