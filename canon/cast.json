@@ -6,9 +6,9 @@
   },
   "cast": {
     "tea": {
-      "name": "茶葉飲料",
+      "name": "茶語",
       "ref": "canon/refs/tea.jpg",
-      "desc": "HEROINE model sheet, petite female university student about 20",
+      "desc": "HEROINE 茶語 model sheet, petite female university student about 20",
       "must": [
         "女性骨架：嬌小、窄肩，身高約 157，三位先生裡最矮的 S 也比她高半個頭",
         "深紫色狼尾髮，後髮及肩、尾端外翹",
@@ -277,7 +277,7 @@
     "三位先生輪廓要一眼分得出：M 最高最成熟、C 中等溫和、S 最矮最少年",
     "一張 CG 以一個人為主角；需要多人時拉遠鏡頭",
     "畫面中沒有任何文字、字幕、標籤",
-    "現實層的冰紅茶是茶葉飲料的招牌道具，只要畫到她的桌面就要出現",
+    "現實層的冰紅茶是茶語的招牌道具，只要畫到她的桌面就要出現",
     "她的裝置分工：手機是主要編輯工具（直立拿在手上，畫面是卡片與連線）；平板看遊戲畫面（像素 RPG），1104 直播那場改成播簡報；筆電是測試用。畫她在編輯的 CG，手上拿的是手機，不是筆電"
   ],
   "lineup": {
