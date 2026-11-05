@@ -1,0 +1,6 @@
+01-1 canon/refs/style_anchor.jpg canon/refs/view_desk_C.jpg canon/refs/tea.jpg
+01-2 canon/refs/style_anchor.jpg canon/refs/view_desk_B.jpg canon/refs/tea.jpg
+01-3 canon/refs/style_anchor.jpg canon/refs/view_desk_C.jpg
+01-4 canon/refs/style_anchor.jpg canon/refs/desk.jpg canon/refs/tea.jpg canon/refs/c.jpg canon/refs/m.jpg canon/refs/s.jpg
+01-6 canon/refs/style_anchor.jpg canon/refs/view_desk_C.jpg canon/refs/tea.jpg
+01-7 canon/refs/style_anchor.jpg canon/refs/view_desk_B.jpg canon/refs/tea.jpg canon/refs/c.jpg canon/refs/m.jpg canon/refs/s.jpg

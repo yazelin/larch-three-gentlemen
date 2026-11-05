@@ -1,0 +1,6 @@
+REFERENCE IMAGES: Image 1 = STYLE ANCHOR.
+Image 2 = APPROVED desk close-up camera reference (camera C).
+SHOT: close-up from camera C, no people. On the phone screen, three small rounded windows glow and flicker on at the same time, each with a faint human silhouette inside (one green-tinted, one navy-tinted, one red-tinted), like a new interface booting. Faint light spills from the laptop and tablet edges too. NO readable text anywhere.
+TIME: late night. The warm desk lamp is the main light; the rest of the room is dim with soft blue shadows; the window shows an ordinary city night with scattered lit windows and no landmark.
+STYLE: exactly the rendering of Image 1 (the style anchor): light transparent watercolour anime illustration, soft pale washes, low saturation, visible paper texture, delicate thin line art. Do not copy Image 1's room, people or composition.
+No text anywhere. Nobody looks at the viewer except where stated.
