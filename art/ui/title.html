@@ -1,0 +1,91 @@
+<!--
+  《夜後明月．晨前朝霞．慕詩客》標題畫面（Larch settings.customInterfaces.title）。
+  書名三行直排，每行裡他的名字那個字帶他的光色：夜後明月＝明（藍）、晨前朝霞＝晨（黃綠）、慕詩客＝詩（酒紅）。
+  LOOP_ID：動態 AVIF 主視覺（之後做），沒有時只顯示封面圖。
+-->
+<style>
+@import url("https://fonts.googleapis.com/css2?family=Noto+Serif+TC:wght@400;600&display=swap");
+:root { color-scheme: dark; --ink:#f4eee6; --dim:rgba(244,238,230,.72); --m:#7fa6ff; --c:#c9dc6a; --s:#e0607a; --gold:#e9cf9a; }
+* { box-sizing: border-box; }
+html, body { margin: 0; height: 100%; background: #070912; }
+.cover { position: relative; min-height: 100dvh; overflow: hidden; color: var(--ink);
+  font-family: "Noto Serif TC", "Songti TC", "Source Han Serif TC", "PMingLiU", serif; }
+.art, .loop { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; object-position: 62% 50%; pointer-events: none; }
+.loop { opacity: 0; transition: opacity 1.4s ease; }
+.loop.is-playing { opacity: 1; }
+/* 左側夜空壓暗一點，書名才讀得到；右下角留給她 */
+.shade { position: absolute; inset: 0; pointer-events: none;
+  background: linear-gradient(90deg, rgba(5,7,16,.78) 0%, rgba(5,7,16,.42) 26%, rgba(5,7,16,0) 44%),
+              linear-gradient(0deg, rgba(5,7,16,.6) 0%, rgba(5,7,16,0) 26%); }
+/* 三種光，慢慢呼吸 */
+.glow { position: absolute; border-radius: 50%; filter: blur(60px); mix-blend-mode: screen; pointer-events: none; opacity: .0; animation: breathe 7s ease-in-out infinite; }
+.glow.m { width: 26vw; height: 26vw; right: 30vw; top: 40vh; background: var(--m); animation-delay: 0s; }
+.glow.c { width: 22vw; height: 22vw; right: 6vw; top: 46vh; background: var(--c); animation-delay: 2.3s; }
+.glow.s { width: 18vw; height: 18vw; right: 19vw; top: 58vh; background: var(--s); animation-delay: 4.6s; }
+@keyframes breathe { 0%,100% { opacity: .05; } 50% { opacity: .2; } }
+
+.content { position: absolute; left: 6vw; top: 10vh; bottom: 8vh; display: flex; flex-direction: column; justify-content: space-between; }
+.title { display: flex; flex-direction: row-reverse; justify-content: flex-end; gap: clamp(10px, 1.4vw, 22px); margin: 0; }
+.title span { writing-mode: vertical-rl; font-weight: 600; font-size: clamp(24px, 3.1vw, 50px); letter-spacing: .2em; line-height: 1;
+  text-shadow: 0 2px 22px rgba(0,0,0,.75); }
+.title b { font-weight: 700; color: var(--k); text-shadow: 0 0 .35em var(--k), 0 2px 22px rgba(0,0,0,.75); }
+.title .tm { --k: var(--m); } .title .tc { --k: var(--c); } .title .ts { --k: var(--s); margin-top: 1.6em; }
+.sub { margin: 18px 0 0; font-size: clamp(13px, 1.05vw, 17px); letter-spacing: .32em; color: var(--dim); }
+.poem { margin: 6px 0 0; font-size: clamp(11px, .8vw, 13px); letter-spacing: .2em; color: rgba(244,238,230,.5); }
+nav { display: flex; flex-direction: row; gap: 4px 22px; flex-wrap: wrap; align-items: center; }
+button { font: inherit; font-size: clamp(15px, 1.2vw, 19px); letter-spacing: .4em; padding: 8px 6px 8px 14px; text-align: left;
+  color: var(--ink); background: none; border: 0; border-left: 1px solid rgba(233,207,154,.35); cursor: pointer; position: relative;
+  transition: color .25s, border-color .25s, padding .25s; }
+button::after { content: ""; position: absolute; left: 14px; right: 30%; bottom: 4px; height: 1px; transform: scaleX(0); transform-origin: left;
+  background: linear-gradient(90deg, var(--m), var(--c), var(--s)); transition: transform .35s ease; }
+button:hover, button:focus-visible { color: #fff; border-color: var(--gold); outline: none; }
+button:hover::after, button:focus-visible::after { transform: scaleX(1); }
+button:focus-visible { box-shadow: -2px 0 0 0 var(--gold); }
+button:active { color: var(--gold); }
+button:disabled { color: rgba(244,238,230,.38); border-color: rgba(244,238,230,.15); cursor: default; }
+button:disabled::after { display: none; }
+button[hidden] { display: none; }
+
+@media (max-width: 720px), (orientation: portrait) {
+  .art, .loop { object-position: 70% 50%; }
+  .shade { background: linear-gradient(180deg, rgba(5,7,16,.75) 0%, rgba(5,7,16,.25) 34%, rgba(5,7,16,0) 50%),
+                       linear-gradient(0deg, rgba(5,7,16,.85) 0%, rgba(5,7,16,.4) 24%, rgba(5,7,16,0) 40%); }
+  .content { left: 7vw; right: 7vw; top: 6vh; bottom: 5vh; }
+  .title span { font-size: clamp(26px, 8.4vw, 44px); }
+  nav { flex-direction: row; flex-wrap: wrap; gap: 4px 14px; }
+  button { min-width: 0; letter-spacing: .25em; padding: 8px 2px 8px 12px; }
+  .glow { display: none; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .loop, .glow { display: none; }
+  button, button::after { transition: none; }
+}
+</style>
+<main class="cover">
+  <img class="art" data-larch-slot="cover" alt="">
+  <img class="loop" data-larch-asset="LOOP_ID" alt="" aria-hidden="true">
+  <div class="shade"></div>
+  <div class="glow m"></div><div class="glow c"></div><div class="glow s"></div>
+  <div class="content">
+    <div>
+      <h1 class="title" aria-label="夜後明月．晨前朝霞．慕詩客">
+        <span class="tm">夜後<b>明</b>月</span><span class="tc"><b>晨</b>前朝霞</span><span class="ts">慕<b>詩</b>客</span>
+      </h1>
+      <p class="sub">三位先生，都讓我心動</p>
+      <p class="poem">取自 元稹〈一字至七字詩．茶〉</p>
+    </div>
+    <nav aria-label="遊戲選單">
+      <button data-larch-action="start">開始</button>
+      <button data-larch-action="continue">繼續</button>
+      <button data-larch-action="chapters">章節</button>
+      <button data-larch-action="gallery">回憶</button>
+    </nav>
+  </div>
+</main>
+<script>
+(function () {
+  var v = document.querySelector('.loop');
+  function shown() { if (v.complete && v.naturalWidth) v.classList.add('is-playing'); }
+  v.addEventListener('load', shown); shown();
+})();
+</script>

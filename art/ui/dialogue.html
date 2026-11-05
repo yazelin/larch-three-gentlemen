@@ -1,0 +1,50 @@
+<!--
+  《夜後明月．晨前朝霞．慕詩客》對話框（Larch settings.customInterfaces.dialogue）。
+  - 名牌前的小光點是說話者的專屬色：明藍、晨黃綠、詩酒紅、茶語淡紫。
+  - 旁白不顯示名牌；文字以「（」開頭的是心聲，字色放淡。
+  - 框只占畫面下緣一條，不擋 CG。
+-->
+<style>
+@import url("https://fonts.googleapis.com/css2?family=Noto+Serif+TC:wght@400;600&display=swap");
+:root { color-scheme: dark; --ink:#f4eee6; --dim:rgba(244,238,230,.68); --m:#7fa6ff; --c:#c9dc6a; --s:#e0607a; --t:#c7b2ea; --gold:#e9cf9a; }
+* { box-sizing: border-box; }
+html, body { margin: 0; height: 100%; background: transparent; }
+.box { position: absolute; left: 0; right: 0; bottom: 0; padding: 22px 9vw 26px; color: var(--ink);
+  font-family: "Noto Serif TC", "Songti TC", serif;
+  background: linear-gradient(0deg, rgba(5,7,16,.88) 0%, rgba(5,7,16,.72) 58%, rgba(5,7,16,0) 100%); }
+.name { display: flex; align-items: center; gap: 10px; min-height: 1.4em; margin: 0 0 8px; font-size: clamp(15px, 1.25vw, 19px); letter-spacing: .32em; font-weight: 600; }
+.name::before { content: ""; width: 8px; height: 8px; border-radius: 50%; background: var(--k, var(--gold)); box-shadow: 0 0 10px var(--k, var(--gold)); }
+.name::after { content: ""; flex: 0 0 72px; height: 1px; background: linear-gradient(90deg, var(--k, var(--gold)), transparent); }
+.box.is-narration .name { visibility: hidden; }
+.text { margin: 0; max-width: 46em; min-height: 3.3em; font-size: var(--larch-text-size, 22px); line-height: 1.75; letter-spacing: .06em;
+  text-shadow: 0 1px 10px rgba(0,0,0,.6); }
+.box.is-thought .text { color: var(--dim); }
+.box.is-narration .text { color: rgba(244,238,230,.86); }
+.next { position: absolute; right: 4vw; bottom: 22px; width: 34px; height: 34px; border: 0; border-radius: 50%; cursor: pointer;
+  background: none; color: var(--gold); font-size: 14px; animation: bob 2.2s ease-in-out infinite; }
+.next:focus-visible { outline: 2px solid var(--gold); outline-offset: 2px; }
+@keyframes bob { 0%,100% { transform: translateY(0); opacity: .55; } 50% { transform: translateY(4px); opacity: 1; } }
+@media (max-width: 720px) {
+  .box { padding: 16px 6vw 20px; }
+  .text { font-size: var(--larch-text-size, 18px); }
+}
+@media (prefers-reduced-motion: reduce) { .next { animation: none; } }
+</style>
+<div class="box" id="box">
+  <p class="name" data-larch-slot="speaker"></p>
+  <p class="text" data-larch-slot="text"></p>
+  <button class="next" data-larch-action="advance" aria-label="下一句">▼</button>
+</div>
+<script>
+(function () {
+  var box = document.getElementById('box');
+  var COLOR = { "M": "--m", "明": "--m", "C": "--c", "晨": "--c", "S": "--s", "詩": "--s", "茶語": "--t" };
+  function apply(d) {
+    var sp = (d && d.speaker || '').trim(), tx = (d && d.text || '').trim();
+    box.classList.toggle('is-narration', !sp || sp === '旁白');
+    box.classList.toggle('is-thought', tx.charAt(0) === '（');
+    var k = COLOR[sp]; box.style.setProperty('--k', k ? 'var(' + k + ')' : 'var(--gold)');
+  }
+  window.addEventListener('larch:state', function (e) { apply(e.detail); });
+})();
+</script>

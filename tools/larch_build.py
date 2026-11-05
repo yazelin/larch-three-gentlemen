@@ -212,7 +212,7 @@ if __name__ == "__main__":
     if "--sample" in sys.argv:   # 只組某一節，推到樣片白板：--sample 五
         sec = sys.argv[sys.argv.index("--sample") + 1]
         segs = [x for x in segs if x[0] == "card" and x[1].startswith(sec + "、")]
-        BOARD = f"board-sample-{sec}"
+        BOARD = f"board-sample-{'一二三四五六七'.index(sec) + 1}"   # 白板代號只能 ASCII
     nodes, edges, cgs = build(segs)
     check(nodes, edges)
     (ROOT / "dist").mkdir(exist_ok=True)
