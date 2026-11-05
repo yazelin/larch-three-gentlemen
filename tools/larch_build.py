@@ -62,7 +62,10 @@ def segments(md):
         if m: pend["sfxUrl"] = f"/sfx/{m[1]}.mp3"; continue
         m = re.match(r"【CG ([^｜\s】]+)(?:｜運鏡 (\S+?))?(?:｜.*)?】", l)
         if m:
-            cid = m[1]; cgs.append(cid); pend_bg = cg_url(cid)
+            cid = m[1]
+            if not (ROOT / f"art/cg/{cid}.jpg").exists():   # ponytail: 圖還沒好就沿用上一張，補圖後重建即可
+                print("  缺圖，暫用上一張：", cid); continue
+            cgs.append(cid); pend_bg = cg_url(cid)
             if m[2] and m[2] != "定": pend["video"] = f"{cid}|{m[2]}"
             if cid != "01-5": last_desk = pend_bg
             continue

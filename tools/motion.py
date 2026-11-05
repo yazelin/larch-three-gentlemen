@@ -43,6 +43,7 @@ if __name__ == "__main__":
     m = json.loads(MAP.read_text()) if MAP.exists() else {}
     pid = json.loads(lb.STATE.read_text())["id"]
     for cid, move in keys():
+        if not (ROOT / f"art/cg/{cid}.jpg").exists(): print("略過（圖還沒好）", cid); continue
         k = f"{cid}|{move}"
         mp4, end, h = make(cid, move)
         print("做好", k, mp4.name, mp4.stat().st_size // 1024, "KB")
