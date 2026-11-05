@@ -1,0 +1,63 @@
+<!doctype html><html lang="zh-Hant"><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<!-- 第一章第三節小遊戲：親手拉出第一條線。白板上的卡片都排好了，只差一條。做完送 larch:complete。 -->
+<style>
+:root { --bg:#0d1020; --grid:rgba(255,255,255,.05); --card:#1b2036; --line:#e9cf9a; --ink:#f4eee6; --dim:rgba(244,238,230,.6); --m:#8aa2ea; --c:#c8d45a; --s:#cf5a6c; }
+* { box-sizing: border-box; }
+html, body { margin: 0; height: 100%; background: var(--bg); color: var(--ink); font-family: "Noto Serif TC", "Songti TC", serif; overflow: hidden; touch-action: none; user-select: none; }
+body { background-image: linear-gradient(var(--grid) 1px, transparent 1px), linear-gradient(90deg, var(--grid) 1px, transparent 1px); background-size: 28px 28px; }
+svg { position: absolute; inset: 0; width: 100%; height: 100%; }
+.card { position: absolute; width: 19vw; min-width: 150px; padding: 12px 14px; border-radius: 10px; background: var(--card); border: 1px solid rgba(255,255,255,.12); box-shadow: 0 8px 24px rgba(0,0,0,.35); font-size: clamp(12px, 1.1vw, 15px); }
+.card b { display: block; font-size: 1.05em; margin-bottom: 4px; letter-spacing: .1em; }
+.card span { color: var(--dim); font-size: .85em; }
+.card.done { opacity: .78; }
+.port { position: absolute; top: 50%; width: 18px; height: 18px; margin-top: -9px; border-radius: 50%; background: #2a3150; border: 2px solid var(--line); }
+.port.out { right: -10px; cursor: grab; }
+.port.in { left: -10px; }
+.port.hot { box-shadow: 0 0 0 6px rgba(233,207,154,.25), 0 0 18px var(--line); animation: pulse 1.4s ease-in-out infinite; }
+@keyframes pulse { 50% { box-shadow: 0 0 0 12px rgba(233,207,154,.08), 0 0 26px var(--line); } }
+.hint { position: absolute; left: 0; right: 0; bottom: 7vh; text-align: center; font-size: clamp(15px, 1.5vw, 21px); letter-spacing: .18em; color: var(--ink); text-shadow: 0 2px 12px #000; transition: opacity .6s; }
+.who { position: absolute; top: 4vh; left: 50%; transform: translateX(-50%); font-size: clamp(12px, 1vw, 14px); letter-spacing: .3em; color: var(--dim); }
+.flash { position: absolute; inset: 0; background: radial-gradient(circle at var(--x) var(--y), rgba(233,207,154,.45), transparent 40%); opacity: 0; pointer-events: none; transition: opacity .8s; }
+.flash.on { opacity: 1; }
+@media (prefers-reduced-motion: reduce) { .port.hot { animation: none; } }
+</style>
+<div class="who">她的白板．第一張卡</div>
+<svg id="svg"><path id="drag" fill="none" stroke="#e9cf9a" stroke-width="3" stroke-dasharray="6 6" opacity="0"/></svg>
+<div class="card" id="a" style="left:12vw;top:30vh"><b>序章</b><span>雲被鎖在天上</span><i class="port out hot" id="pa"></i></div>
+<div class="card" id="b" style="left:44vw;top:44vh"><b>第一扇門</b><span>玩家醒來的地方</span><i class="port in hot" id="pb"></i><i class="port out"></i></div>
+<div class="card done" id="c" style="left:72vw;top:24vh"><b>城門</b><span>C 畫的草圖</span><i class="port in"></i></div>
+<div class="card done" id="d" style="left:70vw;top:62vh"><b>管風琴</b><span>S 的第一首歌</span><i class="port in"></i></div>
+<div class="flash" id="flash"></div>
+<div class="hint" id="hint">從「序章」右邊的點，拉一條線到「第一扇門」。</div>
+<script>
+(function () {
+  var svg = document.getElementById('svg'), drag = document.getElementById('drag'), hint = document.getElementById('hint');
+  var pa = document.getElementById('pa'), pb = document.getElementById('pb');
+  function c(el) { var r = el.getBoundingClientRect(); return { x: r.left + r.width / 2, y: r.top + r.height / 2 }; }
+  function curve(p, q) { var dx = Math.max(60, (q.x - p.x) / 2); return 'M' + p.x + ',' + p.y + ' C' + (p.x + dx) + ',' + p.y + ' ' + (q.x - dx) + ',' + q.y + ' ' + q.x + ',' + q.y; }
+  function line(p, q, color, w) { var e = document.createElementNS('http://www.w3.org/2000/svg', 'path'); e.setAttribute('d', curve(p, q)); e.setAttribute('fill', 'none');
+    e.setAttribute('stroke', color); e.setAttribute('stroke-width', w); svg.insertBefore(e, drag); return e; }
+  // 已經連好的線（M 寫好的程式、C 的圖、S 的歌都在等這一條）
+  function base() { [].slice.call(svg.querySelectorAll('path.base')).forEach(function (e) { e.remove(); });
+    var outB = document.querySelector('#b .port.out');
+    [[outB, document.querySelector('#c .port.in'), '#c8d45a'], [outB, document.querySelector('#d .port.in'), '#cf5a6c']].forEach(function (t) {
+      var e = line(c(t[0]), c(t[1]), t[2], 2); e.classList.add('base'); e.setAttribute('opacity', '.55'); }); }
+  base(); window.addEventListener('resize', base);
+  var dragging = false, done = false;
+  pa.addEventListener('pointerdown', function (ev) { if (done) return; dragging = true; pa.setPointerCapture(ev.pointerId); drag.setAttribute('opacity', '1'); });
+  pa.addEventListener('pointermove', function (ev) { if (!dragging) return; drag.setAttribute('d', curve(c(pa), { x: ev.clientX, y: ev.clientY })); });
+  pa.addEventListener('pointerup', function (ev) {
+    if (!dragging) return; dragging = false; drag.setAttribute('opacity', '0');
+    var q = c(pb), d = Math.hypot(ev.clientX - q.x, ev.clientY - q.y);
+    if (d > 60) { hint.textContent = '再試一次：拉到「第一扇門」左邊的點。'; return; }
+    done = true; pa.classList.remove('hot'); pb.classList.remove('hot');
+    var e = line(c(pa), q, '#e9cf9a', 3), L = e.getTotalLength(); e.style.strokeDasharray = L; e.style.strokeDashoffset = L;
+    e.getBoundingClientRect(); e.style.transition = 'stroke-dashoffset .6s ease'; e.style.strokeDashoffset = 0;
+    var f = document.getElementById('flash'); f.style.setProperty('--x', q.x + 'px'); f.style.setProperty('--y', q.y + 'px'); f.classList.add('on');
+    hint.textContent = '連上了。這是妳親手拉的第一條線。';
+    setTimeout(function () { parent.postMessage({ type: 'larch:complete', result: 'linked', payload: {} }, '*'); }, 2200);
+  });
+  parent.postMessage({ type: 'larch:ready' }, '*');
+})();
+</script>
+</html>

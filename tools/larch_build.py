@@ -13,7 +13,13 @@ BOARD = "board-ch1"
 NAME = "夜後明月．晨前朝霞．慕詩客"
 
 def cg_url(cid): return CDN + f"art/cg/{cid}.jpg"
-BGM = {"枷鎖與選擇": "chains_and_choice"}   # 劇本裡的曲名 → art/bgm/ 檔名（ASCII）
+sys.path.insert(0, str(ROOT / "art/cg"))
+try:
+    from ch1_shots import S as _SHOTS
+    VARIANTS = {k for k, v in _SHOTS.items() if v["kind"] == "var"}   # 表情差分不進 CG 收藏
+except ImportError:
+    VARIANTS = set()
+BGM = {"枷鎖與選擇": "chains_and_choice", "夜的書桌": "night_desk", "工作室": "studio_day", "耳機裡的歌": "chains_muffled"}   # 劇本裡的曲名 → art/bgm/ 檔名（ASCII）
 VIDEOS = ROOT / "art/video/media.json"     # "cg|運鏡" → {mediaId, url}，tools/motion.py 產生
 def video_layer(key):
     m = json.loads(VIDEOS.read_text()) if VIDEOS.exists() else {}
@@ -50,6 +56,8 @@ def segments(md):
         if m:
             pend["bgmAction" if m[1] in ("停", "淡出") else "bgm"] = {"停": "stop", "淡出": "fadeOut"}.get(m[1]) or CDN + f"art/bgm/{BGM[m[1]]}.mp3"
             continue
+        m = re.match(r"【小遊戲 (\S+?)】", l)
+        if m: close(); segs.append(("mini", m[1])); continue
         m = re.match(r"【音效 (\w+)】", l)
         if m: pend["sfxUrl"] = f"/sfx/{m[1]}.mp3"; continue
         m = re.match(r"【CG ([^｜\s】]+)(?:｜運鏡 (\S+?))?(?:｜.*)?】", l)
@@ -116,6 +124,15 @@ def build(segs, ch="ch1"):
             for p in prev: link(p, nid)
             prev = [nid]
             if tails: prev = [nid]; tails = []
+        elif s[0] == "mini":
+            x += 400; n = base("小遊戲", x, 0)
+            html = (ROOT / f"art/ui/minigame_{ {'拉線': 'link'}[s[1]] }.html").read_text(encoding="utf-8")
+            n["data"] = {"type": "miniGame", "title": f"小遊戲：{s[1]}", "text": "親手拉出第一條線。", "miniGameHtml": html,
+                         "miniGamePresentation": "fullscreen", "miniGameSkippable": True, "miniGameReadVars": [], "miniGameWriteVars": [],
+                         "miniGameFrame": {"showButton": False}, "background": bg[0], "voiceMode": "off", "stage": {"actors": []}}
+            nodes.append(n)
+            for p_ in prev: link(p_, n["id"])
+            prev = [n["id"]]
         elif s[0] == "choice":
             x += 400; n = base("先問誰", x, 0)
             n["data"] = {"type": "choice", "title": "先問誰", "text": "先問誰的意見？", "choices": [t for t, _ in s[1]],
@@ -176,9 +193,10 @@ def push(nodes, edges, cgs):
     p["name"] = NAME
     s = p.setdefault("settings", {})
     s.update({"stageFit": "auto", "keepActorsInFrame": False, "textSpeed": 55, "returnToTitleOnEnd": True,
-              "titleScreenEnabled": True, "titleCoverImage": cg_url("01-5"), "projectThumbnail": cg_url("01-5"),
+              "titleScreenEnabled": True, "titleCoverImage": CDN + "art/cg/title_kv.jpg", "projectThumbnail": CDN + "art/cg/title_kv.jpg",
               "cgGalleryEnabled": True, "cgGallerySource": "picked",
-              "cgGalleryItems": [{"url": cg_url(c), "title": f"CG {c}", "locked": True} for c in cgs]})
+              "cgGalleryItems": [{"url": cg_url(c), "title": f"CG {c}", "locked": True} for c in cgs if c not in VARIANTS]})
+    s["titleScreen"] = {**(s.get("titleScreen") or {}), "bgm": CDN + "art/bgm/chains_and_choice.mp3", "bgmVolume": 0.4, "bgmLoop": True}
     p["variables"] = [{"id": f"aff{k}", "name": f"aff{k}", "type": "number", "label": f"{k} 好感", "defaultValue": 0} for k in "CMS"]
     p["languages"] = p.get("languages") or [{"code": "zh-Hant", "label": "繁體中文", "voiceMode": "off"}]
     nodes[0]["data"]["start"] = True

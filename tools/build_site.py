@@ -56,7 +56,8 @@ for row in design.splitlines():
     if m and m[1] not in roles: roles[m[1]] = {"title": m[2].strip(), "does": m[3].strip(), "who": m[4].strip()}
 
 chapters = []
-for f in sorted((ROOT / "劇本").glob("第*章.md")):
+ORDER = [f"第{n}章.md" for n in "一二三四五六七"] + ["個人線_C.md", "個人線_M.md", "個人線_S.md", "夥伴結局.md"]
+for f in [ROOT / "劇本" / n for n in ORDER if (ROOT / "劇本" / n).exists()]:
     t = f.read_text(encoding="utf-8")
     title = re.search(r"^# (.+)$", t, re.M)[1]
     body = t.split("## CG 清單")[0]
@@ -152,19 +153,29 @@ def page(title, body, desc="", depth=0):
 
 # ---------- 閱讀頁 ----------
 SPK = {"茶語": "T", "C": "C", "M": "M", "S": "S"}
+sys.path.insert(0, str(ROOT / "art/cg"))
+try:
+    from ch1_shots import S as _SH
+    VARIANTS = {k for k, v in _SH.items() if v["kind"] == "var"}
+except ImportError:
+    VARIANTS = set()
+
 def render(body):
     out, choice = [], []
     def flush():
         if choice: out.append('<div class="choice">' + "".join(f"<div>{e(c)}</div>" for c in choice) + "</div>"); choice.clear()
     for raw in body.splitlines():
         l = raw.strip()
-        if not l or l.startswith((">", "---", "【背景", "【立繪", "# ")): continue
+        if not l or l.startswith((">", "---", "【背景", "【立繪", "# ", "【轉場", "【BGM", "【自動", "【音效")): continue
+        if l.startswith("【小遊戲"):
+            flush(); out.append('<div class="cg todo">小遊戲：親手拉出第一條線（在 Larch 上玩）</div>'); continue
         if l.startswith("₩"):
             choice.append(re.sub(r"（[CMS]＋1）", "", l[1:])); continue
         flush()
         if l.startswith("## "): out.append(f"<h2>{e(l[3:])}</h2>")
         elif l.startswith("【CG"):
             cid = re.match(r"【CG ([^｜\s】]+)", l)[1]; f = ROOT / f"art/cg/{cid}.jpg"
+            if cid in VARIANTS: continue   # 表情差分只在 Larch 上看
             if f.exists(): out.append(f'<figure class="cg"><img src="{img(f"art/cg/{cid}.jpg", f"cg-{cid}.jpg", 1600)}" alt="CG {cid}" loading="lazy"></figure>')
             else: out.append(f'<div class="cg todo">CG {e(cid)} 製作中</div>')
         elif l.startswith("〔"): out.append(f'<p class="narr">{e(l.strip("〔〕"))}</p>')

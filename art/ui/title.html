@@ -1,18 +1,17 @@
 <!--
   《夜後明月．晨前朝霞．慕詩客》標題畫面（Larch settings.customInterfaces.title）。
   書名三行直排，每行裡他的名字那個字帶他的光色：夜後明月＝明（藍）、晨前朝霞＝晨（黃綠）、慕詩客＝詩（酒紅）。
-  LOOP_ID：動態 AVIF 主視覺（之後做），沒有時只顯示封面圖。
+  手機直立改用直式封面（媒體庫 media:c7a3f718…）。
 -->
 <style>
 @import url("https://fonts.googleapis.com/css2?family=Noto+Serif+TC:wght@400;600&display=swap");
-:root { color-scheme: dark; --ink:#f4eee6; --dim:rgba(244,238,230,.72); --m:#7fa6ff; --c:#c9dc6a; --s:#e0607a; --gold:#e9cf9a; }
+:root { color-scheme: dark; --ink:#f4eee6; --dim:rgba(244,238,230,.72); --m:#8aa2ea; --c:#c8d45a; --s:#cf5a6c; --gold:#e9cf9a; }
 * { box-sizing: border-box; }
 html, body { margin: 0; height: 100%; background: #070912; }
 .cover { position: relative; min-height: 100dvh; overflow: hidden; color: var(--ink);
   font-family: "Noto Serif TC", "Songti TC", "Source Han Serif TC", "PMingLiU", serif; }
-.art, .loop { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; object-position: 62% 50%; pointer-events: none; }
-.loop { opacity: 0; transition: opacity 1.4s ease; }
-.loop.is-playing { opacity: 1; }
+.art { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; object-position: 62% 50%; pointer-events: none; }
+.art-p { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; object-position: 50% 30%; pointer-events: none; display: none; }
 /* 左側夜空壓暗一點，書名才讀得到；右下角留給她 */
 .shade { position: absolute; inset: 0; pointer-events: none;
   background: linear-gradient(90deg, rgba(5,7,16,.78) 0%, rgba(5,7,16,.42) 26%, rgba(5,7,16,0) 44%),
@@ -47,7 +46,7 @@ button:disabled::after { display: none; }
 button[hidden] { display: none; }
 
 @media (max-width: 720px), (orientation: portrait) {
-  .art, .loop { object-position: 70% 50%; }
+  .art-p { display: block; }
   .shade { background: linear-gradient(180deg, rgba(5,7,16,.75) 0%, rgba(5,7,16,.25) 34%, rgba(5,7,16,0) 50%),
                        linear-gradient(0deg, rgba(5,7,16,.85) 0%, rgba(5,7,16,.4) 24%, rgba(5,7,16,0) 40%); }
   .content { left: 7vw; right: 7vw; top: 6vh; bottom: 5vh; }
@@ -57,13 +56,13 @@ button[hidden] { display: none; }
   .glow { display: none; }
 }
 @media (prefers-reduced-motion: reduce) {
-  .loop, .glow { display: none; }
+  .glow { display: none; }
   button, button::after { transition: none; }
 }
 </style>
 <main class="cover">
   <img class="art" data-larch-slot="cover" alt="">
-  <img class="loop" data-larch-asset="LOOP_ID" alt="" aria-hidden="true">
+  <img class="art-p" data-larch-asset="media:c7a3f718-ae8d-4209-8be0-0fb218f715a6" alt="">
   <div class="shade"></div>
   <div class="glow m"></div><div class="glow c"></div><div class="glow s"></div>
   <div class="content">
@@ -82,10 +81,4 @@ button[hidden] { display: none; }
     </nav>
   </div>
 </main>
-<script>
-(function () {
-  var v = document.querySelector('.loop');
-  function shown() { if (v.complete && v.naturalWidth) v.classList.add('is-playing'); }
-  v.addEventListener('load', shown); shown();
-})();
-</script>
+

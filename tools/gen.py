@@ -5,7 +5,7 @@ out, pf, refs = sys.argv[1], sys.argv[2], sys.argv[3:]
 if os.path.exists(out) or os.path.exists(out + ".lock"):
     print("skip", out); sys.exit(0)
 open(out + ".lock", "w").close()
-body = {"prompt": open(pf, encoding="utf-8").read(), "size": "1536x1024"}
+body = {"prompt": open(pf, encoding="utf-8").read(), "size": os.environ.get("GEN_SIZE", "1536x1024")}   # 直式：GEN_SIZE=1024x1536
 if refs: body["reference_images_base64"] = [base64.b64encode(open(r, "rb").read()).decode() for r in refs]
 req = urllib.request.Request((os.environ.get("CODEX_IMAGE_BASE") or open(os.path.expanduser("~/.config/codex-image/base")).read().strip()).rstrip("/") + "/v1/images/generate",
     data=json.dumps(body).encode(), headers={"Content-Type": "application/json",
