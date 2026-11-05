@@ -1,0 +1,61 @@
+
+:root{--paper:#f7f2ea;--paper-2:#efe7da;--ink:#3b3440;--ink-2:#6d6372;--line:#ddd2c2;
+--plum:#7a5a86;--wine:#9b4a5e;--sage:#6f8a6a;--navy:#3f4a6e;
+--f-display:"LXGW WenKai TC","Kaiti TC",serif;--f-body:"Noto Serif TC","Songti TC",serif;--f-ui:"Noto Sans TC","PingFang TC",sans-serif}
+*{box-sizing:border-box}
+html{background:var(--paper)}
+body{margin:0;color:var(--ink);font-family:var(--f-body);font-size:17px;line-height:1.9;
+background:radial-gradient(ellipse 60% 40% at 12% 8%,rgb(122 90 134/.10),transparent 70%),
+radial-gradient(ellipse 50% 35% at 92% 30%,rgb(155 74 94/.08),transparent 70%),
+radial-gradient(ellipse 55% 40% at 30% 92%,rgb(111 138 106/.10),transparent 70%),var(--paper);min-height:100vh}
+a{color:var(--wine)}
+.wrap{max-width:980px;margin:0 auto;padding-block:0 64px;padding-left:max(18px,env(safe-area-inset-left,0px));padding-right:max(18px,env(safe-area-inset-right,0px))}
+.top{display:flex;gap:18px;flex-wrap:wrap;align-items:center;padding:18px 0;font-family:var(--f-ui);font-size:14px}
+.top b{font-family:var(--f-display);font-size:19px;font-weight:700;margin-right:auto}
+.top a{color:var(--ink-2);text-decoration:none}.top a:hover{color:var(--wine)}
+h1,h2,h3{font-family:var(--f-display);font-weight:700;line-height:1.35;text-wrap:balance}
+h2{font-size:28px;margin:56px 0 14px}
+.hero{position:relative;border-radius:6px;overflow:hidden;margin-top:4px}
+.hero img{display:block;width:100%;height:auto;-webkit-mask-image:radial-gradient(ellipse 95% 90% at 50% 45%,#000 70%,transparent 100%);mask-image:radial-gradient(ellipse 95% 90% at 50% 45%,#000 70%,transparent 100%)}
+.hero-copy{text-align:center;margin:-8px auto 0;max-width:640px}
+.hero-copy h1{font-size:clamp(34px,6vw,56px);margin:10px 0 4px;letter-spacing:.06em}
+.hero-copy .q{font-family:var(--f-display);font-size:20px;color:var(--plum)}
+.note{font-family:var(--f-ui);font-size:14.5px;line-height:1.8;color:var(--ink-2);background:rgb(255 255 255/.55);border:1px solid var(--line);border-radius:6px;padding:14px 18px;margin:22px 0}
+.lede{max-width:40em}
+.cast{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,420px),1fr));gap:22px}
+.person{background:rgb(255 255 255/.5);border:1px solid var(--line);border-radius:6px;overflow:hidden}
+.person img{display:block;width:100%;height:auto}
+.person div{padding:12px 16px 16px}
+.person h3{margin:0;font-size:22px}
+.person .role{font-family:var(--f-ui);font-size:13px;letter-spacing:.1em;color:var(--ink-2)}
+.person p{margin:6px 0 0;font-size:15.5px;line-height:1.8}
+.chlist{list-style:none;padding:0;margin:0;display:grid;gap:12px}
+.chlist li{display:flex;flex-wrap:wrap;gap:6px 18px;align-items:baseline;border-bottom:1px dashed var(--line);padding:10px 0}
+.chlist .t{font-family:var(--f-display);font-size:21px}
+.chlist a{font-family:var(--f-ui);font-size:14px}
+/* 閱讀 */
+.read{max-width:38em;margin:0 auto}
+.read h1{font-size:34px;text-align:center;margin:28px 0 8px}
+.read h2{font-size:22px;margin:44px 0 10px;color:var(--plum)}
+.read p{margin:0 0 10px}
+.narr{color:var(--ink-2);font-size:16px}
+.line b{font-family:var(--f-ui);font-size:14px;font-weight:700;margin-right:8px}
+.line.C b{color:var(--sage)}.line.M b{color:var(--navy)}.line.S b{color:var(--wine)}.line.T b{color:var(--plum)}
+.inner{color:var(--plum);font-style:italic}
+.cg{margin:22px -6px}
+.cg img{display:block;width:100%;height:auto;border-radius:4px}
+.cg.todo{border:1px dashed var(--line);border-radius:6px;padding:16px;text-align:center;font-family:var(--f-ui);font-size:13.5px;color:var(--ink-2)}
+.choice{border-left:3px solid var(--plum);padding:6px 0 6px 14px;margin:18px 0;font-family:var(--f-ui);font-size:15px}
+.choice div{margin:3px 0}
+.branch{font-family:var(--f-ui);font-size:13px;letter-spacing:.1em;color:var(--ink-2);margin:22px 0 6px}
+.end{text-align:center;color:var(--ink-2);margin:36px 0}
+/* 取材對照 */
+.scroll{overflow-x:auto}
+table{border-collapse:collapse;width:100%;min-width:640px;font-family:var(--f-ui);font-size:14.5px;line-height:1.7;background:rgb(255 255 255/.5)}
+th,td{border:1px solid var(--line);padding:8px 10px;vertical-align:top;text-align:left}
+th{background:var(--paper-2);font-weight:700}
+.k{display:inline-block;padding:1px 8px;border-radius:99px;font-size:12.5px;white-space:nowrap;color:#fff}
+.k.真實{background:var(--sage)}.k.改編{background:var(--plum)}.k.原創{background:var(--wine)}
+.legend{display:flex;gap:16px;flex-wrap:wrap;font-family:var(--f-ui);font-size:14px;margin:8px 0 16px}
+footer{border-top:1px solid var(--line);margin-top:56px;padding-top:18px;font-family:var(--f-ui);font-size:13.5px;color:var(--ink-2)}
+@media (max-width:600px){body{font-size:16px}h2{font-size:24px}}
