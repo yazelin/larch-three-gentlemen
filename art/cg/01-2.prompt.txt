@@ -4,5 +4,6 @@ SHOT: camera B, medium shot from the desk/window side, so we see her FRONT. She 
 ACTING: expression of total confusion, "huh?": eyebrows raised and pulled together, eyes wide open behind the pink-tinted round glasses, mouth a small open "o". Both hands visible holding the phone, fingers correct. Her face is not blocked by the phone.
 The warm lamp light falls on her face from the front; the room behind her (bed, wardrobe, door) is dim.
 TIME: late night. The warm desk lamp is the main light; the rest of the room is dim with soft blue shadows; the window shows an ordinary city night with scattered lit windows and no landmark.
+Image 4 = PROP reference: her iced black tea. It must appear on the desk exactly like Image 4: a tall clear glass of black tea with ice cubes, the tea-bag string hanging over the rim with its paper tag outside, standing on a round cork coaster, clearly visible. There is NO mug, NO coffee cup and NO other drink anywhere.
 STYLE: exactly the rendering of Image 1 (the style anchor): light transparent watercolour anime illustration, soft pale washes, low saturation, visible paper texture, delicate thin line art. Do not copy Image 1's room, people or composition.
 No text anywhere. Nobody looks at the viewer except where stated.

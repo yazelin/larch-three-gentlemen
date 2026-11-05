@@ -275,6 +275,24 @@
         "定稿正視圖裡沒有的家具或道具"
       ],
       "note": "第一版衣櫃畫成正面貼地像倒了，重畫中"
+    },
+    "prop_tea": {
+      "name": "道具：茶語的冰紅茶",
+      "ref": "canon/refs/prop_tea.jpg",
+      "desc": "PROP reference: her iced black tea",
+      "must": [
+        "高的透明玻璃杯",
+        "紅茶色、裡面有冰塊",
+        "茶包的線掛在杯緣，外面垂著茶包標籤",
+        "底下墊軟木杯墊"
+      ],
+      "must_not": [
+        "馬克杯",
+        "咖啡",
+        "吸管",
+        "杯蓋"
+      ],
+      "note": "2026-11-05 yazelin：桌上的茶要帶參考，錯了就全新重繪；不要馬克杯"
     }
   },
   "global_rules": [
@@ -282,9 +300,9 @@
     "三位先生輪廓要一眼分得出：M 最高最成熟、C 中等溫和、S 最矮最少年",
     "一張 CG 以一個人為主角；需要多人時拉遠鏡頭",
     "畫面中沒有任何文字、字幕、標籤",
-    "現實層的冰紅茶是茶語的招牌道具，只要畫到她的桌面就要出現",
     "她的裝置分工：手機是主要編輯工具（直立拿在手上，畫面是卡片與連線）；平板看遊戲畫面（像素 RPG），1104 直播那場改成播簡報；筆電是測試用。畫她在編輯的 CG，手上拿的是手機，不是筆電",
-    "畫風：淡水彩動畫風（畫風錨 canon/refs/style_anchor.jpg）。每張 CG 的提示詞都要寫 light transparent watercolour、low saturation、paper texture，不要飽和厚塗。理由取材自直播 1864–1873：她嫌 CG 先出來 AI 味太重、色澤太厚，改淡水彩"
+    "畫風：淡水彩動畫風（畫風錨 canon/refs/style_anchor.jpg）。每張 CG 的提示詞都要寫 light transparent watercolour、low saturation、paper texture，不要飽和厚塗。理由取材自直播 1864–1873：她嫌 CG 先出來 AI 味太重、色澤太厚，改淡水彩",
+    "冰紅茶是茶語的招牌道具：只要畫到她的桌面，就把 canon/refs/prop_tea.jpg 當參考圖送進去，不能只寫文字；桌上不准出現馬克杯或其他飲料。錯了就全新重繪，不修圖（yazelin 2026-11-05）"
   ],
   "lineup": {
     "ref": "canon/refs/lineup.jpg",
