@@ -1,7 +1,8 @@
-# 用 llmshare 逐段審台詞的 AI 味：python3 tools/llm_review.py <劇本.md> <模型>
+# 用 llmshare 逐段審台詞的 AI 味：python3 tools/llm_review.py <劇本.md> [模型]
+# 預設 deepseek-v4.1-flash:1017（yazelin 2026-11-06：review 用 deepseek）
 # 結果寫到 review/<章>_<模型>.json。不自動改劇本。
 import json, os, re, sys, time, pathlib, urllib.request
-src, model = pathlib.Path(sys.argv[1]), sys.argv[2]
+src = pathlib.Path(sys.argv[1]); model = sys.argv[2] if len(sys.argv) > 2 else "deepseek-v4.1-flash:1017"
 ROOT = pathlib.Path(__file__).resolve().parent.parent
 body = src.read_text(encoding="utf-8").split("## CG 清單")[0]
 secs = re.split(r"\n(?=## )", body)[1:]
