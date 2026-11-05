@@ -1,0 +1,284 @@
+{
+  "root": "..",
+  "style_ref": {
+    "path": "canon/refs/style_anchor.jpg",
+    "desc": "畫風錨（尚未產生）：定稿後的第一張成品 CG，鎖線條、上色與光線"
+  },
+  "cast": {
+    "tea": {
+      "name": "茶葉飲料",
+      "ref": "canon/refs/tea.jpg",
+      "desc": "HEROINE model sheet, petite female university student about 20",
+      "must": [
+        "女性骨架：嬌小、窄肩，身高約 157，三位先生裡最矮的 S 也比她高半個頭",
+        "深紫色狼尾髮，後髮及肩、尾端外翹",
+        "細金框圓眼鏡，鏡片淡粉色，臉上一定看得到",
+        "金色新月墜項鍊",
+        "雙耳金色垂墜耳鍊",
+        "米白色寬大短袖 T 恤，深炭灰寬版工作褲（有口袋與垂繩），白球鞋",
+        "手腕上的串珠手環"
+      ],
+      "must_not": [
+        "黑色短髮",
+        "男性的寬肩或喉結",
+        "裙子",
+        "濃妝"
+      ],
+      "canon_version": "T_v1",
+      "approved": "2026-11-05 yazelin 確認頁定稿"
+    },
+    "m": {
+      "name": "M 先生（技術總監）",
+      "ref": "canon/refs/m.jpg",
+      "desc": "M model sheet, the oldest and tallest of the three",
+      "must": [
+        "三十出頭，三人裡最成熟",
+        "最高，約 188，肩寬，站姿挺直",
+        "長臉、方正下顎、細長鳳眼、濃而直的眉毛",
+        "深藏青色短髮往後梳整齊，額前只垂一兩撮",
+        "藏青色西裝外套袖子捲到前臂，深藏青襯衫領口敞開",
+        "左翻領上的金色齒輪胸針帶一條短鏈",
+        "左腕手錶，黑皮帶，黑皮鞋"
+      ],
+      "must_not": [
+        "領帶",
+        "眼鏡",
+        "耳環",
+        "捲髮"
+      ],
+      "canon_version": "M_v1",
+      "approved": "2026-11-05 yazelin 確認頁定稿"
+    },
+    "c": {
+      "name": "C 先生（美術設計・校稿）",
+      "ref": "canon/refs/c.jpg",
+      "desc": "C model sheet, the gentle middle one",
+      "must": [
+        "二十五、六歲",
+        "中等身高約 179，偏瘦，肩膀微駝",
+        "臉型比 M 柔和、下顎線條不銳利，眼神溫和半垂，笑起來抿嘴",
+        "暖棕色蓬鬆捲髮蓋住額頭",
+        "細金框圓眼鏡，臉上一定看得到",
+        "橄欖綠開襟針織外套，袖口與下擺有米白條紋，左胸金色葉子胸針，袖子上有彩色顏料斑點",
+        "白襯衫、棕色皮帶、棕色寬褲、白球鞋"
+      ],
+      "must_not": [
+        "西裝",
+        "耳環",
+        "鬍子",
+        "直髮"
+      ],
+      "canon_version": "C_v1",
+      "approved": "2026-11-05 yazelin 確認頁定稿"
+    },
+    "s": {
+      "name": "S 先生（音樂創作）",
+      "ref": "canon/refs/s.jpg",
+      "desc": "S model sheet, the youngest with a boyish energy",
+      "must": [
+        "二十出頭，少年感",
+        "三人裡最矮約 176（含亂翹的頭髮），精瘦，重心常放一隻腳",
+        "尖下巴、大圓眼、大笑時露出上排兩顆小虎牙",
+        "暗紅色長亂髮，左前方垂一條細辮",
+        "耳朵多個耳骨環",
+        "脖子上掛黑色耳罩式耳機，耳罩上有發光的音波線",
+        "酒紅色運動外套配白色條紋，左胸金色高音譜記號，內搭黑 T",
+        "銀色鍊條項鍊、腰間錢包鍊，黑色工作束口褲，黑白高筒鞋"
+      ],
+      "must_not": [
+        "眼鏡",
+        "西裝",
+        "短髮"
+      ],
+      "canon_version": "S_v1",
+      "approved": "2026-11-05 yazelin 確認頁定稿"
+    }
+  },
+  "world": {
+    "desk": {
+      "name": "她的書桌（現實層，高雄深夜）",
+      "ref": "canon/refs/desk.jpg",
+      "desc": "DESK scene reference, real layer, late night",
+      "must": [
+        "小房間一角，書桌貼著窗",
+        "窗外是一般城市的夜景燈光，沒有可辨識的地標",
+        "桌上：打開的筆電、立著的平板、一支手機、一杯加冰塊與茶包的冰紅茶",
+        "檯燈是房間主要光源，暖黃光，房間其他地方偏暗",
+        "筆電螢幕上是 Larch 編輯器風格的卡片與連線（不畫可讀文字）",
+        "桌角疊著課本與筆記",
+        "椅背掛著一件外套"
+      ],
+      "must_not": [
+        "三位先生的實體（現實層他們只出現在螢幕裡）",
+        "可辨識的高雄地標（例如八五大樓）",
+        "整齊乾淨到像樣品屋"
+      ],
+      "canon_version": "desk_v1",
+      "approved": "2026-11-05 yazelin 確認頁定稿"
+    },
+    "studio": {
+      "name": "四人工作室（工作室層）",
+      "ref": "canon/refs/studio.jpg",
+      "desc": "STUDIO scene reference, the shared imagined space",
+      "must": [
+        "一整面落地格子窗，白天柔和的自然光",
+        "窗邊垂掛的藤蔓綠植",
+        "右側木書架，上面有書、相機、小盆栽",
+        "長木桌：攤開的素描本與便利貼、筆筒、一盆小植物、馬克杯",
+        "左側牆上與螢幕上貼著水彩風景畫稿和色票",
+        "右側是音樂角：鍵盤、監聽喇叭、立著一把木吉他",
+        "一張可以四人圍坐的空間，桌邊有數張椅子"
+      ],
+      "must_not": [
+        "任何文字或招牌",
+        "電腦機房感的冷色霓虹",
+        "夜景（工作室層永遠是白天）"
+      ],
+      "canon_version": "studio_v1",
+      "approved": "2026-11-05 yazelin 確認頁定稿"
+    },
+    "studio_A": {
+      "name": "工作室 機位 A：全景（南側站姿往北）",
+      "ref": "canon/refs/studio.jpg",
+      "plan": "canon/plans/studio_A.png",
+      "desc": "STUDIO camera A empty view",
+      "must": [
+        "就是工作室定稿正視圖"
+      ],
+      "must_not": [
+        "人",
+        "可讀的文字",
+        "定稿正視圖裡沒有的家具或道具"
+      ]
+    },
+    "studio_B": {
+      "name": "工作室 機位 B：反打（窗邊往南看門）",
+      "ref": "canon/refs/view_studio_B.jpg",
+      "plan": "canon/plans/studio_B.png",
+      "desc": "STUDIO camera B empty view",
+      "must": [
+        "光從鏡頭背後的窗照進來",
+        "南牆中央是木門，矮櫃在門的東側（畫面左邊）",
+        "長桌與四張椅子在前景到中景"
+      ],
+      "must_not": [
+        "人",
+        "可讀的文字",
+        "定稿正視圖裡沒有的家具或道具"
+      ]
+    },
+    "studio_C": {
+      "name": "工作室 機位 C：貼近她的座位（坐姿往東北看音樂角）",
+      "ref": "canon/refs/view_studio_C.jpg",
+      "plan": "canon/plans/studio_C.png",
+      "desc": "STUDIO camera C empty view",
+      "must": [
+        "前景是紅椅椅背與桌緣的素描本",
+        "背景是鍵盤、兩顆監聽喇叭、書架、吉他架",
+        "窗光從畫面左邊來"
+      ],
+      "must_not": [
+        "人",
+        "可讀的文字",
+        "定稿正視圖裡沒有的家具或道具"
+      ]
+    },
+    "studio_D": {
+      "name": "工作室 機位 D：俯視",
+      "ref": "canon/refs/view_studio_D.jpg",
+      "plan": "canon/plans/studio_D.png",
+      "desc": "STUDIO camera D empty view",
+      "must": [
+        "長桌與四張椅子在地毯上",
+        "北面落地窗在畫面上緣",
+        "東側書架、音樂角、吉他；南牆門與矮櫃"
+      ],
+      "must_not": [
+        "人",
+        "可讀的文字",
+        "定稿正視圖裡沒有的家具或道具"
+      ]
+    },
+    "desk_A": {
+      "name": "書桌 機位 A：正視（椅子左後方坐姿往窗）",
+      "ref": "canon/refs/desk.jpg",
+      "plan": "canon/plans/desk_A.png",
+      "desc": "DESK camera A empty view",
+      "must": [
+        "就是書桌定稿正視圖"
+      ],
+      "must_not": [
+        "人",
+        "可讀的文字",
+        "定稿正視圖裡沒有的家具或道具"
+      ]
+    },
+    "desk_B": {
+      "name": "書桌 機位 B：反打（從書桌往房間看）",
+      "ref": "canon/refs/view_desk_B.jpg",
+      "plan": "canon/plans/desk_B.png",
+      "desc": "DESK camera B empty view",
+      "must": [
+        "前景是掛著外套的空椅子",
+        "床在畫面右邊（西），衣櫃在左邊（東南角），南牆是房門",
+        "只有背後的檯燈光，越往門越暗"
+      ],
+      "must_not": [
+        "人",
+        "可讀的文字",
+        "定稿正視圖裡沒有的家具或道具"
+      ]
+    },
+    "desk_C": {
+      "name": "書桌 機位 C：桌面特寫",
+      "ref": "canon/refs/view_desk_C.jpg",
+      "plan": "canon/plans/desk_C.png",
+      "desc": "DESK camera C empty view",
+      "must": [
+        "正面朝上的手機、插茶包線的冰紅茶、立架上的平板",
+        "畫面左邊有筆電邊緣與檯燈光，背後是夜窗",
+        "淺景深"
+      ],
+      "must_not": [
+        "人",
+        "可讀的文字",
+        "定稿正視圖裡沒有的家具或道具"
+      ]
+    },
+    "desk_D": {
+      "name": "書桌 機位 D：俯視",
+      "ref": "canon/refs/view_desk_D.jpg",
+      "plan": "canon/plans/desk_D.png",
+      "desc": "DESK camera D empty view",
+      "must": [
+        "書桌沿窗，桌上檯燈、筆電、手機、冰紅茶、平板",
+        "西牆是床與床頭書架，東南角衣櫃，南牆房門",
+        "檯燈的暖光集中在桌面，其他地方偏暗"
+      ],
+      "must_not": [
+        "人",
+        "可讀的文字",
+        "定稿正視圖裡沒有的家具或道具"
+      ]
+    }
+  },
+  "global_rules": [
+    "雙層世界：現實層是她深夜的書桌（三位先生只出現在螢幕的人形視窗裡，碰不到她）；工作室層是四人共用的空間，可以同處一室",
+    "三位先生輪廓要一眼分得出：M 最高最成熟、C 中等溫和、S 最矮最少年",
+    "一張 CG 以一個人為主角；需要多人時拉遠鏡頭",
+    "畫面中沒有任何文字、字幕、標籤",
+    "現實層的冰紅茶是茶葉飲料的招牌道具，只要畫到她的桌面就要出現",
+    "她的裝置分工：手機是主要編輯工具（直立拿在手上，畫面是卡片與連線）；平板看遊戲畫面（像素 RPG），1104 直播那場改成播簡報；筆電是測試用。畫她在編輯的 CG，手上拿的是手機，不是筆電"
+  ],
+  "lineup": {
+    "ref": "canon/refs/lineup.jpg",
+    "desc": "HEIGHT LINE-UP, left to right M C heroine S. Use only for relative heights; outfits follow each single-character sheet",
+    "heights_cm": {
+      "m": 188,
+      "c": 179,
+      "tea": 157,
+      "s": 176
+    },
+    "note": "2026-11-05 yazelin 選 v1；S 外套多一個高音譜記號，以單人定稿為準"
+  }
+}

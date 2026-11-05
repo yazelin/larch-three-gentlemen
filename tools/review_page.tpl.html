@@ -1,0 +1,106 @@
+<title><!--TITLE--></title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Serif+TC:wght@600;800&family=Noto+Sans+TC:wght@400;500;700&display=swap">
+<style>
+/* 版面：一欄一人，大圖在上，必須有／不可以有在下，像製作人在桌上攤開四張設定稿逐張簽核 */
+:root{
+  --bg:#f3f1f5; --paper:#ffffff; --ink:#26222c; --muted:#6c6574; --line:#dcd6e2;
+  --accent:#b23a62; --ok:#2f7a55; --warn:#a8641a;
+  --display:"Noto Serif TC","Songti TC",serif; --body:"Noto Sans TC","PingFang TC","Microsoft JhengHei",sans-serif;
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
+  --bg:#18161c; --paper:#221f27; --ink:#ece8f0; --muted:#a59cae; --line:#3a3442;
+  --accent:#e27a9c; --ok:#6cc495; --warn:#e0a35a; color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#18161c; --paper:#221f27; --ink:#ece8f0; --muted:#a59cae; --line:#3a3442;
+  --accent:#e27a9c; --ok:#6cc495; --warn:#e0a35a; color-scheme:dark}
+body{background:var(--bg);color:var(--ink);font-family:var(--body);font-size:15px;line-height:1.7}
+.wrap{max-width:1100px;margin:0 auto;padding-block:28px 64px;
+  padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+.top h1{font-family:var(--display);font-weight:800;font-size:clamp(26px,5vw,38px);margin:0;text-wrap:balance}
+.top h1 em{font-style:normal;color:var(--accent)}
+.top p{color:var(--muted);max-width:65ch;margin:8px 0 0}
+.tally{display:flex;gap:10px;flex-wrap:wrap;margin:18px 0 28px;font-size:13px}
+.tally span{padding:3px 10px;border:1px solid var(--line);border-radius:999px;background:var(--paper)}
+.grid{display:grid;gap:28px}
+.card{background:var(--paper);border:1px solid var(--line);border-radius:6px;overflow:hidden}
+.card header{display:flex;align-items:baseline;gap:12px;flex-wrap:wrap;padding:14px 18px;border-bottom:1px solid var(--line)}
+.card h2{font-family:var(--display);font-size:21px;margin:0}
+.ver{font-size:12px;color:var(--muted);font-variant-numeric:tabular-nums}
+.state{margin-left:auto;font-size:13px;font-weight:700;color:var(--muted)}
+.card[data-st="approved"] .state{color:var(--ok)} .card[data-st="revise"] .state{color:var(--warn)}
+.card[data-st="approved"]{border-color:var(--ok)} .card[data-st="revise"]{border-color:var(--warn)}
+.shot{display:block;width:100%;padding:0;border:0;background:#e9e6ee;cursor:zoom-in}
+.shot img{display:block;width:100%;height:auto}
+.spec{display:grid;grid-template-columns:2fr 1fr;gap:18px;padding:14px 18px}
+.spec>div{min-width:0}
+.spec h3{font-size:12px;letter-spacing:.08em;color:var(--muted);margin:0 0 4px}
+.spec ul{margin:0;padding-left:1.2em} .spec ul.no li::marker{content:"× "}
+.mine{margin:0 18px 14px;padding:10px 12px;background:var(--bg);border-radius:4px;font-size:14px}
+.mine b{color:var(--accent)}
+.act{display:grid;gap:8px;padding:0 18px 18px}
+.choices{display:flex;gap:8px;flex-wrap:wrap}
+button{font:inherit}
+.choices button,.save{border:1px solid var(--line);background:var(--bg);color:var(--ink);border-radius:4px;padding:7px 18px;cursor:pointer}
+.choices button[aria-pressed="true"][data-pick="approved"]{background:var(--ok);border-color:var(--ok);color:#fff}
+.choices button[aria-pressed="true"][data-pick="revise"]{background:var(--warn);border-color:var(--warn);color:#fff}
+.save{justify-self:start;background:var(--accent);border-color:var(--accent);color:#fff;font-weight:700}
+.save:disabled{opacity:.5;cursor:default}
+button:focus-visible,textarea:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+label{font-size:13px;color:var(--muted)}
+textarea{width:100%;box-sizing:border-box;font:inherit;color:var(--ink);background:var(--bg);border:1px solid var(--line);border-radius:4px;padding:8px}
+.msg{margin:0;font-size:13px;color:var(--muted);min-height:1.4em}
+dialog{border:0;padding:0;background:transparent;max-width:96vw;max-height:94vh}
+dialog::backdrop{background:rgb(0 0 0 / .8)}
+dialog img{max-width:96vw;max-height:94vh;display:block}
+@media (max-width:640px){.spec{grid-template-columns:1fr}}
+</style>
+<div class="wrap">
+<section class="top">
+<h1>三位先生，都讓我心動<br><em><!--TITLE--></em></h1>
+<p><!--INTRO--></p>
+</section>
+<div class="tally" id="tally"><span>載入中</span></div>
+<div class="grid">
+<!--CARDS-->
+</div>
+</div>
+<dialog id="zoom"><img alt=""></dialog>
+<script>
+const cards=[...document.querySelectorAll('.card')];
+const zoom=document.getElementById('zoom');
+cards.forEach(c=>{
+  c.querySelector('.shot').addEventListener('click',()=>{const i=c.querySelector('.shot img');zoom.querySelector('img').src=i.src;zoom.querySelector('img').alt=i.alt;zoom.showModal()});
+  c.querySelectorAll('[data-pick]').forEach(b=>b.addEventListener('click',()=>{c.querySelectorAll('[data-pick]').forEach(x=>x.setAttribute('aria-pressed',x===b));c.dataset.pick=b.dataset.pick}));
+});
+zoom.addEventListener('click',()=>zoom.close());
+function paint(c,doc){
+  const st=doc&&doc.ver===c.dataset.ver?doc.status:null;
+  c.dataset.st=st||'';
+  c.querySelector('[data-state]').textContent=st==='approved'?'已定稿':st==='revise'?'要修改':'未回覆';
+  if(doc&&doc.ver===c.dataset.ver){
+    c.querySelector('textarea').value=doc.note||'';c.dataset.pick=doc.status;
+    c.querySelectorAll('[data-pick]').forEach(x=>x.setAttribute('aria-pressed',x.dataset.pick===doc.status));
+  }
+}
+function tally(){
+  const n={approved:0,revise:0,none:0};cards.forEach(c=>n[c.dataset.st||'none']++);
+  document.getElementById('tally').innerHTML=`<span>已定稿 ${n.approved}／${cards.length}</span><span>要修改 ${n.revise}</span><span>未回覆 ${n.none}</span>`;
+}
+(async()=>{
+  const db=await claude.use('db');
+  if(!db){cards.forEach(c=>{c.querySelector('[data-save]').disabled=true;c.querySelector('[data-msg]').textContent='登入後才能送出回覆'});tally();return}
+  const t=setTimeout(()=>{document.getElementById('tally').innerHTML='<span>讀取回覆逾時，仍可以送出</span>'},10000);
+  db.collection('reviews').onSnapshot(s=>{clearTimeout(t);const m={};s.docs.forEach(d=>m[d.id]=d.data());cards.forEach(c=>paint(c,m[c.dataset.id]));tally()},()=>{clearTimeout(t);tally()});
+  cards.forEach(c=>c.querySelector('[data-save]').addEventListener('click',async e=>{
+    const msg=c.querySelector('[data-msg]');
+    if(!c.dataset.pick){msg.textContent='先選「定稿」或「要修改」';return}
+    const note=c.querySelector('textarea').value.trim();
+    if(c.dataset.pick==='revise'&&!note){msg.textContent='要修改的話，請寫一下哪裡不對';return}
+    e.target.disabled=true;msg.textContent='送出中';
+    try{await db.doc('reviews/'+c.dataset.id).set({status:c.dataset.pick,note,ver:c.dataset.ver,at:Date.now()});msg.textContent='已送出'}
+    catch(err){msg.textContent='送出失敗：'+(err&&err.message||'請稍後再試')}
+    finally{e.target.disabled=false}
+  }));
+})();
+</script>

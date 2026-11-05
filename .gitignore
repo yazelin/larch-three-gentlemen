@@ -1,0 +1,9 @@
+art/gen/
+__pycache__/
+sources/promo/
+sources/profile_music/
+sources/teahouse_img/*.img
+sources/teahouse_img/
+sources/部落格-*.json
+sources/明日再寫-歌詞.txt
+sources/work_*.json
