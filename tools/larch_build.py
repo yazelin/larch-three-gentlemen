@@ -10,7 +10,7 @@ STATE = ROOT / "larch_project.json"
 SHA = subprocess.run(["git", "-C", str(ROOT), "rev-parse", "HEAD"], capture_output=True, text=True).stdout.strip()
 CDN = f"https://cdn.jsdelivr.net/gh/yazelin/larch-three-gentlemen@{SHA}/"
 BOARD = "board-ch1"
-NAME = "慕詩客，邀明月，對朝霞"
+NAME = "夜後明月．晨前朝霞．慕詩客"
 
 def cg_url(cid): return CDN + f"art/cg/{cid}.jpg"
 
@@ -146,6 +146,7 @@ def push(nodes, edges, cgs):
     if p.get("settings", {}).get("organization", {}).get("tags") and "慕詩客" not in p["settings"]["organization"]["tags"]:
         raise SystemExit("專案標籤不對，停下來，不覆寫")
     # 專案層設定（整份 PUT 會清白板，之後白板再推一次）
+    p["name"] = NAME
     s = p.setdefault("settings", {})
     s.update({"stageFit": "auto", "keepActorsInFrame": False, "textSpeed": 55, "returnToTitleOnEnd": True,
               "titleScreenEnabled": True, "titleCoverImage": cg_url("01-5"), "projectThumbnail": cg_url("01-5"),

@@ -143,7 +143,7 @@ def page(title, body, desc="", depth=0):
 <title>{e(title)}</title><meta name="description" content="{e(desc)}">
 <meta property="og:title" content="{e(title)}"><meta property="og:description" content="{e(desc)}"><meta property="og:image" content="https://yazelin.github.io/larch-three-gentlemen/img/hero.jpg">
 {FONTS}<link rel="stylesheet" href="{up}style.css"></head><body><div class="wrap">
-<nav class="top"><b>慕詩客，邀明月，對朝霞</b><a href="{up}index.html">首頁</a><a href="{up}index.html#cast">角色</a><a href="{up}index.html#names">名字</a><a href="{up}{chapters[0]['slug']}.html">讀第一章</a><a href="{up}sources.html">取材對照</a></nav>
+<nav class="top"><b>夜後明月．晨前朝霞．慕詩客</b><a href="{up}index.html">首頁</a><a href="{up}index.html#cast">角色</a><a href="{up}index.html#names">名字</a><a href="{up}{chapters[0]['slug']}.html">讀第一章</a><a href="{up}sources.html">取材對照</a></nav>
 {body}
 <footer><p>茶語是虛構角色。人設與製作經過取材自 Larch 創作者茶葉飲料，經她本人同意；她的作品《最後的聖戰》：<a href="{WORK}">{WORK}</a>。劇本、設定與圖採 CC BY-NC 4.0，程式採 MIT，詳見 <a href="{REPO}/blob/main/LICENSE.md">LICENSE</a>。</p>
 <div class="title-footer"><a href="{REPO}" aria-label="GitHub" title="GitHub">GitHub</a> · <a href="https://www.facebook.com/yaze.lin.gm" aria-label="Facebook" title="Facebook">Facebook</a> · <a href="https://buymeacoffee.com/yazelin" aria-label="Buy Me a Coffee" title="Buy Me a Coffee">Buy Me a Coffee</a> · <a href="https://yazelin.github.io/" aria-label="亞澤的部落格" title="亞澤的部落格">部落格</a></div></footer>
@@ -199,21 +199,21 @@ cards = "".join(card(*p) for p in people)
 POEM = """<h2 id="names">名字的由來</h2>
 <p class="lede">三位先生原本只是 C、M、S，是工具本來的叫法。茶語後來讀到唐朝元稹的〈一字至七字詩．茶〉，這首詩的第一個字就是「茶」，她從詩裡替他們取了名字。</p>
 <blockquote class="poem">茶。<br>香葉，嫩芽。<br><b>慕詩客</b>，愛僧家。<br>碾雕白玉，羅織紅紗。<br>銚煎黃蕊色，碗轉麴塵花。<br>夜後邀陪<b>明</b>月，<b>晨</b>前命對朝霞。<br>洗盡古今人不倦，將知醉後豈堪誇。</blockquote>
-<p class="lede">「夜後邀陪明月，晨前命對朝霞」：入夜後是明陪著她，天亮前是晨陪著她。作品名《慕詩客，邀明月，對朝霞》是從詩裡取字重組的：「慕詩客」是第三句原文，「邀明月」「對朝霞」取自第六句，三個動詞都是茶語做的事。詩只有七句，從一個字長到七個字，共通線的七章就用這七句當章名。作歌的人，就是詩客。詩見《全唐詩》卷 423，個別字句在不同版本有出入。</p>"""
+<p class="lede">「夜後邀陪明月，晨前命對朝霞」：入夜後是明陪著她，天亮前是晨陪著她。作品名《夜後明月．晨前朝霞．慕詩客》是從詩裡取字重組的：「慕詩客」是第三句原文，「邀明月」「對朝霞」取自第六句，三個動詞都是茶語做的事。詩只有七句，從一個字長到七個字，共通線的七章就用這七句當章名。作歌的人，就是詩客。詩見《全唐詩》卷 423，個別字句在不同版本有出入。</p>"""
 chl = "".join(f'<li><span class="t">{e(c["title"])}</span><a href="{c["slug"]}.html">線上閱讀</a><a href="sources.html#{c["slug"]}">這一章的取材</a></li>' for c in chapters)
 index = f"""<div class="hero"><img src="{hero}" alt="茶語與三位先生第一次在工作室，桌上浮著三把發光的鎖"></div>
-<div class="hero-copy"><h1>慕詩客，邀明月，對朝霞</h1><p class="q">三位先生，都讓我心動</p></div>
+<div class="hero-copy"><h1>夜後明月．晨前朝霞．慕詩客</h1><p class="q">三位先生，都讓我心動</p></div>
 <p class="lede">Larch 創作者挑戰「自由與限制」那三個禮拜，大學生茶語在高雄的書桌前，做一部聖騎士與信仰的 RPG。她的三個 AI 夥伴升級之後有了人形介面：畫圖的 C 先生、寫程式的 M 先生、做音樂的 S 先生。她想說一個好故事。他們知道一件她不知道的事。</p>
 <div class="note">茶語是虛構角色。她的人設與製作經過取材自 Larch 創作者茶葉飲料（第三屆挑戰最佳作品《最後的聖戰》作者），經她本人同意。哪些情節是真的、哪些是改編，逐段寫在<a href="sources.html">取材對照</a>。作品製作中，還沒有可以玩的版本。</div>
 <h2 id="cast">角色</h2><div class="cast">{cards}</div>
 {POEM}
 <h2>章節</h2><ul class="chlist">{chl}</ul>
 <p class="note">先去玩讓這一切開始的那部作品：<a href="{WORK}">《最後的聖戰》</a>。</p>"""
-(DOCS / "index.html").write_text(page("慕詩客，邀明月，對朝霞", index, "乙女向視覺小說：大學生茶語與三個 AI 夥伴的三個禮拜。"), encoding="utf-8")
+(DOCS / "index.html").write_text(page("夜後明月．晨前朝霞．慕詩客", index, "乙女向視覺小說：大學生茶語與三個 AI 夥伴的三個禮拜。"), encoding="utf-8")
 
 for c in chapters:
     body = f'<article class="read"><h1>{e(c["title"])}</h1>{render(c["body"])}<p class="note">這一章哪些是真的、哪些是改編：<a href="sources.html#{c["slug"]}">取材對照</a>。</p></article>'
-    (DOCS / f'{c["slug"]}.html').write_text(page(f'{c["title"]}｜慕詩客，邀明月，對朝霞', body, f'{c["title"]}，線上閱讀。'), encoding="utf-8")
+    (DOCS / f'{c["slug"]}.html').write_text(page(f'{c["title"]}｜夜後明月．晨前朝霞．慕詩客', body, f'{c["title"]}，線上閱讀。'), encoding="utf-8")
 
 sec = []
 for c in chapters:
@@ -224,7 +224,7 @@ src = f"""<h1 style="font-size:36px;margin:24px 0 6px">取材對照</h1>
 <div class="legend"><span><span class="k 真實">真實</span> 照記錄寫</span><span><span class="k 改編">改編</span> 真實的事，換了說的人或形式</span><span><span class="k 原創">原創</span> 為了故事新寫的</span></div>
 <div class="note">沒有轉貼她未公開的內容；其他真實的人只寫角色，不寫名字。錄影：<a href="{LIVE}">週三直播記錄 1104</a>。</div>
 {"".join(sec)}"""
-(DOCS / "sources.html").write_text(page("取材對照｜慕詩客，邀明月，對朝霞", src, "哪些情節是真的、哪些是改編：逐章逐段對照。"), encoding="utf-8")
+(DOCS / "sources.html").write_text(page("取材對照｜夜後明月．晨前朝霞．慕詩客", src, "哪些情節是真的、哪些是改編：逐章逐段對照。"), encoding="utf-8")
 import subprocess
 apply = pathlib.Path.home() / ".claude/skills/promo-footer/apply.py"
 if apply.exists():
