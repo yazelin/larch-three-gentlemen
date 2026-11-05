@@ -1,0 +1,23 @@
+REFERENCE IMAGES:
+Image 1 = APPROVED STUDIO scene reference, camera A. It is the single source of truth for the room: windows, vines, long wooden table with sketchbook, chairs, shelves, music corner, light.
+Image 2 = HEROINE 茶語 model sheet. Image 3 = M model sheet. Image 4 = C model sheet. Image 5 = S model sheet.
+Every character must match their sheet exactly (face, hair, glasses, outfit, accessories, shoes).
+
+CHARACTER SHEET (must / must not):
+- 茶語 (heroine): 女性骨架：嬌小、窄肩，身高約 157，三位先生裡最矮的 S 也比她高半個頭; 深紫色狼尾髮，後髮及肩、尾端外翹; 細金框圓眼鏡，鏡片淡粉色，臉上一定看得到; 金色新月墜項鍊; 雙耳金色垂墜耳鍊; 米白色寬大短袖 T 恤，深炭灰寬版工作褲（有口袋與垂繩），白球鞋; 手腕上的串珠手環. NOT: 黑色短髮; 男性的寬肩或喉結; 裙子; 濃妝
+- M: 三十出頭，三人裡最成熟; 最高，約 188，肩寬，站姿挺直; 長臉、方正下顎、細長鳳眼、濃而直的眉毛; 深藏青色短髮往後梳整齊，額前只垂一兩撮; 藏青色西裝外套袖子捲到前臂，深藏青襯衫領口敞開; 左翻領上的金色齒輪胸針帶一條短鏈; 左腕手錶，黑皮帶，黑皮鞋. NOT: 領帶; 眼鏡; 耳環; 捲髮
+- C: 二十五、六歲; 中等身高約 179，偏瘦，肩膀微駝; 臉型比 M 柔和、下顎線條不銳利，眼神溫和半垂，笑起來抿嘴; 暖棕色蓬鬆捲髮蓋住額頭; 細金框圓眼鏡，臉上一定看得到; 橄欖綠開襟針織外套，袖口與下擺有米白條紋，左胸金色葉子胸針，袖子上有彩色顏料斑點; 白襯衫、棕色皮帶、棕色寬褲、白球鞋. NOT: 西裝; 耳環; 鬍子; 直髮
+- S: 二十出頭，少年感; 三人裡最矮約 176（含亂翹的頭髮），精瘦，重心常放一隻腳; 尖下巴、大圓眼、大笑時露出上排兩顆小虎牙; 暗紅色長亂髮，左前方垂一條細辮; 耳朵多個耳骨環; 脖子上掛黑色耳罩式耳機，耳罩上有發光的音波線; 酒紅色運動外套配白色條紋，左胸金色高音譜記號，內搭黑 T; 銀色鍊條項鍊、腰間錢包鍊，黑色工作束口褲，黑白高筒鞋. NOT: 眼鏡; 西裝; 短髮
+Heights: M about 188 cm, C 179, S 176, 茶語 157. When standing, 茶語's head top reaches only M's shoulder.
+
+SHOT: the same room and camera as Image 1 (camera A, wide establishing, standing eye level, looking north at the window wall). Keep the room exactly as Image 1.
+Above the centre of the long table, three small glowing golden padlocks float in the air, softly lit, the only magical element. No text anywhere.
+
+BLOCKING (exclusive, do not move anyone):
+- 茶語 stands on the NEAR side of the table, directly in front of the red chair, body turned three-quarters toward the camera, looking UP at the floating padlocks with wide eyes and slightly parted lips (eyes OPEN, amazed). Her right hand rests flat on top of the red chair's backrest, all five fingers visible. Her left hand holds her phone against her chest. Her face must not be blocked by anything.
+- C sits on the cream chair on the FAR side of the table (left of centre), pencil in his right hand paused over an open sketchbook, looking at 茶語 with a gentle smile. His left hand is under the table, not visible.
+- M stands on the FAR side behind the table, right of centre, in front of the windows, upright, holding a tablet in his left hand, right hand in his trouser pocket, looking up at the padlocks, calm.
+- S sits backwards on the wooden chair on the FAR side (right), both forearms resting on the chair back, headphones around his neck, grinning at 茶語 with his fang showing.
+- The green chair on the near side is empty. Nobody else is in the room. Nobody looks at the viewer.
+
+STYLE: clean anime illustration matching the character sheets: crisp line art, soft cel shading, warm daylight from the windows, gentle bloom, like a romance visual novel CG.

@@ -2,7 +2,8 @@
   "root": "..",
   "style_ref": {
     "path": "canon/refs/style_anchor.jpg",
-    "desc": "畫風錨（尚未產生）：定稿後的第一張成品 CG，鎖線條、上色與光線"
+    "desc": "STYLE ANCHOR = CG 01-5 in light transparent watercolour anime style: soft pale washes, low saturation, visible paper texture, delicate thin line art, airy warm light. Every CG copies this rendering. Use it as Image 1 for every CG.",
+    "approved": "2026-11-05 yazelin 選 B 淡水彩"
   },
   "cast": {
     "tea": {
@@ -278,7 +279,8 @@
     "一張 CG 以一個人為主角；需要多人時拉遠鏡頭",
     "畫面中沒有任何文字、字幕、標籤",
     "現實層的冰紅茶是茶語的招牌道具，只要畫到她的桌面就要出現",
-    "她的裝置分工：手機是主要編輯工具（直立拿在手上，畫面是卡片與連線）；平板看遊戲畫面（像素 RPG），1104 直播那場改成播簡報；筆電是測試用。畫她在編輯的 CG，手上拿的是手機，不是筆電"
+    "她的裝置分工：手機是主要編輯工具（直立拿在手上，畫面是卡片與連線）；平板看遊戲畫面（像素 RPG），1104 直播那場改成播簡報；筆電是測試用。畫她在編輯的 CG，手上拿的是手機，不是筆電",
+    "畫風：淡水彩動畫風（畫風錨 canon/refs/style_anchor.jpg）。每張 CG 的提示詞都要寫 light transparent watercolour、low saturation、paper texture，不要飽和厚塗。理由取材自直播 1864–1873：她嫌 CG 先出來 AI 味太重、色澤太厚，改淡水彩"
   ],
   "lineup": {
     "ref": "canon/refs/lineup.jpg",
@@ -290,5 +292,26 @@
       "s": 176
     },
     "note": "2026-11-05 yazelin 選 v1；S 外套多一個高音譜記號，以單人定稿為準"
+  },
+  "cg": {
+    "01-5": {
+      "name": "CG 01-5 四人第一次在工作室（畫風錨）",
+      "ref": "art/cg/01-5.jpg",
+      "approved": "2026-11-05",
+      "must": [
+        "房間照工作室定稿（機位 A）",
+        "桌子上方浮著三把發光的鎖，畫面沒有字",
+        "茶語站在近側紅椅前、睜眼抬頭看鎖、右手扶椅背、左手拿手機",
+        "C 坐遠側奶油色椅、鉛筆在素描本上、看著茶語",
+        "M 站在窗前、托平板、手插口袋、看鎖",
+        "S 反坐木椅、手臂搭椅背、露虎牙",
+        "綠椅空著，沒有人看鏡頭"
+      ],
+      "must_not": [
+        "多出來的手或手指",
+        "角色長相跟定稿不同",
+        "第五個人"
+      ]
+    }
   }
 }
