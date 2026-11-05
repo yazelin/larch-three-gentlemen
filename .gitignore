@@ -9,3 +9,5 @@ sources/明日再寫-歌詞.txt
 sources/work_*.json
 art/cg/*.png
 art/cg/*.png.lock
+dist/
+larch_project.json
