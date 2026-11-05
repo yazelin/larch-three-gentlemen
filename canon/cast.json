@@ -292,7 +292,9 @@
         "吸管",
         "杯蓋"
       ],
-      "note": "2026-11-05 yazelin：桌上的茶要帶參考，錯了就全新重繪；不要馬克杯"
+      "note": "2026-11-05 yazelin：桌上的茶要帶參考，錯了就全新重繪；不要馬克杯",
+      "text_spec": "Her iced black tea: a TALL, straight-sided, slightly tapered CLEAR drinking glass (no handle, no stem), filled about 85% with amber-brown black tea; four or five clear square ice cubes floating at the top; the thin white string of a tea bag hangs over the rim on the RIGHT side of the glass, with a small rectangular cream-coloured paper tag dangling outside the glass halfway down; the glass stands on a round light-brown CORK coaster; no straw, no lid, no lemon slice, no handle. It is never a mug and never coffee.",
+      "text_spec_verified": "2026-11-05 只用文字生成一次（art/gen/prop_tea_textonly.png），杯型、茶色、冰塊、茶包線在右、米色標籤、軟木杯墊全部與參考圖一致"
     }
   },
   "global_rules": [
