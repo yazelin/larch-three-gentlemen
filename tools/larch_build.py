@@ -13,29 +13,49 @@ BOARD = "board-ch1"
 NAME = "夜後明月．晨前朝霞．慕詩客"
 
 def cg_url(cid): return CDN + f"art/cg/{cid}.jpg"
+BGM = {"枷鎖與選擇": "chains_and_choice"}   # 劇本裡的曲名 → art/bgm/ 檔名（ASCII）
+VIDEOS = ROOT / "art/video/media.json"     # "cg|運鏡" → {mediaId, url}，tools/motion.py 產生
+def video_layer(key):
+    m = json.loads(VIDEOS.read_text()) if VIDEOS.exists() else {}
+    if key not in m: raise SystemExit(f"缺運鏡影片 {key}，先跑 tools/motion.py")
+    return {"id": "v-" + key.replace("|", "-"), "mediaId": m[key]["mediaId"], "url": m[key]["url"], "fill": True, "videoLoop": False, "volume": 0}
 
 # ---------- 第一步：劇本 → 段落 ----------
 def segments(md):
     """[('card', title, lines, cgs) | ('choice', [(text, key)]) | ('branch', key, lines, cgs)]；每句 line 可帶 background。"""
     body = md.split("## CG 清單")[0]
     segs, title, lines, cgs, mode, last_desk, pend_bg = [], "", [], [], None, cg_url("01-1"), None
+    pend, opts = {}, {}   # pend：下一句要帶的 video/bgm/sfx；opts：這張卡的轉場與自動前進
     def close():
-        nonlocal lines, cgs
+        nonlocal lines, cgs, opts
         if lines:
-            segs.append(("branch", mode, lines, cgs) if mode else ("card", title, lines, cgs))
+            segs.append(("branch", mode, lines, cgs, opts) if mode else ("card", title, lines, cgs, opts))
+            opts = {}
         lines, cgs = [], []
     def add(sp, tx, emo):
-        nonlocal pend_bg
+        nonlocal pend_bg, pend
         ln = {"id": f"l{len(lines)}", "speaker": sp, "text": tx, "emotion": emo}
         if pend_bg: ln["background"], pend_bg = pend_bg, None
+        ln.update(pend); pend = {}
         lines.append(ln)
     for raw in body.splitlines():
         l = raw.strip()
         if not l or l.startswith((">", "---", "# ", "【立繪")): continue
         if l.startswith("## "): close(); title = l[3:]; continue
-        m = re.match(r"【CG ([^｜\s】]+)", l)
+        m = re.match(r"【轉場 (\w+)(?: (\d+))?】", l)
+        if m: close(); opts = {"transition": m[1], "transitionMs": int(m[2] or 600)}; continue
+        m = re.match(r"【自動 ([\d.]+)】", l)
+        if m: opts["autoAdvance"] = {"enabled": True, "mode": "delay", "delayMs": int(float(m[1]) * 1000), "uninterruptible": True}; continue
+        m = re.match(r"【BGM (.+?)】", l)
+        if m:
+            pend["bgmAction" if m[1] in ("停", "淡出") else "bgm"] = {"停": "stop", "淡出": "fadeOut"}.get(m[1]) or CDN + f"art/bgm/{BGM[m[1]]}.mp3"
+            continue
+        m = re.match(r"【音效 (\w+)】", l)
+        if m: pend["sfxUrl"] = f"/sfx/{m[1]}.mp3"; continue
+        m = re.match(r"【CG ([^｜\s】]+)(?:｜運鏡 (\S+?))?(?:｜.*)?】", l)
         if m:
             cid = m[1]; cgs.append(cid); pend_bg = cg_url(cid)
+            if m[2] and m[2] != "定": pend["video"] = f"{cid}|{m[2]}"
             if cid != "01-5": last_desk = pend_bg
             continue
         m = re.match(r"【背景 (\w+)", l)
@@ -49,7 +69,7 @@ def segments(md):
         if re.fullmatch(r"（[CMS]）", l): close(); mode = l[1]; continue
         if l == "（共通）": close(); mode = None; continue
         if re.fullmatch(r"（第.+完）", l): add("旁白", l, "描述動作"); continue
-        if l.startswith("〔"): add("旁白", l.strip("〔〕"), "描述動作"); continue
+        if l.startswith("〔"): add("旁白", l.strip("〔〕") or "……", "描述動作"); continue
         m = re.match(r"([^：]{1,8}?)（心聲）：(.*)", l)
         if m: add(m[1], f"（{m[2]}）", "心聲"); continue
         m = re.match(r"([^：]{1,8})：(.*)", l)
@@ -65,14 +85,21 @@ def build(segs, ch="ch1"):
     def new_id(): return f"{ch}-{len(nodes):03d}"
     def base(title, x, y):
         return {"id": new_id(), "type": "story", "position": {"x": x, "y": y}}
-    def dialogue(title, lines, cgs, x, y):
+    def dialogue(title, lines, cgs, x, y, opts=None):
         n = base(title, x, y)
+        lines = [dict(ln) for ln in lines]
         for ln in lines:
+            v = ln.pop("video", None)
+            ln["stage"] = {"actors": [], "videos": [video_layer(v)] if v else []}
+            if v: ln["background"] = CDN + json.loads(VIDEOS.read_text())[v]["end"]   # 影片播完停在最後一格
             if ln.get("background"): bg[0] = ln["background"]
         first_bg = lines[0].get("background") or bg_before
         d = {"type": "dialogue", "title": title, "speaker": lines[0]["speaker"], "text": lines[0]["text"],
              "emotion": lines[0]["emotion"], "dialogueLines": lines, "background": first_bg,
-             "stage": {"actors": []}, "characterLayers": [], "transition": "fade", "transitionMs": 360, "voiceMode": "off"}
+             "stage": lines[0]["stage"], "characterLayers": [], "transition": "fade", "transitionMs": 360, "voiceMode": "off"}
+        for k in ("bgm", "bgmAction", "sfxUrl"):
+            if lines[0].get(k): d[k] = lines[0][k]
+        d.update(opts or {})
         if cgs:
             d["cgOps"] = [{"id": f"cg-{c}", "mode": "unlock", "url": cg_url(c)} for c in cgs]
             cg_order.extend(c for c in cgs if c not in cg_order)
@@ -85,7 +112,7 @@ def build(segs, ch="ch1"):
     for s in segs:
         bg_before = bg[0]
         if s[0] == "card":
-            x += 400; nid = dialogue(s[1], s[2], s[3], x, 0)
+            x += 400; nid = dialogue(s[1], s[2], s[3], x, 0, s[4])
             for p in prev: link(p, nid)
             prev = [nid]
             if tails: prev = [nid]; tails = []
@@ -100,7 +127,7 @@ def build(segs, ch="ch1"):
         elif s[0] == "branch":
             k, lines = s[1], list(s[2]); i = keys.index(k); y = (i - 1) * 300
             last = lines.pop() if len(lines) > 1 else {"speaker": "旁白", "text": "……", "emotion": "描述動作"}
-            bid = dialogue(f"選 {k}", lines, s[3], bx + 400, y)
+            bid = dialogue(f"選 {k}", lines, s[3], bx + 400, y, s[4])
             link(choice, bid, f"choice-{i}")
             sv = base(f"{k} 好感 +1", bx + 800, y)
             sv["data"] = {"type": "setVariable", "title": f"{k} 好感 +1", "speaker": last["speaker"], "text": last["text"],
@@ -167,12 +194,31 @@ def push(nodes, edges, cgs):
     pv, _ = call("GET", f"/projects/{pid}/preview?boardId={BOARD}&hours=168")
     print("預覽（私人，7 天）：", pv.get("playUrl") or pv.get("url"))
 
+def push_board_only(nodes, edges, name):
+    """只推一塊白板，不動專案設定與其他白板（樣片用）。"""
+    pid = json.loads(STATE.read_text())["id"]
+    nodes[0]["data"]["start"] = True
+    _, etag = call("GET", f"/projects/{pid}")
+    _, etag = call("PUT", f"/projects/{pid}/boards/{BOARD}", {"name": name, "nodes": nodes, "edges": edges}, etag)
+    back, _ = call("GET", f"/projects/{pid}/boards/{BOARD}")
+    b = back.get("board", back)
+    print("回讀：卡", len(b.get("nodes", [])), "／", len(nodes))
+    assert len(b.get("nodes", [])) == len(nodes)
+    pv, _ = call("GET", f"/projects/{pid}/preview?boardId={BOARD}&hours=168")
+    print("預覽（私人，7 天）：", pv.get("playUrl") or pv.get("url"))
+
 if __name__ == "__main__":
     segs = segments((ROOT / "劇本/第一章.md").read_text(encoding="utf-8"))
+    if "--sample" in sys.argv:   # 只組某一節，推到樣片白板：--sample 五
+        sec = sys.argv[sys.argv.index("--sample") + 1]
+        segs = [x for x in segs if x[0] == "card" and x[1].startswith(sec + "、")]
+        BOARD = f"board-sample-{sec}"
     nodes, edges, cgs = build(segs)
     check(nodes, edges)
     (ROOT / "dist").mkdir(exist_ok=True)
     (ROOT / "dist/board_ch1.json").write_text(json.dumps({"nodes": nodes, "edges": edges}, ensure_ascii=False, indent=1))
     lines = sum(len(n["data"].get("dialogueLines", [])) or 1 for n in nodes)
     print(f"卡 {len(nodes)}、線 {len(edges)}、句 {lines}、CG {cgs}")
-    if "--push" in sys.argv: push(nodes, edges, cgs)
+    if "--push" in sys.argv:
+        if "--sample" in sys.argv: push_board_only(nodes, edges, f"樣片：第{sec}節")
+        else: push(nodes, edges, cgs)

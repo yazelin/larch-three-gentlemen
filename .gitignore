@@ -11,3 +11,5 @@ art/cg/*.png
 art/cg/*.png.lock
 dist/
 larch_project.json
+art/music_raw/
+art/video/*.mp4
