@@ -33,7 +33,7 @@ def link_sources(text):
                 out.append(f'<a href="{LIVE}">錄影 {ts(cue[int(n[1])])}</a>')
             else:
                 out.append(part)
-        return "直播 " + "、".join(out)
+        return "、".join(out)
     return re.sub(r"(逐字稿|直播)\s*([\d–\-、 ]+\d)", lines, text)
 
 def kind(src, adapt):
@@ -100,6 +100,9 @@ h2{font-size:28px;margin:56px 0 14px}
 .person h3{margin:0;font-size:22px}
 .person .role{font-family:var(--f-ui);font-size:13px;letter-spacing:.1em;color:var(--ink-2)}
 .person p{margin:6px 0 0;font-size:15.5px;line-height:1.8}
+.person .from{font-family:var(--f-display);color:var(--plum);font-size:16px}
+.poem{font-family:var(--f-display);font-size:20px;line-height:2;margin:18px 0;padding:14px 22px;border-left:3px solid var(--plum);background:rgb(255 255 255/.45)}
+.poem b{color:var(--wine);font-weight:700}
 .chlist{list-style:none;padding:0;margin:0;display:grid;gap:12px}
 .chlist li{display:flex;flex-wrap:wrap;gap:6px 18px;align-items:baseline;border-bottom:1px dashed var(--line);padding:10px 0}
 .chlist .t{font-family:var(--f-display);font-size:21px}
@@ -140,10 +143,10 @@ def page(title, body, desc="", depth=0):
 <title>{e(title)}</title><meta name="description" content="{e(desc)}">
 <meta property="og:title" content="{e(title)}"><meta property="og:description" content="{e(desc)}"><meta property="og:image" content="https://yazelin.github.io/larch-three-gentlemen/img/hero.jpg">
 {FONTS}<link rel="stylesheet" href="{up}style.css"></head><body><div class="wrap">
-<nav class="top"><b>三位先生，都讓我心動</b><a href="{up}index.html">首頁</a><a href="{up}index.html#cast">角色</a><a href="{up}{chapters[0]['slug']}.html">讀第一章</a><a href="{up}sources.html">取材對照</a></nav>
+<nav class="top"><b>三位先生，都讓我心動</b><a href="{up}index.html">首頁</a><a href="{up}index.html#cast">角色</a><a href="{up}index.html#names">名字</a><a href="{up}{chapters[0]['slug']}.html">讀第一章</a><a href="{up}sources.html">取材對照</a></nav>
 {body}
 <footer><p>茶語是虛構角色。人設與製作經過取材自 Larch 創作者茶葉飲料，經她本人同意；她的作品《最後的聖戰》：<a href="{WORK}">{WORK}</a>。劇本、設定與圖採 CC BY-NC 4.0，程式採 MIT，詳見 <a href="{REPO}/blob/main/LICENSE.md">LICENSE</a>。</p>
-<div class="title-footer"><a href="{REPO}" aria-label="GitHub" title="GitHub">GitHub</a> · <a href="https://www.facebook.com/yaze.lin.gm" aria-label="Facebook" title="Facebook">Facebook</a> · <a href="https://buymeacoffee.com/yazelin" aria-label="Buy Me a Coffee" title="Buy Me a Coffee">Buy Me a Coffee</a></div></footer>
+<div class="title-footer"><a href="{REPO}" aria-label="GitHub" title="GitHub">GitHub</a> · <a href="https://www.facebook.com/yaze.lin.gm" aria-label="Facebook" title="Facebook">Facebook</a> · <a href="https://buymeacoffee.com/yazelin" aria-label="Buy Me a Coffee" title="Buy Me a Coffee">Buy Me a Coffee</a> · <a href="https://yazelin.github.io/" aria-label="亞澤的部落格" title="亞澤的部落格">部落格</a></div></footer>
 </div></body></html>
 """
 
@@ -161,7 +164,7 @@ def render(body):
         flush()
         if l.startswith("## "): out.append(f"<h2>{e(l[3:])}</h2>")
         elif l.startswith("【CG"):
-            cid = re.match(r"【CG (\S+)", l)[1]; f = ROOT / f"art/cg/{cid}.jpg"
+            cid = re.match(r"【CG ([^｜\s】]+)", l)[1]; f = ROOT / f"art/cg/{cid}.jpg"
             if f.exists(): out.append(f'<figure class="cg"><img src="{img(f"art/cg/{cid}.jpg", f"cg-{cid}.jpg", 1600)}" alt="CG {cid}" loading="lazy"></figure>')
             else: out.append(f'<div class="cg todo">CG {e(cid)} 製作中</div>')
         elif l.startswith("〔"): out.append(f'<p class="narr">{e(l.strip("〔〕"))}</p>')
@@ -182,14 +185,28 @@ IMG.mkdir(parents=True)
 (DOCS / ".nojekyll").write_text("")
 hero = img("canon/refs/style_anchor_full.jpg", "hero.jpg", 1800)
 
-people = [("茶語", "tea"), ("C 先生", "c"), ("M 先生", "m"), ("S 先生", "s")]
-cards = "".join(f'''<article class="person"><img src="{img(f"canon/refs/{k}_full.jpg", f"{k}.jpg", 1200)}" alt="{e(n)}設定圖" loading="lazy"><div><h3>{e(n)}</h3><div class="role">{e(roles.get(n, {}).get("title", ""))}</div><p>{e(roles.get(n, {}).get("who", ""))}</p></div></article>''' for n, k in people)
+# 名字出自元稹〈一字至七字詩．茶〉（設計.md「三位先生的名字定案」）
+people = [("茶語", "tea", "茶語", "創作者，大學生，住在高雄", ""),
+          ("C 先生", "c", "晨", "C 先生", "晨前命對朝霞"),
+          ("M 先生", "m", "明", "M 先生", "夜後邀陪明月"),
+          ("S 先生", "s", "詩", "S 先生", "慕詩客")]
+def card(n, k, name, sub, line):
+    title = roles.get(n, {}).get("title", "")
+    role = f"{sub}｜{title}" if line else sub
+    src = f'<p class="from">名字出自「{e(line)}」</p>' if line else ""
+    return f'''<article class="person"><img src="{img(f"canon/refs/{k}_full.jpg", f"{k}.jpg", 1200)}" alt="{e(name)}設定圖" loading="lazy"><div><h3>{e(name)}</h3><div class="role">{e(role)}</div>{src}<p>{e(roles.get(n, {}).get("who", ""))}</p></div></article>'''
+cards = "".join(card(*p) for p in people)
+POEM = """<h2 id="names">名字的由來</h2>
+<p class="lede">三位先生原本只是 C、M、S，是工具本來的叫法。茶語後來讀到唐朝元稹的〈一字至七字詩．茶〉，這首詩的第一個字就是「茶」，她從詩裡替他們取了名字。</p>
+<blockquote class="poem">茶。<br>香葉，嫩芽。<br><b>慕詩客</b>，愛僧家。<br>碾雕白玉，羅織紅紗。<br>銚煎黃蕊色，碗轉麴塵花。<br>夜後邀陪<b>明</b>月，<b>晨</b>前命對朝霞。<br>洗盡古今人不倦，將知醉後豈堪誇。</blockquote>
+<p class="lede">「夜後邀陪明月，晨前命對朝霞」：入夜後是明陪著她，天亮前是晨陪著她。作歌的人，就是詩客。詩見《全唐詩》卷 423，個別字句在不同版本有出入。</p>"""
 chl = "".join(f'<li><span class="t">{e(c["title"])}</span><a href="{c["slug"]}.html">線上閱讀</a><a href="sources.html#{c["slug"]}">這一章的取材</a></li>' for c in chapters)
 index = f"""<div class="hero"><img src="{hero}" alt="茶語與三位先生第一次在工作室，桌上浮著三把發光的鎖"></div>
 <div class="hero-copy"><p class="q">怎麼選，才不會後悔？</p><h1>三位先生，都讓我心動</h1></div>
 <p class="lede">Larch 創作者挑戰「自由與限制」那三個禮拜，大學生茶語在高雄的書桌前，做一部聖騎士與信仰的 RPG。她的三個 AI 夥伴升級之後有了人形介面：畫圖的 C 先生、寫程式的 M 先生、做音樂的 S 先生。她想說一個好故事。他們知道一件她不知道的事。</p>
 <div class="note">茶語是虛構角色。她的人設與製作經過取材自 Larch 創作者茶葉飲料（第三屆挑戰最佳作品《最後的聖戰》作者），經她本人同意。哪些情節是真的、哪些是改編，逐段寫在<a href="sources.html">取材對照</a>。作品製作中，還沒有可以玩的版本。</div>
 <h2 id="cast">角色</h2><div class="cast">{cards}</div>
+{POEM}
 <h2>章節</h2><ul class="chlist">{chl}</ul>
 <p class="note">先去玩讓這一切開始的那部作品：<a href="{WORK}">《最後的聖戰》</a>。</p>"""
 (DOCS / "index.html").write_text(page("三位先生，都讓我心動", index, "乙女向視覺小說：大學生茶語與三個 AI 夥伴的三個禮拜。"), encoding="utf-8")
@@ -208,4 +225,8 @@ src = f"""<h1 style="font-size:36px;margin:24px 0 6px">取材對照</h1>
 <div class="note">沒有轉貼她未公開的內容；其他真實的人只寫角色，不寫名字。錄影：<a href="{LIVE}">週三直播記錄 1104</a>。</div>
 {"".join(sec)}"""
 (DOCS / "sources.html").write_text(page("取材對照｜三位先生，都讓我心動", src, "哪些情節是真的、哪些是改編：逐章逐段對照。"), encoding="utf-8")
+import subprocess
+apply = pathlib.Path.home() / ".claude/skills/promo-footer/apply.py"
+if apply.exists():
+    for f in sorted(DOCS.glob("*.html")): subprocess.run(["python3", str(apply), str(f), "larch-three-gentlemen"], check=True, capture_output=True)
 print("built", [p.name for p in DOCS.iterdir()], "cues", len(cue))

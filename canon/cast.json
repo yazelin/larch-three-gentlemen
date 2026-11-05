@@ -2,8 +2,8 @@
   "root": "..",
   "style_ref": {
     "path": "canon/refs/style_anchor.jpg",
-    "desc": "STYLE ANCHOR = CG 01-5 in light transparent watercolour anime style: soft pale washes, low saturation, visible paper texture, delicate thin line art, airy warm light. Every CG copies this rendering. Use it as Image 1 for every CG.",
-    "approved": "2026-11-05 yazelin 選 B 淡水彩"
+    "desc": "STYLE ANCHOR = CG 01-5（正式版）: light transparent watercolour anime style, soft pale washes, low saturation, visible paper texture, delicate thin line art. Image 1 for every CG.",
+    "approved": "2026-11-05 yazelin OK"
   },
   "cast": {
     "tea": {
@@ -25,21 +25,22 @@
         "裙子",
         "濃妝"
       ],
-      "canon_version": "wc_tea（淡水彩）",
-      "approved": "2026-11-05 yazelin 角色淡水彩確認：OK"
+      "canon_version": "pure（純文字一手生成）",
+      "approved": "2026-11-05 yazelin 第一份正式定稿：全 OK",
+      "prompt": "art/gen/pure/tea.prompt.txt"
     },
     "m": {
-      "name": "M 先生（技術總監）",
+      "name": "明（M，技術總監）",
       "ref": "canon/refs/m.jpg",
       "desc": "M model sheet, the oldest and tallest of the three",
       "must": [
-        "二十六歲，三人裡最成熟穩重（成熟靠作風，不靠年紀）",
-        "最高，約 188，肩寬，站姿挺直",
-        "長臉、方正下顎、細長鳳眼、濃而直的眉毛",
-        "深藏青色短髮往後梳整齊，額前只垂一兩撮",
-        "藏青色西裝外套袖子捲到前臂，深藏青襯衫領口敞開",
-        "左翻領上的金色齒輪胸針帶一條短鏈",
-        "左腕手錶，黑皮帶，黑皮鞋"
+        "二十六歲，三人裡最沉穩，但臉年輕",
+        "最高約 188，肩寬、站姿挺直",
+        "略長的臉、俐落下顎、細長平靜的眼、濃直眉、淡淡的閉口微笑",
+        "深藏青短髮，蓬鬆，大致往後但有幾撮落在額頭",
+        "藏青西裝外套敞開、袖子捲到前臂，深藏青襯衫敞領",
+        "左翻領金色齒輪胸針帶一條短鏈",
+        "左腕棕色錶帶手錶，黑皮帶，黑皮鞋"
       ],
       "must_not": [
         "領帶",
@@ -47,11 +48,12 @@
         "耳環",
         "捲髮"
       ],
-      "canon_version": "wc_m（淡水彩）",
-      "approved": "2026-11-05 yazelin 角色淡水彩確認：OK"
+      "canon_version": "pure（純文字一手生成）",
+      "approved": "2026-11-05 yazelin 第一份正式定稿：全 OK",
+      "prompt": "art/gen/pure/m.prompt.txt"
     },
     "c": {
-      "name": "C 先生（美術設計・校稿）",
+      "name": "晨（C，美術設計・校稿）",
       "ref": "canon/refs/c.jpg",
       "desc": "C model sheet, the gentle middle one",
       "must": [
@@ -69,18 +71,19 @@
         "鬍子",
         "直髮"
       ],
-      "canon_version": "wc_c（淡水彩）",
-      "approved": "2026-11-05 yazelin 角色淡水彩確認：OK"
+      "canon_version": "pure（純文字一手生成）",
+      "approved": "2026-11-05 yazelin 第一份正式定稿：全 OK",
+      "prompt": "art/gen/pure/c.prompt.txt"
     },
     "s": {
-      "name": "S 先生（音樂創作）",
+      "name": "詩（S，音樂創作）",
       "ref": "canon/refs/s.jpg",
       "desc": "S model sheet, the youngest with a boyish energy",
       "must": [
         "二十一歲，少年感",
-        "三人裡最矮約 176（含亂翹的頭髮），精瘦，重心常放一隻腳",
+        "三人裡最矮約 176，精瘦，重心常放一隻腳",
         "尖下巴、大圓眼、大笑時露出上排兩顆小虎牙",
-        "暗紅色長亂髮，左前方垂一條細辮",
+        "暗紅長亂髮，他的左側前方垂一條細辮",
         "耳朵多個耳骨環",
         "脖子上掛黑色耳罩式耳機，耳罩上有發光的音波線",
         "酒紅色運動外套配白色條紋，左胸金色高音譜記號，內搭黑 T",
@@ -91,8 +94,9 @@
         "西裝",
         "短髮"
       ],
-      "canon_version": "wc_s（淡水彩）",
-      "approved": "2026-11-05 yazelin 角色淡水彩確認：OK"
+      "canon_version": "pure（純文字一手生成）",
+      "approved": "2026-11-05 yazelin 第一份正式定稿：全 OK",
+      "prompt": "art/gen/pure/s.prompt.txt"
     }
   },
   "world": {
@@ -284,29 +288,28 @@
   ],
   "lineup": {
     "ref": "canon/refs/lineup.jpg",
-    "desc": "HEIGHT LINE-UP, left to right M C heroine S. Use only for relative heights; outfits follow each single-character sheet",
-    "heights_cm": {
-      "m": 188,
-      "c": 179,
-      "tea": 157,
-      "s": 175
-    },
-    "note": "2026-11-05 淡水彩版定稿（yazelin 確認頁）。yazelin 覺得這張的 M 比單人定稿好看，01-5 改用這張的 M 臉修；之後 M 單人定稿可能也照這張更新",
-    "name": "身高對照圖（淡水彩）",
+    "name": "身高對照圖",
     "must": [
       "M 188、C 179、茶語 157、S 176 的比例",
-      "四人長相照淡水彩定稿",
+      "四人長相照第一份正式定稿",
       "S 胸口只有一個高音譜記號"
     ],
     "must_not": [
       "文字或數字"
-    ]
+    ],
+    "note": "2026-11-05 從第一份正式定稿重新產生，yazelin OK",
+    "heights_cm": {
+      "m": 188,
+      "c": 180,
+      "tea": 158,
+      "s": 177
+    }
   },
   "cg": {
     "01-5": {
       "name": "CG 01-5 四人第一次在工作室（畫風錨）",
       "ref": "art/cg/01-5.jpg",
-      "approved": "2026-11-05",
+      "approved": "2026-11-05 正式版 yazelin OK",
       "must": [
         "房間照工作室定稿（機位 A）",
         "桌子上方浮著三把發光的鎖，畫面沒有字",
@@ -320,7 +323,8 @@
         "多出來的手或手指",
         "角色長相跟定稿不同",
         "第五個人"
-      ]
+      ],
+      "note": "晨的視線往上看鎖、不是看茶語（yazelin 接受）"
     }
   }
 }

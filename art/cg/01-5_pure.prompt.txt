@@ -1,0 +1,21 @@
+REFERENCE IMAGES:
+Image 1 = APPROVED STUDIO scene reference, camera A: the single source of truth for the room (grid windows, hanging vines, long wooden table with open sketchbook, the four chairs, shelves, music corner, light).
+Image 2 = heroine model sheet. Image 3 = M model sheet. Image 4 = C model sheet. Image 5 = S model sheet. Every character must match their sheet exactly.
+
+CHARACTER SHEET:
+- heroine: 女性骨架：嬌小、窄肩，身高約 157，三位先生裡最矮的 S 也比她高半個頭; 深紫色狼尾髮，後髮及肩、尾端外翹; 細金框圓眼鏡，鏡片淡粉色，臉上一定看得到; 金色新月墜項鍊; 雙耳金色垂墜耳鍊; 米白色寬大短袖 T 恤，深炭灰寬版工作褲（有口袋與垂繩），白球鞋; 手腕上的串珠手環. NOT: 黑色短髮; 男性的寬肩或喉結; 裙子; 濃妝
+- M: 二十六歲，三人裡最沉穩，但臉年輕; 最高約 188，肩寬、站姿挺直; 略長的臉、俐落下顎、細長平靜的眼、濃直眉、淡淡的閉口微笑; 深藏青短髮，蓬鬆，大致往後但有幾撮落在額頭; 藏青西裝外套敞開、袖子捲到前臂，深藏青襯衫敞領; 左翻領金色齒輪胸針帶一條短鏈; 左腕棕色錶帶手錶，黑皮帶，黑皮鞋. NOT: 領帶; 眼鏡; 耳環; 捲髮
+- C: 二十四歲; 中等身高約 179，偏瘦，肩膀微駝; 臉型比 M 柔和、下顎線條不銳利，眼神溫和半垂，笑起來抿嘴; 暖棕色蓬鬆捲髮蓋住額頭; 細金框圓眼鏡，臉上一定看得到; 橄欖綠開襟針織外套，袖口與下擺有米白條紋，左胸金色葉子胸針，袖子上有彩色顏料斑點; 白襯衫、棕色皮帶、棕色寬褲、白球鞋. NOT: 西裝; 耳環; 鬍子; 直髮
+- S: 二十一歲，少年感; 三人裡最矮約 176，精瘦，重心常放一隻腳; 尖下巴、大圓眼、大笑時露出上排兩顆小虎牙; 暗紅長亂髮，他的左側前方垂一條細辮; 耳朵多個耳骨環; 脖子上掛黑色耳罩式耳機，耳罩上有發光的音波線; 酒紅色運動外套配白色條紋，左胸金色高音譜記號，內搭黑 T; 銀色鍊條項鍊、腰間錢包鍊，黑色工作束口褲，黑白高筒鞋. NOT: 眼鏡; 西裝; 短髮
+Heights: M 188 cm, C 179, S 176, heroine 157 (standing, her head reaches only M's shoulder).
+
+SHOT: the same room and camera as Image 1 (camera A, wide establishing, standing eye level, looking north at the window wall). Above the centre of the long table, three small glowing golden padlocks float in the air, the only magical element. No text anywhere.
+
+BLOCKING AND ACTING (do not move anyone):
+- heroine: stands on the NEAR side of the table directly in front of the red chair, body turned three-quarters toward the camera, eyes wide OPEN looking UP at the floating padlocks, lips slightly parted in amazement. Right hand rests flat on top of the red chair's backrest, all five fingers visible. Left hand holds her phone against her chest. Her face is not blocked.
+- C: sits on the cream chair on the FAR side of the table (left of centre), pencil in his right hand paused over the open sketchbook, looking at the heroine with a soft warm smile. His left hand is under the table, not visible.
+- M: stands on the FAR side behind the table, right of centre, in front of the windows, upright, tablet in his left hand, right hand in his trouser pocket. Head tilted up, eyes fully open looking straight UP at the padlocks; calm and quietly curious, eyebrows level, mouth closed with both corners even, the faintest gentle smile. No smirk.
+- S: sits backwards on the wooden chair on the FAR side (right), both forearms resting on the chair back, headphones around his neck. A natural open laugh: mouth open, one small fang showing, teeth not clenched, eyes curved into happy crescents, head tilted toward the heroine.
+- The green chair on the near side is empty. Nobody else is in the room. Nobody looks at the viewer.
+
+STYLE: light transparent watercolour anime illustration: soft pale washes, low saturation, visible paper texture, delicate thin line art, airy warm daylight. Nothing heavy or glossy.
