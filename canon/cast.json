@@ -295,6 +295,50 @@
       "note": "2026-11-05 yazelin：桌上的茶要帶參考，錯了就全新重繪；不要馬克杯",
       "text_spec": "Her iced black tea: a TALL, straight-sided, slightly tapered CLEAR drinking glass (no handle, no stem), filled about 85% with amber-brown black tea; four or five clear square ice cubes floating at the top; the thin white string of a tea bag hangs over the rim on the RIGHT side of the glass, with a small rectangular cream-coloured paper tag dangling outside the glass halfway down; the glass stands on a round light-brown CORK coaster; no straw, no lid, no lemon slice, no handle. It is never a mug and never coffee.",
       "text_spec_verified": "2026-11-05 只用文字生成一次（art/gen/prop_tea_textonly.png），杯型、茶色、冰塊、茶包線在右、米色標籤、軟木杯墊全部與參考圖一致"
+    },
+    "prop_phone": {
+      "name": "道具：茶語的手機",
+      "ref": "canon/refs/prop_phone.jpg",
+      "desc": "PROP reference: her smartphone",
+      "text_spec": "Her smartphone: an ordinary modern smartphone with normal proportions — about 7 cm wide and 15 cm tall (height roughly twice the width), about 8 mm thick, NOT stretched, NOT elongated. Rounded corners, a slim SOLID silver aluminium frame, a fully OPAQUE black glass front: the screen is a solid surface and nothing behind or under the phone ever shows through it. Back: matte silver with a small square two-lens camera bump at the top left. When it lies flat on a desk it looks like a thin flat slab with correct perspective.",
+      "must": [
+        "一般手機比例：寬約 7 公分、高約 15 公分",
+        "銀色鋁框、背面左上方雙鏡頭",
+        "螢幕不透明"
+      ],
+      "must_not": [
+        "拉長變形",
+        "半透明、看得到後面的桌面"
+      ],
+      "note": "2026-11-05 yazelin 在 01-6 退件：手機比例與透明都有問題",
+      "text_spec_verified": "2026-11-05 只用文字生成道具設定圖（art/gen/prop_phone.png），正面高寬比 2.01、不透明銀框、背面左上雙鏡頭"
+    },
+    "prop_laptop": {
+      "name": "道具：筆電（明住的地方）",
+      "ref": "canon/refs/prop_laptop_tablet.jpg",
+      "text_spec": "Her laptop: an ordinary 14-inch laptop with a thin SILVER aluminium body, a slim black bezel around the screen, silver keyboard deck with dark keys and a plain trackpad, no logo, no stickers. It sits open on the desk at a normal angle. The screen is solid and opaque.",
+      "must": [
+        "銀色鋁殼、黑色窄邊框、無 logo"
+      ],
+      "must_not": [
+        "黑色機身",
+        "貼紙"
+      ],
+      "text_spec_verified": "2026-11-05 只用文字生成道具設定圖（art/gen/prop_laptop_tablet.png）"
+    },
+    "prop_tablet": {
+      "name": "道具：平板（晨住的地方）",
+      "ref": "canon/refs/prop_laptop_tablet.jpg",
+      "text_spec": "Her tablet: an ordinary 11-inch tablet with a slim silver edge and a black bezel, held in LANDSCAPE on a dark charcoal-grey folio cover that is folded into a triangle stand behind it. Correct proportions (about 3:2), not stretched. The screen is solid and opaque.",
+      "must": [
+        "銀邊黑框、橫放",
+        "深灰色折疊保護套撐成三角立架"
+      ],
+      "must_not": [
+        "拉長變形",
+        "沒有立架就站著"
+      ],
+      "text_spec_verified": "2026-11-05 只用文字生成道具設定圖（art/gen/prop_laptop_tablet.png）"
     }
   },
   "global_rules": [
@@ -305,7 +349,9 @@
     "她的裝置分工：手機是主要編輯工具（直立拿在手上，畫面是卡片與連線）；平板看遊戲畫面（像素 RPG），1104 直播那場改成播簡報；筆電是測試用。畫她在編輯的 CG，手上拿的是手機，不是筆電",
     "畫風：淡水彩動畫風（畫風錨 canon/refs/style_anchor.jpg）。每張 CG 的提示詞都要寫 light transparent watercolour、low saturation、paper texture，不要飽和厚塗。理由取材自直播 1864–1873：她嫌 CG 先出來 AI 味太重、色澤太厚，改淡水彩",
     "冰紅茶是茶語的招牌道具：只要畫到她的桌面，就把 canon/refs/prop_tea.jpg 當參考圖送進去，不能只寫文字；桌上不准出現馬克杯或其他飲料。錯了就全新重繪，不修圖（yazelin 2026-11-05）",
-    "住所（yazelin 2026-11-05）：依身高對應螢幕大小，明（M）住筆電、晨（C）住平板、詩（S）住手機；她叫他們時可以暫時過去她正在用的那台。畫現實層時每台裝置只能出現住在那裡的人，除非劇本寫了誰暫時過去"
+    "住所（yazelin 2026-11-05）：依身高對應螢幕大小，明（M）住筆電、晨（C）住平板、詩（S）住手機；她叫他們時可以暫時過去她正在用的那台。畫現實層時每台裝置只能出現住在那裡的人，除非劇本寫了誰暫時過去",
+    "手機是茶語的主要道具：比例照 prop_phone（高約為寬的 2 倍）、螢幕不透明；畫到她的手機就附 canon/refs/prop_phone.jpg，參考圖太多時用驗證過的 text_spec",
+    "筆電（明住）與平板（晨住）照 canon/refs/prop_laptop_tablet.jpg：銀色鋁殼筆電；銀邊黑框平板橫放在深灰折疊立架上。畫到桌面時附這張，參考圖太多時用 text_spec"
   ],
   "lineup": {
     "ref": "canon/refs/lineup.jpg",
