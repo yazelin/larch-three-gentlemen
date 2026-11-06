@@ -2,7 +2,7 @@
 #   python3 tools/larch_build.py             # 只組卡、印統計、寫 dist/board_ch1.json
 #   python3 tools/larch_build.py --push      # 推上 Larch（第一次建專案，id 存在 larch_project.json）
 # 圖走 jsDelivr（repo 公開、檔名 ASCII），不上傳 Larch 媒體庫。立繪、BGM、配音之後再補。
-import json, re, sys, pathlib, subprocess, urllib.request, urllib.error, time
+import json, time, re, sys, pathlib, subprocess, urllib.request, urllib.error, time
 
 ROOT = pathlib.Path(__file__).resolve().parent.parent
 API = "https://larch.ink/api/agent"
@@ -177,6 +177,22 @@ def check(nodes, edges):
     nobg = [n["id"] for n in nodes if not n["data"].get("background")]
     assert not (bad or orphans or dead or empty or nobg), dict(bad=bad, orphans=orphans, dead=dead, empty=empty, nobg=nobg)
 
+def warm(nodes):
+    """推之前把用到的 jsDelivr 網址全部打一次：新版本第一次被抓時偶爾回 403，之後就一直失敗（2026-11-06 敲鎖小遊戲的鎖圖就是這樣不見的）。"""
+    import re, urllib.request, concurrent.futures as cf
+    urls = sorted(set(re.findall(r"https://cdn\.jsdelivr\.net/gh/[^\"'\s)]+", json.dumps(nodes, ensure_ascii=False))))
+    def get(u):
+        for _ in range(4):
+            try:
+                with urllib.request.urlopen(urllib.request.Request(u, headers={"User-Agent": "Mozilla/5.0"}), timeout=60) as r:
+                    if r.status == 200: r.read(1); return None
+            except Exception: pass
+            time.sleep(5)
+        return u
+    with cf.ThreadPoolExecutor(8) as ex: bad = [u for u in ex.map(get, urls) if u]
+    if bad: raise SystemExit("CDN 讀不到，先不推：\n" + "\n".join(bad))
+    print("CDN 都讀得到：", len(urls), "個網址")
+
 # ---------- 推上 Larch ----------
 def call(method, path, body=None, etag=None):
     key = (pathlib.Path.home() / ".config/larch/key").read_text().strip()
@@ -257,5 +273,6 @@ if __name__ == "__main__":
     lines = sum(len(n["data"].get("dialogueLines", [])) or 1 for n in nodes)
     print(f"卡 {len(nodes)}、線 {len(edges)}、句 {lines}、CG {cgs}")
     if "--push" in sys.argv:
+        warm(nodes)
         if "--sample" in sys.argv: push_board_only(nodes, edges, f"樣片：第{sec}節")
         else: push(nodes, edges, cgs)
