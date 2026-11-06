@@ -116,7 +116,7 @@ shot("06-2", "desk", "t4", """SHOT (extreme close-up): strands of her dark purpl
 shot("06-3a", "var", "t4", "Change ONLY this: the laptop screen has gone completely DARK (M is gone); the tablet with C and the phone with S are still lit; the blue light no longer falls on her hair.", base="06A")
 shot("06-3b", "var", "t4", "Change ONLY this: the laptop AND the tablet screens are completely DARK (M and C are gone); only the phone with S is still lit; only a faint red glow remains on her hair.", base="06A")
 shot("06-3c", "var", "t4", "Change ONLY this: all three screens — laptop, tablet and phone — are completely DARK; nobody is visible; only the warm desk lamp light remains on her hair.", base="06A")
-shot("06-4", "var", "t4", "Change ONLY this: she is now asleep with her head down on the desk; the laptop, tablet and phone are all dark; the window shows the city with almost every window dark; the lamp is the only light; even more stillness.", base="01-0")
+shot("06-4", "var", "t4", "Change ONLY this: she is now asleep, her head resting on her folded arms on an open textbook on the desk, small white wireless earbuds still in her ears; her phone lies dark on the desk beside her arm; the laptop, tablet and phone screens are all dark; the window shows the city with almost every window dark; the lamp is the only light; even more stillness.", base="01-0")
 
 # 視線表（yazelin 2026-11-06：「各的人物到底是誰在看誰 要畫清楚」）。shots.py 會把它附在每一格提示詞最後。
 # 她＝茶語。「her」在螢幕裡＝轉向她所在的方向；POV 格的「lens」才看鏡頭。沒列到的人不在畫面裡。

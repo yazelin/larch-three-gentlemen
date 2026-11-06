@@ -36,9 +36,9 @@
   "end": "art/video/05-6_close_end.jpg"
  },
  "01-0|推近": {
-  "mediaId": "3cc634a4-cc81-4ba2-9e73-6b455f24535b",
-  "url": "https://customer-e6nms1ojkxvkaqjj.cloudflarestream.com/2666eccd6edcee519bea7ae183437d89/iframe",
-  "src": "7ceecb52f83a",
+  "mediaId": "9add7015-7edf-48f8-90b8-3c5f9541253c",
+  "url": "https://customer-e6nms1ojkxvkaqjj.cloudflarestream.com/af9a8ec248cc38025f9cf0bd76853d32/iframe",
+  "src": "ce2de9d2b268",
   "end": "art/video/01-0_in_end.jpg"
  },
  "01-1|推近": {
@@ -84,21 +84,21 @@
   "end": "art/video/03-T_in_end.jpg"
  },
  "04-1|推近": {
-  "mediaId": "eb613c14-051c-46dc-bef7-caf332d098b2",
-  "url": "https://customer-e6nms1ojkxvkaqjj.cloudflarestream.com/a3878da7544977d3c1fe1d31f1f29a88/iframe",
-  "src": "a4ee0aabd632",
+  "mediaId": "1d0d5cfc-000a-453b-91d3-8f0f93ebb132",
+  "url": "https://customer-e6nms1ojkxvkaqjj.cloudflarestream.com/7153dbe2de02b4534edf493bbda3fcbb/iframe",
+  "src": "04f5d6b78165",
   "end": "art/video/04-1_in_end.jpg"
  },
  "04-PC|逼近": {
-  "mediaId": "230e930e-eaf3-40e4-af8b-31fa85a7b425",
-  "url": "https://customer-e6nms1ojkxvkaqjj.cloudflarestream.com/621862ab8d5a1b1460ba08e916fe0c2f/iframe",
-  "src": "4d6c36ec49c6",
+  "mediaId": "c4b34822-236e-4129-99ed-3ca62b798e77",
+  "url": "https://customer-e6nms1ojkxvkaqjj.cloudflarestream.com/e74d6cfc1e2929d5fbe99d10d9a48eb1/iframe",
+  "src": "b2f946ff03c3",
   "end": "art/video/04-PC_close_end.jpg"
  },
  "04-PM|逼近": {
-  "mediaId": "1d188d90-0a38-42c9-b947-5dcf24ab7e8a",
-  "url": "https://customer-e6nms1ojkxvkaqjj.cloudflarestream.com/e9cbcfbba49531489dc0af39722581df/iframe",
-  "src": "0f62e199a756",
+  "mediaId": "39fd9188-8274-4d2a-9e79-353017bb6aca",
+  "url": "https://customer-e6nms1ojkxvkaqjj.cloudflarestream.com/06a775ef0076047d5808717877317130/iframe",
+  "src": "bc39fd48f1fa",
   "end": "art/video/04-PM_close_end.jpg"
  },
  "04-PS|逼近": {
