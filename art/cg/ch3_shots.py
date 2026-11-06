@@ -60,21 +60,27 @@ shot("3-16", "insert", "t3", """SHOT (close insert of the laptop screen from her
 
 GAZE = {
  "3-01A": {"she": "the laptop", "M": "HER at the lower RIGHT of the frame", "C": "HER at the lower RIGHT of the frame", "S": "HER at the lower RIGHT of the frame"},
- "3-02C": {"C": H}, "3-02M": {"M": H}, "3-02S": {"S": H},
- "3-03": {"M": "the spinning coin in the game window beside him"},
+ "3-02C": {"C": H, "M": "HER (on the laptop screen at the frame's left edge, lit)", "S": "HER (on the phone screen in its stand, lit)"},
+ "3-02M": {"M": H, "C": "HER (on the tablet screen at the frame's right edge, lit)", "S": "HER (on the phone screen in its stand, lit)"},
+ "3-02S": {"S": H, "M": "HER (on the laptop screen behind the phone, out of focus, lit)", "C": "HER (on the tablet screen behind the phone, out of focus, lit)"},
+ "3-03": {"M": "the spinning coin in the game window beside him", "C": "HER (on the tablet if its edge shows, lit)", "S": "HER (on the phone if its edge shows, lit)"},
  "3-04": {"she": "the laptop screen just below the frame's left edge"},
  "3-05": {"she": "down at her own fists on the desk", "S": H, "C": "down at his own sketch"},
- "3-06": {"M": H}, "3-07": {"C": H},
- "3-09": {"M": H},
+ "3-06": {"M": H, "C": "HER (on the tablet if its edge shows, lit)", "S": "HER (on the phone if its edge shows, lit)"},
+ "3-07": {"C": H, "M": "HER (on the laptop screen at the frame's left edge, lit)", "S": "HER (on the phone screen in its stand, lit)"},
+ "3-09": {"M": H, "C": "HER (on the tablet if its edge shows, lit)", "S": "HER (on the phone if its edge shows, lit)"},
  "3-10": {"she": "the tablet", "C": H, "S": H, "M": H},
- "3-11": {"C": "down at his own drawing"},
+ "3-11": {"C": "down at his own drawing", "M": "HER (on the laptop screen at the frame's left edge, lit)", "S": "HER (on the phone screen in its stand, lit)"},
  "3-12": {"she": "the laptop screen", "M": "HER at the lower RIGHT of the frame", "C": "HER at the lower RIGHT of the frame", "S": "HER at the lower RIGHT of the frame"},
- "3-13": {"M": "the tiny pixel girl on the map"},
- "3-14C": {"C": H}, "3-14M": {"M": "sideways toward the tablet off the frame's right"}, "3-14S": {"S": H},
+ "3-13": {"M": "the tiny pixel girl on the map", "C": "HER (on the tablet if its edge shows, lit)", "S": "HER (on the phone if its edge shows, lit)"},
+ "3-14C": {"C": H, "M": "HER (on the laptop screen at the frame's left edge, lit)", "S": "HER (on the phone screen in its stand, lit)"},
+ "3-14M": {"M": "sideways toward the tablet off the frame's right", "C": "HER (on the tablet if its edge shows, lit)", "S": "HER (on the phone screen in its stand, lit)"},
+ "3-14S": {"S": H, "M": "HER (on the laptop screen behind the phone, out of focus, lit)", "C": "HER (on the tablet screen behind the phone, out of focus, lit)"},
  "3-15": {"she": "the laptop screen just below the frame's left edge, unfocused"},
- "3-16": {"M": H},
+ "3-16": {"M": H, "C": "HER (on the tablet if its edge shows, lit)", "S": "HER (on the phone if its edge shows, lit)"},
 }
 NOFACE = {"3-08"}
+GAZE["3-08"] = {"S": "HER (on the phone screen above the stand base, out of focus, lit)"}
 CHIN_OK = {}
 
 SETUP = {"3-01A": "A", "3-05": "A", "3-10": "A", "3-12": "A",
@@ -84,7 +90,9 @@ SETUP = {"3-01A": "A", "3-05": "A", "3-10": "A", "3-12": "A",
          "3-02C": "F", "3-07": "F", "3-11": "F", "3-14C": "F"}
 TEA_STUDIO = {"_": _T1}
 _REV = "The camera stands BEHIND the devices on the desk, so it sees only the plain dark BACK of the laptop lid (and the back of the tablet case and the phone if they enter the frame): NO screen and NO man is visible to the camera. MIRRORED because this is a reverse angle: the desk lamp glows at the frame's RIGHT edge."
+BG = "BACKGROUND SCREENS (very important): every device screen that shows in the frame, even out of focus, is LIT and shows its own man exactly as his sheet: the laptop ONLY M, the tablet ONLY C, the phone ONLY S, each in his own coloured interface space, chest up. The heroine herself is NEVER on any screen; no screen is ever dark or blank."
 FIX = {
+    **{k: BG for k in ["3-02C","3-02M","3-02S","3-03","3-06","3-07","3-09","3-11","3-13","3-14C","3-14M","3-14S","3-16","3-08","3-01A","3-10","3-12"]},
     "3-04": _REV, "3-15": _REV,
     "3-05": "The laptop is CLOSED and DARK: no screen, no glow, no M anywhere in the picture. Exactly one phone (in its stand, showing S) and one tablet (showing C).",
     "3-10-1": "Her palm only touches her forehead for a moment in a light gesture; her head is NOT resting or leaning on the hand, her elbow is not on the desk.",
