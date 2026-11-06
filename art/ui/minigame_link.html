@@ -10,6 +10,8 @@ svg { position: absolute; inset: 0; width: 100%; height: 100%; }
 .card b { display: block; font-size: 1.05em; margin-bottom: 4px; letter-spacing: .1em; }
 .card span { color: var(--dim); font-size: .85em; }
 .card.done { opacity: .78; }
+.card[data-k] { border-left: 3px solid var(--k); }
+.card[data-k] span { color: color-mix(in srgb, var(--k) 70%, var(--ink)); }
 .port { position: absolute; top: 50%; width: 18px; height: 18px; margin-top: -9px; border-radius: 50%; background: #2a3150; border: 2px solid var(--line); }
 .port.out { right: -10px; cursor: grab; }
 .port.in { left: -10px; }
@@ -24,9 +26,9 @@ svg { position: absolute; inset: 0; width: 100%; height: 100%; }
 <div class="who">她的白板．第一張卡</div>
 <svg id="svg"><path id="drag" fill="none" stroke="#e9cf9a" stroke-width="3" stroke-dasharray="6 6" opacity="0"/></svg>
 <div class="card" id="a" style="left:12vw;top:30vh"><b>序章</b><span>雲被鎖在天上</span><i class="port out hot" id="pa"></i></div>
-<div class="card" id="b" style="left:44vw;top:44vh"><b>第一扇門</b><span>玩家醒來的地方</span><i class="port in hot" id="pb"></i><i class="port out"></i></div>
-<div class="card done" id="c" style="left:72vw;top:24vh"><b>城門</b><span>C 畫的草圖</span><i class="port in"></i></div>
-<div class="card done" id="d" style="left:70vw;top:62vh"><b>管風琴</b><span>S 的第一首歌</span><i class="port in"></i></div>
+<div class="card" id="b" data-k style="--k:var(--m);left:44vw;top:44vh"><b>第一扇門</b><span>M 寫好的開門程式</span><i class="port in hot" id="pb"></i><i class="port out"></i></div>
+<div class="card done" id="c" data-k style="--k:var(--c);left:72vw;top:24vh"><b>城門</b><span>C 畫的草圖</span><i class="port in"></i></div>
+<div class="card done" id="d" data-k style="--k:var(--s);left:70vw;top:62vh"><b>管風琴</b><span>S 的第一首歌</span><i class="port in"></i></div>
 <div class="flash" id="flash"></div>
 <div class="hint" id="hint">從「序章」右邊的點，拉一條線到「第一扇門」。</div>
 <script>
@@ -37,7 +39,7 @@ svg { position: absolute; inset: 0; width: 100%; height: 100%; }
   function curve(p, q) { var dx = Math.max(60, (q.x - p.x) / 2); return 'M' + p.x + ',' + p.y + ' C' + (p.x + dx) + ',' + p.y + ' ' + (q.x - dx) + ',' + q.y + ' ' + q.x + ',' + q.y; }
   function line(p, q, color, w) { var e = document.createElementNS('http://www.w3.org/2000/svg', 'path'); e.setAttribute('d', curve(p, q)); e.setAttribute('fill', 'none');
     e.setAttribute('stroke', color); e.setAttribute('stroke-width', w); svg.insertBefore(e, drag); return e; }
-  // 已經連好的線（M 寫好的程式、C 的圖、S 的歌都在等這一條）
+  // 已經連好的線：M 的程式（第一扇門）後面接 C 的圖、S 的歌，全都在等她拉這一條
   function base() { [].slice.call(svg.querySelectorAll('path.base')).forEach(function (e) { e.remove(); });
     var outB = document.querySelector('#b .port.out');
     [[outB, document.querySelector('#c .port.in'), '#c8d45a'], [outB, document.querySelector('#d .port.in'), '#cf5a6c']].forEach(function (t) {
@@ -54,7 +56,7 @@ svg { position: absolute; inset: 0; width: 100%; height: 100%; }
     var e = line(c(pa), q, '#e9cf9a', 3), L = e.getTotalLength(); e.style.strokeDasharray = L; e.style.strokeDashoffset = L;
     e.getBoundingClientRect(); e.style.transition = 'stroke-dashoffset .6s ease'; e.style.strokeDashoffset = 0;
     var f = document.getElementById('flash'); f.style.setProperty('--x', q.x + 'px'); f.style.setProperty('--y', q.y + 'px'); f.classList.add('on');
-    hint.textContent = '連上了。這是妳親手拉的第一條線。';
+    hint.textContent = '連上了。門一開，M 的程式、C 的圖、S 的歌一起動起來。';
     setTimeout(function () { parent.postMessage({ type: 'larch:complete', result: 'linked', payload: {} }, '*'); }, 2200);
   });
   parent.postMessage({ type: 'larch:ready' }, '*');
