@@ -21,10 +21,20 @@ except ImportError:
     VARIANTS = set()
 BGM = {"枷鎖與選擇": "chains_and_choice", "夜的書桌": "night_desk", "工作室": "studio_day", "耳機裡的歌": "chains_muffled"}   # 劇本裡的曲名 → art/bgm/ 檔名（ASCII）
 VIDEOS = ROOT / "art/video/media.json"     # "cg|運鏡" → {mediaId, url}，tools/motion.py 產生
+_VFU = {}
+def _video_files():
+    # 媒體庫裡每支影片都有直接的 mp4（videoFileUrl）。只給 Stream 的 iframe 網址時，播放器用 Stream 內嵌框播，fit 管不到，寬螢幕會左右黑邊
+    if not _VFU:
+        p, _ = call("GET", f"/projects/{json.loads(STATE.read_text())['id']}")
+        _VFU.update({x["id"]: x["videoFileUrl"] for x in p.get("project", p).get("media", []) if x.get("videoFileUrl")})
+    return _VFU
 def video_layer(key):
     m = json.loads(VIDEOS.read_text()) if VIDEOS.exists() else {}
     if key not in m: raise SystemExit(f"缺運鏡影片 {key}，先跑 tools/motion.py")
-    return {"id": "v-" + key.replace("|", "-"), "mediaId": m[key]["mediaId"], "url": m[key]["url"], "fill": True, "fit": "cover", "videoLoop": False, "volume": 0}   # fit 預設 contain，寬螢幕會留黑邊
+    vf = _video_files().get(m[key]["mediaId"])
+    if not vf: raise SystemExit(f"媒體庫找不到 {key} 的 mp4（videoFileUrl）")
+    return {"id": "v-" + key.replace("|", "-"), "mediaId": m[key]["mediaId"], "url": m[key]["url"], "videoFileUrl": vf,
+            "fill": True, "fit": "cover", "videoLoop": False, "volume": 0}
 
 # ---------- 第一步：劇本 → 段落 ----------
 def segments(md):
@@ -148,11 +158,10 @@ def build(segs, ch="ch1"):
             choice, keys, prev, bx = n["id"], [k for _, k in s[1]], [], x
         elif s[0] == "branch":
             k, lines = s[1], list(s[2]); i = keys.index(k); y = (i - 1) * 300
-            last = lines.pop() if len(lines) > 1 else {"speaker": "旁白", "text": "……", "emotion": "描述動作"}
-            bid = dialogue(f"選 {k}", lines, s[3], bx + 400, y, s[4])
+            bid = dialogue(f"選 {k}", lines, s[3], bx + 400, y, s[4])   # 分支最後一句留在對話卡：以前搬進好感卡當文字，顯示成黑底字
             link(choice, bid, f"choice-{i}")
             sv = base(f"{k} 好感 +1", bx + 800, y)
-            sv["data"] = {"type": "setVariable", "title": f"{k} 好感 +1", "speaker": last["speaker"], "text": last["text"],
+            sv["data"] = {"type": "setVariable", "title": f"{k} 好感 +1", "text": "",
                           "variableOps": [{"kind": "add", "value": 1, "variable": f"aff{k}"}],
                           "background": bg[0], "stage": {"actors": []}, "characterLayers": []}
             nodes.append(sv); link(bid, sv["id"]); prev.append(sv["id"]); x = bx + 800
@@ -164,7 +173,7 @@ def check(nodes, edges):
     has_in = {e["target"] for e in edges}; has_out = {e["source"] for e in edges}
     orphans = [n["id"] for n in nodes if n["id"] not in has_in][1:]
     dead = [n["id"] for n in nodes if n["id"] not in has_out][:-1]
-    empty = [n["id"] for n in nodes if n["data"]["type"] in ("dialogue", "setVariable") and not str(n["data"].get("text", "")).strip()]
+    empty = [n["id"] for n in nodes if n["data"]["type"] == "dialogue" and not str(n["data"].get("text", "")).strip()]
     nobg = [n["id"] for n in nodes if not n["data"].get("background")]
     assert not (bad or orphans or dead or empty or nobg), dict(bad=bad, orphans=orphans, dead=dead, empty=empty, nobg=nobg)
 
