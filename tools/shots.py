@@ -1,4 +1,4 @@
-# 從 art/cg/ch1_shots.py 組提示詞並產圖（最多 5 條並行，.11 codex-image）。
+# 從 art/cg/ch1_shots.py 組提示詞並產圖（.11 codex-image；送圖排隊在 tools/gen.py，走全機共用的 ~/.cache/cg_jobs）。
 #   python3 tools/shots.py prompts            # 只寫 art/cg/ch1/<id>.prompt.txt
 #   python3 tools/shots.py run masters [id…]  # 產非差分格（主鏡頭、單格）
 #   python3 tools/shots.py run vars [id…]     # 產差分（主鏡頭的定稿要先在 art/cg/<base>.jpg）
@@ -96,5 +96,5 @@ if __name__ == "__main__":
         miss = [i for i in ids if not (ROOT / f"art/cg/{S[i]['base']}.jpg").exists()]
         if miss: print("主鏡頭還沒定稿，先略過：", miss); ids = [i for i in ids if i not in miss]
     print("要產", len(ids), "張", flush=True)
-    with cf.ThreadPoolExecutor(5) as ex:
+    with cf.ThreadPoolExecutor(3) as ex:
         for i, msg in ex.map(job, ids): print(i, msg[0] if msg else "", flush=True)

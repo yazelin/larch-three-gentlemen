@@ -6,18 +6,21 @@
 -->
 <style>
 @import url("https://fonts.googleapis.com/css2?family=Noto+Serif+TC:wght@400;600&display=swap");
-:root { color-scheme: dark; --ink:#f4eee6; --dim:rgba(244,238,230,.68); --m:#8aa2ea; --c:#c8d45a; --s:#cf5a6c; --t:#c7b2ea; --gold:#e9cf9a; }
+:root { color-scheme: normal; --ink:#f4eee6; --dim:rgba(244,238,230,.68); --m:#8aa2ea; --c:#c8d45a; --s:#cf5a6c; --t:#c7b2ea; --gold:#e9cf9a; }
 * { box-sizing: border-box; }
 html, body { margin: 0; background: transparent; overflow: hidden; }
-.box { position: relative; padding: 18px 9vw 22px; color: var(--ink);
+.box { position: relative; padding: 34px 9vw 24px; color: var(--ink);
   font-family: "Noto Serif TC", "Songti TC", serif;
-  background: linear-gradient(0deg, rgba(5,7,16,.9) 0%, rgba(5,7,16,.78) 70%, rgba(5,7,16,.35) 100%); }
+  background: radial-gradient(closest-side at 50% 55%, rgba(5,7,16,.9) 0%, rgba(5,7,16,.82) 50%, rgba(5,7,16,.5) 78%, rgba(5,7,16,0) 100%); }
+/* 上緣一條兩端淡出的金線 */
+.box::before { content: ""; position: absolute; left: 12%; right: 12%; top: 18px; height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(233,207,154,.45) 30%, rgba(233,207,154,.45) 70%, transparent); }
 .name { display: flex; align-items: center; gap: 10px; min-height: 1.4em; margin: 0 0 8px; font-size: clamp(15px, 1.25vw, 19px); letter-spacing: .32em; font-weight: 600; }
 .name::before { content: ""; width: 8px; height: 8px; border-radius: 50%; background: var(--k, var(--gold)); box-shadow: 0 0 10px var(--k, var(--gold)); }
 .name::after { content: ""; flex: 0 0 72px; height: 1px; background: linear-gradient(90deg, var(--k, var(--gold)), transparent); }
 .box.is-narration .name { visibility: hidden; }
 .text { margin: 0; max-width: 46em; min-height: 3.5em; font-size: var(--larch-text-size, 22px); line-height: 1.75; letter-spacing: .06em;
-  text-shadow: 0 1px 10px rgba(0,0,0,.6); }
+  text-shadow: 0 1px 2px rgba(0,0,0,.9), 0 2px 14px rgba(0,0,0,.75); }
 .box.is-thought .text { color: var(--dim); }
 .box.is-narration .text { color: rgba(244,238,230,.86); }
 .next { position: absolute; right: 4vw; bottom: 16px; width: 34px; height: 34px; border: 0; border-radius: 50%; cursor: pointer;

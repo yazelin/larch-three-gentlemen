@@ -65,24 +65,24 @@ shot("04A-4", "var", "day", "She leans back in her chair with a helpless little 
 shot("04A-5", "var", "day", "She closes her eyes and sighs; S and C are holding back laughter; M is calm.", base="04A")
 shot("04B", "studio", "day", """SHOT (close-up of her alone; the three men are soft blurred shapes in the sunlit background): she bites her lip, uneasy — afraid of choosing wrong. Sunlight on her hair.""")
 shot("04B-1", "var", "day", "She gives a small self-mocking smile, eyes lowered.", base="04B")
-shot("04-PC", "studio", "day", """SHOT (her POINT OF VIEW, the camera is her eyes; close-up): C across the table looks up from his sketchbook STRAIGHT INTO THE CAMERA — at her — his pencil stopped on the paper, a gentle, open look. Sunlight behind him, the background soft. At the lower edge, out of focus, the corner of her own sketchbook.""", who="c")
+shot("04-PC", "studio", "day", """SHOT (her POINT OF VIEW, the camera is her eyes; close-up): C across the table looks up from his sketchbook STRAIGHT INTO THE CAMERA — at her — his pencil stopped on the paper, a gentle, open look. Sunlight behind him, the background soft. At the lower edge, out of focus, the corner of her own sketchbook. HANDS: M sits upright with both forearms resting on the table; S sits upright with both hands in his lap; nobody touches his own face, chin or cheek.""", who="c")
 shot("04-PM", "studio", "day", """SHOT (her POINT OF VIEW, the camera is her eyes; close-up): M at the head of the table looks STRAIGHT INTO THE CAMERA — at her — calm, quietly waiting for her to speak first, the glow of his laptop on one side of his face. Background soft.""", who="m")
 shot("04-PS", "studio", "day", """SHOT (her POINT OF VIEW, the camera is her eyes; close-up): S slips one ear of his wine-red headphones off and looks STRAIGHT INTO THE CAMERA — at her — a soft, curious half smile. One hand at the headphones, five clear fingers. Background soft.""", who="s")
 shot("04C-1", "studio", "day", """SHOT (close-up from above the sketchbook, slightly angled): C's right hand holds a pencil and is drawing on a sketchbook page: only the outline of a tall city gate seen from inside, a doorframe of light, still unfinished; real pencil strokes. Only his one hand and cardigan cuff (with its thin yellow-green stripe) are visible.""", who="c")
 shot("04C-2", "studio", "day", """SHOT (two-shot, medium close-up): she leans over to look at the sketch; C turns his head toward her and smiles; their faces are close, the sketchbook between them. Sunlight between them. Her hands out of frame; his hand holds the pencil. C's head is turned toward HER, his eyes on her face (not on the sketch), smiling.""", who="c")
 shot("04C-3", "var", "day", "She has pulled back half a step, her ears turning pink; C watches her and smiles; on the sketchbook a second sketch now shows the gate from outside.", base="04C-2")
-shot("04C-4", "studio", "day", """SHOT (insert, top-down): two pencil sketches side by side on the table — the tall gate seen from inside and the same gate seen from outside — and the tip of her index finger hovering between them, not choosing. Only the one finger visible.""", who="")
+shot("04C-4", "studio", "day", """SHOT (insert, top-down): two pencil sketches side by side on the table — the tall gate seen from inside and the same gate seen from outside — and the tip of her index finger hovering between them, not choosing. Only the one finger visible. Strictly TOP-DOWN insert of the table surface only: the two sketches and the tip of her index finger entering from the bottom edge; NO faces, NO people in the frame except that one fingertip and hand.""", who="")
 shot("04-afterC", "studio", "day", """SHOT (medium shot of the other two at the table): M has turned his eyes back to his laptop; S puts his headphones back on and does not look at her. Quiet; the sunlight a little cooler.""", who="ms")
 shot("04M-1", "studio", "day", """SHOT (over M's shoulder): over M's shoulder we see his open laptop showing a simple grid practice map (coloured tiles, no text); across the table she sits listening; M turns his face toward her, profile visible.""", who="m")
 shot("04M-2", "studio", "day", """SHOT (close-up of M): M explains seriously, leaning forward a little, voice low; laptop glow on one side of his face; sunlight behind.""", who="m")
 shot("04M-3", "studio", "day", """SHOT (close-up of her): TIGHT close-up on HER face and shoulders only (from the chest up, she fills most of the frame); she watches M quietly, her hands under the table and out of frame, a hidden smile at the corner of her mouth, reassured. M is only a soft out-of-focus shoulder at the frame edge; C and S are NOT in this frame. Nobody rests a chin or cheek on a hand.""")
 shot("04-afterM", "studio", "day", """SHOT (medium shot of the other two at the table): C lowers his head and goes back to his sketch; S's grin pauses for a beat before he smiles again. Quiet.""", who="cs")
-shot("04S-1", "studio", "day", """SHOT (close-up, profile): S with his wine-red headphones on, eyes closed, tapping a rhythm on the table edge with two fingers, humming; a shaft of window light falls across half of his face. Behind him, out of focus, she watches.""", who="s")
+shot("04S-1", "studio", "day", """SHOT (close-up, profile): S with his wine-red headphones on, eyes closed, tapping a rhythm on the table edge with two fingers, humming; a shaft of window light falls across half of his face. Behind him, out of focus, she watches. HANDS: she sits upright with both hands resting flat on the table in front of her; M stands with his hands at his sides; C's hands rest on his sketchbook; nobody touches his or her face, chin or cheek.""", who="s")
 shot("04S-2", "studio", "day", """SHOT (two-shot, medium): S has pulled his headphones down to his neck and turned toward her, drawing one slow line in the air with one hand as he describes the sound; she listens, leaning in.""", who="s")
 shot("04S-3", "var", "day", "She looks away with a slight pout of doubt held back; S shrugs with a grin.", base="04S-2")
 shot("04S-4a", "studio", "day", """SHOT (close-up of S): S freezes for a second, then laughs, caught off guard by how picky she is.""", who="s")
 shot("04S-4b", "studio", "day", """SHOT (close-up of her): she sips her iced tea as if nothing happened, a calm, slightly smug look, eyes on S. One hand holds the tall glass naturally (five fingers around the glass). TIGHT close-up of HER ONLY from the chest up; nobody else is in the frame.""")
-shot("04S-5", "studio", "day", """SHOT (extreme close-up): her eyes closed, listening to a sound inside her head; window light on her eyelashes.""")
+shot("04S-5", "studio", "day", """SHOT (extreme close-up): her eyes closed, listening to a sound inside her head; window light on her eyelashes. EXTREME close-up of HER face only (eyes, eyelashes, cheek), nobody else in the frame, her hands out of frame.""")
 shot("04-afterS", "studio", "day", """SHOT (medium shot of the other two at the table): C's pencil stops for a moment; M looks at her, then at S, then back to his laptop.""", who="cm")
 
 # ── 五、第一首歌（重產：新定稿＋AI 介面空間）──
@@ -153,3 +153,10 @@ GAZE = {
  "06M": {"M": "lowered to the side, at no one", "C": H, "S": H, "she": "asleep"},
  "06S": {"S": "down toward her", "M": H, "C": H, "she": "asleep"},
 }
+
+GAZE.update({
+ "04-PC": {"C": "lens (her), eyes raised from the sketchbook straight into the camera", "M": "C", "S": "C"},
+ "04-PM": {"M": "lens (her)", "C": "M", "S": "M"},
+ "04-PS": {"S": "lens (her)", "M": "S", "C": "S"},
+ "04S-1": {"S": "eyes closed", "she": "S", "M": "S", "C": "S"},
+})
