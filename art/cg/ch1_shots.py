@@ -95,6 +95,9 @@ shot("05A-3", "var", "t3", "She looks away toward the dark window on the left, e
 shot("05A-4", "var", "t3", "She watches the phone, waiting. S has just put his wine-red headphones ON his ears and is closing his eyes, a faint wry half smile; his hands are out of the screen.", base="05A")
 shot("05A-5", "var", "t3", "She smiles for the first time tonight, softly, eyes warm and certain, looking at the phone. S has headphones around his neck and gives her a small nod.", base="05A")
 shot("05-1", "insert", "t3", """SHOT (extreme close-up insert): the phone screen fills most of the frame, the slim silver bezel framing it; inside, in his dark wine-red interface space with drifting motes, S has his wine-red headphones on and closes his eyes, lips parting to sing, completely absorbed; a thin glowing red waveform rises along the bottom of the screen. Hands out of frame. The screen glow is the main light; amber lamp bokeh around.""", who="s")
+shot("05-2", "desk", "t3", """SHOT (close-up, REVERSE ANGLE from the desk side looking at her, eye level): her face and shoulders, turned slightly toward the phone propped against the tea glass at the frame's lower right (the phone itself is out of frame); the phone's dark wine-red light falls across her cheek; her eyes are wet and wide, lips slightly parted: she has just understood what the song is. Behind her the dark room exactly as Image 2 (bed on the right, wardrobe and door further back), out of focus. One small white wireless earbud in her ear.""")
+shot("05-3", "insert", "t3", """SHOT (extreme close-up): one of her eyes behind the thin gold rim and pale pink lens of her glasses; reflected on the lens, a thin glowing wine-red sound waveform; her eyelashes and the warm lamp light; goosebumps implied only by her stillness. Only the eye, the lens and part of her cheek in frame.""", who="t")
+shot("05-4", "free", "t3", """An IMAGINED picture inside her head (no desk, no devices): an extreme long shot from high up inside a vast, very dark cathedral: stone columns fading into darkness, and one single shaft of pale light falling from a high window onto a tiny kneeling figure in the middle of the stone floor, too small and far to recognise. The only bright thing in the whole picture is the shaft of light. Transparent watercolour, deep blue-black washes, a sacred but slightly wrong feeling.""", who="")
 shot("01-6", "desk", "t3", """SHOT (cinematic over-the-shoulder, shallow depth of field): camera just behind her LEFT shoulder, very close, at her eye height. FOREGROUND (strongly out of focus): the back of her dark purple hair, a white wireless earbud, the curve of her cheek and eyelashes in lost profile, the gold rim of her glasses. MIDGROUND (the only sharp area): the phone propped against the tea glass; inside S sings with eyes closed, headphones on, a small gentle smile; a glowing red waveform along the bottom; the red glow spills onto the glass and her cheek. BACKGROUND (deep blur): the laptop with M and the tablet with C, both with eyes closed, listening. DEVICE ORDER on the desk from the frame's LEFT to RIGHT: the laptop with M, then the tall tea glass with the phone propped against its front, then the tablet on its stand with C at the right. The phone is between the laptop and the tablet, never to the left of the laptop.""")
 shot("05-6", "desk", "t3", """SHOT (her POINT OF VIEW, the camera is her eyes): the phone propped against the tea glass fills the centre of the frame, close. Inside the screen S looks STRAIGHT INTO THE CAMERA — at her — with a soft, warm, unguarded smile, headphones around his neck, a small nod. At the top-left corner, the out-of-focus edge of her glasses frame and a few strands of her purple hair. The laptop and tablet are soft blurred glows in the background (M and C small and blurred, looking at S). Hands out of frame.""")
 
@@ -162,6 +165,13 @@ GAZE.update({
  "04S-1": {"S": "eyes closed", "she": "S", "M": "S", "C": "S"},
 })
 
+GAZE.update({
+ "01-2": {"she": "her phone, just below the camera"},
+ "01A": {"she": "her phone"},
+ "01-4": {"she": "the three glowing screens on the desk, coloured light on her face"},
+ "05-2": {"she": "the phone at the lower right"},
+})
+
 # 書桌機位（yazelin 2026-11-06 第一章回饋：東西亂搬、兩張桌子）。平面圖 canon/refs/desk_plan.jpg，空景 canon/refs/set_desk_<機位>.jpg。
 SETUP = {
  "01-0": "D", "05-0": "D",
@@ -203,3 +213,90 @@ _T2 = "Her iced tea in front of her: about 70% full, the ice half melted into sm
 _T3 = "Her iced tea in front of her: about half full (she has drunk some), only one or two small slivers of ice left."
 TEA_STUDIO = {"_": _T2, "04-1": _T1, "04A": _T1, "04B": _T1,
               "04S-4b": _T2 + " She is drinking from it now.", "04S-5": _T3, "04-afterS": _T3}
+
+# ── 分鏡表（新流程第三層，2026-11-06）──────────────────────────────
+# 露出來的手：每一隻看得到的手放哪、拿什麼；看不到的手也寫「畫面外」。差分沿用主鏡頭，只寫有變的。
+# 試玩抓到的錯（review/第一章_試玩問題.md）都是「手沒寫死」或「道具沒寫死」：少手指、少一隻手臂、手機出現在工作室。
+RETIRED = {"01-2b", "01-2c"}
+NOFACE = {"04C-1", "04C-4", "06-2", "02-1", "02A", "06-F"}   # 畫面裡只有手或頭髮，不需要視線表   # 改成敲鎖小遊戲（art/ui/minigame_challenge.html），不再產圖
+HANDS = {
+ "01-0": "她兩手一起捧著亮著的手機，手很小、在檯燈光裡，不必畫清每根手指。",
+ "01-1": "沒有人，沒有手。",
+ "01-2": "只露她兩手的指尖扶在手機兩側邊緣（前景、失焦），其餘的手在畫面外。",
+ "01A": "她的兩手都在畫面下緣之外，看不到。",
+ "02A": "只露她右手：食指伸出、懸在計算機上方，其他四指自然收起，手腕從畫面下緣進來。",
+ "02B": "她的兩手都在畫面外，只看得到手機上緣貼在胸口。",
+ "02-1": "只露她右手食指的指尖按在發光的確認鈕上，指甲與指節自然。",
+ "01-3": "沒有人，沒有手。",
+ "03-T": "三人都只到胸口，手都在畫面外。",
+ "03-0": "她兩手在胸前一起捧著手機（兩隻手都看得到、各五根手指），三道光從手機射出。",
+ "01-4": "她的兩手都在畫面外（桌緣以下）。",
+ "03S": "她不在畫面裡；詩只到胸口，手在畫面外。",
+ "03A": "她的手在畫面外；三位先生都只到胸口，手在畫面外。",
+ "03C": "她不在畫面裡；晨右手在胸前拿著一支鉛筆（五根手指清楚，鉛筆夾在拇指與食指之間），左手在畫面外。",
+ "03M": "她不在畫面裡；明只到胸口，手在畫面外。",
+ "03-F": "兩年前的她：右手拿鉛筆在紙上畫，左手壓著紙的角落，兩隻手都看得到、各五根手指。",
+ "04-0": "只露她右手，從下面托著手機、拇指在螢幕上；左手在畫面外。",
+ "04-1": "她站在門口，只露後腦與右肩，手在畫面外。明兩手放在筆電鍵盤上；晨右手拿鉛筆在素描本上、左手扶著本子；詩右手搭在椅背上、左手放在大腿上。",
+ "04A": "她兩手交疊放在桌上（兩隻都看得到）。明兩手放在筆電鍵盤上；晨右手拿鉛筆、左手扶素描本；詩右手搭在椅背上、左手放在大腿上。",
+ "04B": "她兩手交疊放在桌上、手指輕輕交握；詩在旁邊失焦，手看不清楚也可以。",
+ "04-PC": "她的手不在畫面裡（主觀鏡頭）。晨右手拿鉛筆停在素描本上、左手扶著本子；明兩手在筆電上；詩的手在畫面外。",
+ "04-PM": "她的手不在畫面裡（主觀鏡頭）。明兩手交疊放在筆電前的桌上；晨與詩的手在畫面外。",
+ "04-PS": "她的手不在畫面裡（主觀鏡頭）。詩右手把一邊耳罩從耳朵拉下來（五根手指清楚），左手在畫面外。",
+ "04C-1": "只露晨的右手與袖口（袖口有黃綠細線），右手拿鉛筆在素描本上畫。",
+ "04C-2": "她的手在畫面外。晨右手拿鉛筆放在素描本上，左手在畫面外。",
+ "04C-4": "只露她右手食指的指尖，懸在兩張草圖中間，沒有碰到紙。",
+ "04-afterC": "明兩手放在筆電鍵盤上；詩兩手把耳機戴回頭上（兩手扶著耳罩，各五根手指）。她不在畫面裡。",
+ "04M-1": "越過明的右肩：明右手放在觸控板上，左手在畫面外；她在桌子對面，兩手交疊放在桌上（遠、小）。",
+ "04M-2": "明右手放在筆電鍵盤上，左手在畫面外。",
+ "04M-3": "她的兩手都在桌面以下、畫面外。",
+ "04-afterM": "晨右手拿鉛筆畫、左手扶著本子；詩兩手放在桌上。她不在畫面裡。",
+ "04S-1": "詩右手兩根手指在桌緣打拍子，左手在畫面外；她在後面失焦，兩手平放在桌上。",
+ "04S-2": "詩只露右手，在空中畫一條慢慢的線（五根手指清楚），左手在畫面外。她兩手交疊放在膝上，兩隻手都看得到。",
+ "04S-4a": "詩的兩手都在畫面外（只到胸口）。",
+ "04S-4b": "她右手握著高玻璃杯（五根手指自然圈住杯身），左手在畫面外。",
+ "04S-5": "她的手在畫面外（只有臉）。",
+ "04-afterS": "晨右手拿鉛筆停在紙上、左手扶著本子；明兩手放在筆電鍵盤上。她不在畫面裡。",
+ "05-0": "她兩手放在腿上、桌緣以下。",
+ "05A": "她的兩手都在桌緣以下、畫面外。",
+ "05-1": "詩只到胸口，手在畫面外。",
+ "01-6": "她的手在畫面外；三位先生都只到胸口，手在畫面外。",
+ "05-6": "主觀鏡頭，沒有手；詩只到胸口。",
+ "06-0": "她右手壓在攤開的課本上，左手垂在腿上（畫面外）。",
+ "01-7": "她兩手臂交疊在課本上當枕頭，臉頰枕在上面（兩隻手臂都看得到，手掌半藏在手臂下）。",
+ "06A": "她只露頭髮，手在畫面外；三位先生只到胸口，手在畫面外。",
+ "06C": "晨右手拿著鉛筆、靜止不動（五根手指清楚），左手在畫面外。",
+ "06-1": "沒有人，沒有手。",
+ "06M": "明只到胸口，手在畫面外。",
+ "06-F": "只露她右手：食指懸在計算機上方，其他四指自然收起。",
+ "06S": "詩右手拿著剛摘下的耳機（五根手指清楚），左手在畫面外。",
+ "06-2": "沒有人，沒有手。",
+ "05-2": "她的兩手都在畫面外（只到肩膀）。",
+ "05-3": "沒有手。",
+ "05-4": "想像畫面：跪著的小人影太小，看不出手；沒有其他人。",
+}
+# 差分格只寫手有變的（沒寫就沿用主鏡頭）
+HANDS.update({
+ "04S-3": "她兩手交疊放在膝上，兩隻手都看得到；詩只露右手，在胸前輕輕攤開（五根手指清楚），左手在畫面外。",
+ "04A-4": "她往後靠在椅背上，兩手放在腿上；三位先生的手照 04A。",
+ "04A-5": "她閉眼嘆氣，兩手交疊放在桌上；三位先生的手照 04A。",
+})
+
+# 手機在哪：人形介面出現（03S）之前，手機在她手上或平放在桌上；之後詩住在手機裡，手機立著靠在紅茶杯右邊
+PHONE = {
+ "01-0": "手機在她手上亮著；筆電與平板的螢幕關著", "01-1": "手機平放在紅茶後面、剛亮起通知", "01-2": "手機在她手上",
+ "01A": "手機在她手上", "02A": "手機平放在桌上", "02B": "手機貼在她胸口", "02-1": "手機在桌上、她的指尖按著螢幕",
+ "01-3": "手機平放在桌上", "03-0": "手機在她手上、射出三道光", "04-0": "手機在她右手上", "06-F": "（回憶）手機平放在桌上",
+ "06-4": "手機暗著平放在她手邊；三台裝置的螢幕都暗了",
+}
+def props(i):
+    """道具狀態：依場景與時間自動帶，不逐格手抄。沒入鏡的道具不用畫。"""
+    d = S[i]; k = d["kind"] if d["kind"] != "var" else S[d["base"]]["kind"]; t = d["time"]
+    if k == "studio":
+        tea = TEA_STUDIO.get(i, TEA_STUDIO["_"])
+        return "工作室：桌上沒有任何手機；明用他自己的太空灰素面筆電；她的三台裝置都不在工作室。" + tea
+    if k in ("desk", "room", "insert"):
+        tea = {"t1": "冰紅茶冰塊半融、剩幾小塊", "t3": "冰紅茶沒有冰塊、杯壁水珠往下流", "t4": "冰紅茶快喝完、杯墊上一圈水痕"}.get(t, "")
+        ph = PHONE.get(i) or PHONE.get(d["base"] or "", "手機立著靠在杯子右邊")
+        return f"書桌：由左到右檯燈、筆電、冰紅茶、平板；{ph}；全畫面只有一支手機；沒入鏡的道具不用畫。{tea}。"
+    return ""

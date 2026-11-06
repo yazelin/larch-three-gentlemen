@@ -5,7 +5,7 @@
 # 產出在 art/gen/ch1/<id>.png；驗收過的才轉成 art/cg/<id>.jpg。
 import json, os, subprocess, sys, pathlib, concurrent.futures as cf
 ROOT = pathlib.Path(__file__).resolve().parent.parent
-sys.path.insert(0, str(ROOT / "art/cg")); from ch1_shots import S, GAZE, SETUP, SETUP_DESC, SEATING, TEA_STUDIO
+sys.path.insert(0, str(ROOT / "art/cg")); from ch1_shots import S, GAZE, SETUP, SETUP_DESC, SEATING, TEA_STUDIO, HANDS, props
 OUT, PR = ROOT / "art/gen/ch1", ROOT / "art/cg/ch1"
 REF = "canon/refs/"
 SHEET = {"t": REF + "tea.jpg", "c": REF + "c.jpg", "m": REF + "m.jpg", "s": REF + "s.jpg"}
@@ -61,6 +61,15 @@ def gaze(i):
     # ponytail: 只管主鏡頭與單格；差分照主鏡頭的視線，差分自己的描述會覆寫
     return "GAZE, who looks at whom (draw exactly, eyes OPEN unless stated; HER = toward the heroine wherever she is; nobody gazes up and away into the distance): " + "; ".join(f"{NAMES[k]} looks at {v}" for k, v in GAZE[i].items()) + "."
 
+def board(i):
+    # 分鏡表兩欄（中文）：露出來的手、道具狀態。差分沒寫手就沿用主鏡頭
+    h = HANDS.get(i) or HANDS.get(S[i]["base"] or "", "")
+    out = []
+    if h: out.append("HANDS (storyboard, must be followed exactly; every visible hand has exactly five fingers and is attached to an arm; hands written as out of frame must not appear): " + h)
+    p = props(i)
+    if p: out.append("PROPS STATE (storyboard, must be followed exactly): " + p)
+    return out
+
 def prompt(i):
     d = S[i]; files, names = refs_for(i)
     ref = "REFERENCE IMAGES: " + " ".join(f"Image {n+1} = {x}." for n, x in enumerate(names))
@@ -68,6 +77,7 @@ def prompt(i):
         return "\n".join([ref,
             "Reproduce Image 1 EXACTLY: same camera position, framing, lens, lighting, colour grade, room, background, devices and what each screen shows, props, clothing, hair, glasses and accessories, same watercolour rendering and level of detail.",
             "Change ONLY what is described here, nothing else in the picture: " + d["body"],
+            *board(i),
             "Keep every face identical to Image 1 and to the character sheets. Restrained adult acting; no manga symbols. Hands not mentioned stay as in Image 1 or out of frame. No text."])
     parts = [ref, TEA]
     if d["kind"] in ("desk", "studio", "free") and (d["kind"] != "free" or d["who"] not in ("", "t")): parts.append(CAST)
@@ -82,6 +92,7 @@ def prompt(i):
     if d["kind"] == "desk": parts.append(AI)
     if d["kind"] != "free": parts.append(TIME[d["time"]])
     if i in GAZE: parts.append(gaze(i))
+    parts += board(i)
     parts.append(STYLE)
     return "\n".join(parts)
 
