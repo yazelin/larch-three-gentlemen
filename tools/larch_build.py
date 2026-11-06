@@ -196,7 +196,7 @@ def push(nodes, edges, cgs):
     p["name"] = NAME
     s = p.setdefault("settings", {})
     s.update({"arrowKeyBack": True, "arrowKeyNext": True, "stageFit": "auto", "keepActorsInFrame": False, "textSpeed": 55, "returnToTitleOnEnd": True,
-              "titleScreenEnabled": True, "titleCoverImage": CDN + "art/cg/title_kv.jpg", "projectThumbnail": CDN + "art/cg/title_kv.jpg",
+              "titleScreenEnabled": True, "titleCoverImage": CDN + "art/cg_paper/title_kv.jpg", "projectThumbnail": CDN + "art/cg_paper/title_kv.jpg",
               "cgGalleryEnabled": True, "cgGallerySource": "picked",
               "cgGalleryItems": [{"url": cg_url(c), "title": f"CG {c}", "locked": True} for c in cgs if c not in VARIANTS]})
     # 對話框外框透明滿版：露出 art/ui/dialogue.html 自己的夜色漸層（這個欄位 PATCH 不收，只能隨整包 PUT 寫）

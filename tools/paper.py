@@ -29,7 +29,6 @@ def apply(src, dst):
 if __name__ == "__main__":
     OUT.mkdir(exist_ok=True); n = 0
     for p in sorted(SRC.glob("*.jpg")):
-        if p.name.startswith("title_"): continue   # 封面自己有紙紋，不疊
         d = OUT / p.name
         if d.exists() and d.stat().st_mtime >= p.stat().st_mtime: continue
         apply(p, d); n += 1
