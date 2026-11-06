@@ -76,7 +76,16 @@ SETUP = {"2-01": "D", "2-01A": "A", "2-02": "C", "2-04": "C", "2-03": "B", "2-12
          "2-11": "C", "2-17": "A", "2-15": "D", "2-16": "D",
          "2-05": "C", "2-06C": "C", "2-06M": "A", "2-06S": "B", "2-08": "A"}
 TEA_STUDIO = {"_": _T1, "2-05-4": _T2, "2-05-5": _T2, "2-08": _T2}
-FIX = {}
+FIX = {
+    "2-03": "The camera stands BEHIND the devices on the desk, so it sees only the plain dark BACK of the laptop lid and the plain dark BACK of the tablet case (and the back of the phone in its stand): NO screen and NO man is visible to the camera. MIRRORED because this is a reverse angle: the desk lamp glows at the frame's RIGHT edge, the back of the tablet is at the frame's LEFT, the back of the laptop lid at the RIGHT.",
+    "2-12": "The camera stands BEHIND the devices on the desk, so it sees only the plain dark BACK of the laptop lid and the plain dark BACK of the tablet case (and the back of the phone in its stand): NO screen and NO man is visible to the camera. MIRRORED because this is a reverse angle: the desk lamp glows at the frame's RIGHT edge, the back of the tablet is at the frame's LEFT, the back of the laptop lid at the RIGHT.",
+    "2-04": "The photo on the phone screen is EXACTLY the same as in shot 2-02: a deep blue pre-dawn sky over old rooftops with the silhouette of a mosque dome and a thin minaret, a thin line of light at the horizon. NOT a seaside town, NOT white houses, NOT a sunset.",
+    "2-06C": "The camera is over C's right shoulder on the WINDOW (north) side of the table, looking SOUTH toward the wooden door: so the background is the door wall with the wooden door, NOT the windows. Across the table, facing the camera: the heroine on the red chair and S on the green chair beside her. M sits on the SAME side as C (window side, at the far right of the frame or out of frame), never across the table.",
+    "2-08": "There is only ONE heroine in this picture: she stands at the window. Her red chair at the table is EMPTY. At the table only M (white chair, window side, with his laptop), C (wooden chair, window side) and S (green chair, near side) are sitting.",
+    "2-09": "IDENTITIES (very important): the laptop at the left edge shows ONLY M exactly as his sheet: near-black short hair with a cool blue sheen, charcoal suit jacket, gold gear brooch (NOT silver or white hair). The phone in its stand shows ONLY S exactly as his sheet: long messy WINE-RED hair with one thin braid, wine-red headphones around his neck, black track jacket (NOT dark brown short hair).",
+    "2-10": "The phone stands in its wooden stand with its SCREEN facing her (toward the camera). On that phone screen is S ONLY, exactly as his sheet: a young MAN with long messy WINE-RED hair and one thin braid, wine-red headphones around his neck, black track jacket, small, chest up, in his dark wine-red interface space. The heroine herself is NEVER on any screen.",
+    "2-11": "INSIDE THE SCREENS: M and C sit upright with both hands below the screen edge and out of frame; nothing touches their chins or cheeks; they simply watch the phone.",
+}
 RETIRED = set()
 HANDS = {
  "2-01": "她右手把手機插進手機架（五根手指清楚），左手扶著肩上的帆布袋背帶。螢幕裡三人只到胸口、手在畫面外。",
