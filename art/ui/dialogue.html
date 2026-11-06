@@ -9,18 +9,24 @@
 :root { color-scheme: normal; --ink:#f4eee6; --dim:rgba(244,238,230,.68); --m:#8aa2ea; --c:#c8d45a; --s:#cf5a6c; --t:#c7b2ea; --gold:#e9cf9a; }
 * { box-sizing: border-box; }
 html, body { margin: 0; background: transparent; overflow: hidden; }
-.box { position: relative; padding: 34px 9vw 24px; color: var(--ink);
-  font-family: "Noto Serif TC", "Songti TC", serif;
-  background: radial-gradient(closest-side at 50% 55%, rgba(5,7,16,.9) 0%, rgba(5,7,16,.82) 50%, rgba(5,7,16,.5) 78%, rgba(5,7,16,0) 100%); }
-/* 上緣一條兩端淡出的金線 */
-.box::before { content: ""; position: absolute; left: 12%; right: 12%; top: 18px; height: 1px;
-  background: linear-gradient(90deg, transparent, rgba(233,207,154,.45) 30%, rgba(233,207,154,.45) 70%, transparent); }
+.box { position: relative; isolation: isolate; padding: 110px 9vw 24px; color: var(--ink);
+  font-family: "Noto Serif TC", "Songti TC", serif; }
+/* 淡墨暈染（yazelin 2026-11-06 選 D）：一抹偏紫的靛藍從下緣往上淡到全透明，接進 CG 看不到邊；
+   紙紋已經疊在每張 CG 上（tools/paper.py），這裡不另外加紋。左側帶一點說話者的顏色。 */
+.box::after { content: ""; position: absolute; z-index: -1; left: 0; right: 0; top: 0; bottom: 0; pointer-events: none;
+  background: radial-gradient(40% 55% at 22% 90%, color-mix(in srgb, var(--k, var(--gold)) 15%, transparent) 0%, transparent 100%),
+              linear-gradient(to top, rgba(30,27,54,.82) 0%, rgba(38,34,66,.72) 45%, rgba(46,40,78,.55) 100%);
+  -webkit-mask-image: linear-gradient(to top, transparent 0, rgba(0,0,0,.6) 18px, #000 44px, #000 calc(100% - 120px), rgba(0,0,0,.8) calc(100% - 96px), rgba(0,0,0,.55) calc(100% - 72px), rgba(0,0,0,.3) calc(100% - 48px), rgba(0,0,0,.12) calc(100% - 24px), transparent 100%), linear-gradient(90deg, transparent 0, #000 12%, #000 88%, transparent 100%);
+          mask-image: linear-gradient(to top, transparent 0, rgba(0,0,0,.6) 18px, #000 44px, #000 calc(100% - 120px), rgba(0,0,0,.8) calc(100% - 96px), rgba(0,0,0,.55) calc(100% - 72px), rgba(0,0,0,.3) calc(100% - 48px), rgba(0,0,0,.12) calc(100% - 24px), transparent 100%), linear-gradient(90deg, transparent 0, #000 12%, #000 88%, transparent 100%);
+  -webkit-mask-composite: source-in; mask-composite: intersect; }
+
+
 .name { display: flex; align-items: center; gap: 10px; min-height: 1.4em; margin: 0 0 8px; font-size: clamp(15px, 1.25vw, 19px); letter-spacing: .32em; font-weight: 600; }
 .name::before { content: ""; width: 8px; height: 8px; border-radius: 50%; background: var(--k, var(--gold)); box-shadow: 0 0 10px var(--k, var(--gold)); }
 .name::after { content: ""; flex: 0 0 72px; height: 1px; background: linear-gradient(90deg, var(--k, var(--gold)), transparent); }
 .box.is-narration .name { visibility: hidden; }
 .text { margin: 0; max-width: 46em; min-height: 3.5em; font-size: var(--larch-text-size, 22px); line-height: 1.75; letter-spacing: .06em;
-  text-shadow: 0 1px 2px rgba(0,0,0,.9), 0 2px 14px rgba(0,0,0,.75); }
+  text-shadow: 0 1px 3px rgba(28,24,48,.8), 0 0 14px rgba(28,24,48,.5); }
 .box.is-thought .text { color: var(--dim); }
 .box.is-narration .text { color: rgba(244,238,230,.86); }
 .next { position: absolute; right: 4vw; bottom: 16px; width: 34px; height: 34px; border: 0; border-radius: 50%; cursor: pointer;

@@ -12,7 +12,7 @@ CDN = f"https://cdn.jsdelivr.net/gh/yazelin/larch-three-gentlemen@{SHA}/"
 BOARD = "board-ch1"
 NAME = "夜後明月．晨前朝霞．慕詩客"
 
-def cg_url(cid): return CDN + f"art/cg/{cid}.jpg"
+def cg_url(cid): return CDN + f"art/cg_paper/{cid}.jpg"   # 遊戲用疊了全畫面紙紋的版本（tools/paper.py）
 sys.path.insert(0, str(ROOT / "art/cg"))
 try:
     from ch1_shots import S as _SHOTS

@@ -28,7 +28,7 @@ def keys():
     return sorted(k for k in set(re.findall(r"【CG ([^｜\s】]+)｜運鏡 (\S+?)[】｜]", md)) if k[1] != "定")   # 定＝不動，不做影片
 
 def make(cid, move):
-    src = ROOT / f"art/cg/{cid}.jpg"
+    src = ROOT / f"art/cg_paper/{cid}.jpg"   # 運鏡也用紙紋版，影片播完接回背景才不會跳
     z, x, y = MOVES[move]
     stem = f"{cid}_{ {'推近':'in','拉遠':'out','左搖':'panl','右搖':'panr','下搖':'tiltd','呼吸':'breath','逼近':'close'}[move] }"
     mp4, end = OUT / f"{stem}.mp4", OUT / f"{stem}_end.jpg"

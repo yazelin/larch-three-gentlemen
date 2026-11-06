@@ -43,10 +43,13 @@ p{margin:0;max-width:65ch}.sub{color:var(--mute)}
 .v-a.thought .text{color:#7a6a66}
 
 /* B 淡墨暈染：沒有框，一抹偏紫的靛藍水彩由下往上淡開，邊緣不規則，帶一點說話者的色 */
-.v-b .wash{left:-4cqw;right:-4cqw;top:1cqw;bottom:-3cqw;filter:url(#ragged2);
-  background:radial-gradient(70% 90% at 50% 100%,rgba(44,40,74,.72) 0%,rgba(52,46,84,.6) 45%,rgba(60,52,92,.32) 72%,rgba(60,52,92,0) 100%),
-             radial-gradient(40% 60% at 22% 85%,color-mix(in srgb,var(--k) 38%,transparent) 0%,transparent 100%)}
-.v-b .grain{left:-4cqw;right:-4cqw;top:1cqw;bottom:-3cqw;filter:url(#ragged2);mix-blend-mode:soft-light;opacity:.7;background:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='240' height='240'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.6' numOctaves='3'/%3E%3C/filter%3E%3Crect width='240' height='240' filter='url(%23n)'/%3E%3C/svg%3E")}
+/* 第二版（yazelin：底再暗一點、上緣淡出融進 CG）：往上多延伸一段，用遮罩讓上緣完全淡掉，看不到斷層 */
+.v-b .wash{left:-4cqw;right:-4cqw;top:-20cqw;bottom:-3cqw;filter:url(#raggedx);
+  background:linear-gradient(to top,rgba(30,27,54,.86) 0%,rgba(36,32,62,.8) 30%,rgba(42,37,72,.7) 55%,rgba(46,40,78,.62) 100%),
+             radial-gradient(40% 45% at 22% 92%,color-mix(in srgb,var(--k) 30%,transparent) 0%,transparent 100%);
+  -webkit-mask-image:linear-gradient(to top,#000 0,#000 calc(100% - 26cqw),rgba(0,0,0,.86) calc(100% - 22cqw),rgba(0,0,0,.66) calc(100% - 18cqw),rgba(0,0,0,.45) calc(100% - 14cqw),rgba(0,0,0,.27) calc(100% - 10cqw),rgba(0,0,0,.13) calc(100% - 6.5cqw),rgba(0,0,0,.04) calc(100% - 3cqw),transparent 100%);
+          mask-image:linear-gradient(to top,#000 0,#000 calc(100% - 26cqw),rgba(0,0,0,.86) calc(100% - 22cqw),rgba(0,0,0,.66) calc(100% - 18cqw),rgba(0,0,0,.45) calc(100% - 14cqw),rgba(0,0,0,.27) calc(100% - 10cqw),rgba(0,0,0,.13) calc(100% - 6.5cqw),rgba(0,0,0,.04) calc(100% - 3cqw),transparent 100%)}
+.v-b .grain{left:-4cqw;right:-4cqw;top:-20cqw;bottom:-3cqw;filter:url(#raggedx);mix-blend-mode:soft-light;opacity:.85;-webkit-mask-image:linear-gradient(to top,#000 0,#000 calc(100% - 26cqw),rgba(0,0,0,.86) calc(100% - 22cqw),rgba(0,0,0,.66) calc(100% - 18cqw),rgba(0,0,0,.45) calc(100% - 14cqw),rgba(0,0,0,.27) calc(100% - 10cqw),rgba(0,0,0,.13) calc(100% - 6.5cqw),rgba(0,0,0,.04) calc(100% - 3cqw),transparent 100%);mask-image:linear-gradient(to top,#000 0,#000 calc(100% - 26cqw),rgba(0,0,0,.86) calc(100% - 22cqw),rgba(0,0,0,.66) calc(100% - 18cqw),rgba(0,0,0,.45) calc(100% - 14cqw),rgba(0,0,0,.27) calc(100% - 10cqw),rgba(0,0,0,.13) calc(100% - 6.5cqw),rgba(0,0,0,.04) calc(100% - 3cqw),transparent 100%);background:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='320' height='320'%3E%3Cfilter id='f'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='3' seed='4' result='a'/%3E%3CfeColorMatrix in='a' type='saturate' values='0' result='g'/%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.035 .09' numOctaves='2' seed='9' result='b'/%3E%3CfeColorMatrix in='b' type='saturate' values='0' result='h'/%3E%3CfeBlend in='g' in2='h' mode='multiply'/%3E%3C/filter%3E%3Crect width='320' height='320' filter='url(%23f)'/%3E%3C/svg%3E")}
 .v-b .name,.v-b .text{color:#f7f2ea;text-shadow:0 1px 3px rgba(28,24,48,.75),0 0 14px rgba(28,24,48,.45)}
 .v-b .name::before{content:"";width:2.4cqw;height:1cqw;border-radius:50%;background:var(--k);opacity:.8;filter:url(#dab)}
 .v-b.thought .text{color:rgba(247,242,234,.72)}
@@ -60,6 +63,26 @@ p{margin:0;max-width:65ch}.sub{color:var(--mute)}
 .v-c .text{color:#3b2f2c}
 .v-c.thought .text{color:#7a6a66}
 
+/* B2 縮小版：暈染只到畫面下方約四分之一 */
+.v-b2 .wash{left:-4cqw;right:-4cqw;top:-6cqw;bottom:-3cqw;filter:url(#raggedx);
+  background:linear-gradient(to top,rgba(30,27,54,.88) 0%,rgba(38,34,66,.8) 45%,rgba(46,40,78,.66) 100%);
+  -webkit-mask-image:linear-gradient(to top,#000 0,#000 calc(100% - 13cqw),rgba(0,0,0,.8) calc(100% - 10.5cqw),rgba(0,0,0,.55) calc(100% - 8cqw),rgba(0,0,0,.3) calc(100% - 5.5cqw),rgba(0,0,0,.12) calc(100% - 3cqw),transparent 100%);mask-image:linear-gradient(to top,#000 0,#000 calc(100% - 13cqw),rgba(0,0,0,.8) calc(100% - 10.5cqw),rgba(0,0,0,.55) calc(100% - 8cqw),rgba(0,0,0,.3) calc(100% - 5.5cqw),rgba(0,0,0,.12) calc(100% - 3cqw),transparent 100%)}
+.v-b2 .grain{left:-4cqw;right:-4cqw;top:-6cqw;bottom:-3cqw;filter:url(#raggedx);mix-blend-mode:soft-light;opacity:.85;
+  -webkit-mask-image:linear-gradient(to top,#000 0,#000 calc(100% - 13cqw),rgba(0,0,0,.8) calc(100% - 10.5cqw),rgba(0,0,0,.55) calc(100% - 8cqw),rgba(0,0,0,.3) calc(100% - 5.5cqw),rgba(0,0,0,.12) calc(100% - 3cqw),transparent 100%);mask-image:linear-gradient(to top,#000 0,#000 calc(100% - 13cqw),rgba(0,0,0,.8) calc(100% - 10.5cqw),rgba(0,0,0,.55) calc(100% - 8cqw),rgba(0,0,0,.3) calc(100% - 5.5cqw),rgba(0,0,0,.12) calc(100% - 3cqw),transparent 100%);background:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='320' height='320'%3E%3Cfilter id='f'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='3' seed='4' result='a'/%3E%3CfeColorMatrix in='a' type='saturate' values='0' result='g'/%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.035 .09' numOctaves='2' seed='9' result='b'/%3E%3CfeColorMatrix in='b' type='saturate' values='0' result='h'/%3E%3CfeBlend in='g' in2='h' mode='multiply'/%3E%3C/filter%3E%3Crect width='320' height='320' filter='url(%23f)'/%3E%3C/svg%3E")}
+.v-b2 .name,.v-b2 .text{color:#f7f2ea;text-shadow:0 1px 3px rgba(28,24,48,.8),0 0 14px rgba(28,24,48,.5)}
+.v-b2 .name::before{content:"";width:2.4cqw;height:1cqw;border-radius:50%;background:var(--k);opacity:.8;filter:url(#dab)}
+.v-b2.thought .text{color:rgba(247,242,234,.72)}
+/* D 全畫面紙紋：整張畫蓋同一層淡紙紋，對話框那帶只壓暗、不另外加紋 */
+.stage.paper::after{content:"";position:absolute;inset:0;pointer-events:none;mix-blend-mode:soft-light;opacity:.28;background:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='320' height='320'%3E%3Cfilter id='f'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='3' seed='4' result='a'/%3E%3CfeColorMatrix in='a' type='saturate' values='0' result='g'/%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.035 .09' numOctaves='2' seed='9' result='b'/%3E%3CfeColorMatrix in='b' type='saturate' values='0' result='h'/%3E%3CfeBlend in='g' in2='h' mode='multiply'/%3E%3C/filter%3E%3Crect width='320' height='320' filter='url(%23f)'/%3E%3C/svg%3E");z-index:3}
+.v-d .wash{left:-4cqw;right:-4cqw;top:-6cqw;bottom:-3cqw;
+  background:radial-gradient(40% 55% at 22% 90%,color-mix(in srgb,var(--k) 15%,transparent) 0%,transparent 100%),
+             linear-gradient(to top,rgba(30,27,54,.82) 0%,rgba(38,34,66,.72) 45%,rgba(46,40,78,.55) 100%);
+  -webkit-mask-image:linear-gradient(to top,#000 0,#000 calc(100% - 13cqw),rgba(0,0,0,.8) calc(100% - 10.5cqw),rgba(0,0,0,.55) calc(100% - 8cqw),rgba(0,0,0,.3) calc(100% - 5.5cqw),rgba(0,0,0,.12) calc(100% - 3cqw),transparent 100%);mask-image:linear-gradient(to top,#000 0,#000 calc(100% - 13cqw),rgba(0,0,0,.8) calc(100% - 10.5cqw),rgba(0,0,0,.55) calc(100% - 8cqw),rgba(0,0,0,.3) calc(100% - 5.5cqw),rgba(0,0,0,.12) calc(100% - 3cqw),transparent 100%)}
+.v-d .grain{display:none}
+.v-d .name,.v-d .text{color:#f7f2ea;text-shadow:0 1px 3px rgba(28,24,48,.8),0 0 14px rgba(28,24,48,.5)}
+.v-d .name::before{content:"";width:2.4cqw;height:1cqw;border-radius:50%;background:var(--k);opacity:.8;filter:url(#dab)}
+.v-d.thought .text{color:rgba(247,242,234,.72)}
+
 form{background:var(--card);border:1px solid var(--line);border-radius:8px;padding:18px;display:grid;gap:16px}
 fieldset{border:0;margin:0;padding:0;display:grid;gap:8px}legend{font-weight:600;margin-bottom:4px}
 label.opt{display:flex;gap:10px;align-items:flex-start;padding:8px 10px;border:1px solid var(--line);border-radius:6px;cursor:pointer}
@@ -71,6 +94,7 @@ textarea{width:100%;box-sizing:border-box;min-height:80px;font:inherit;backgroun
 </style>
 <svg width="0" height="0" style="position:absolute" aria-hidden="true">
   <filter id="ragged" x="-5%" y="-20%" width="110%" height="140%"><feTurbulence type="fractalNoise" baseFrequency=".018 .05" numOctaves="3" seed="7"/><feDisplacementMap in="SourceGraphic" scale="14"/></filter>
+  <filter id="raggedx" x="-5%" y="-5%" width="110%" height="110%"><feTurbulence type="fractalNoise" baseFrequency=".02 .004" numOctaves="3" seed="3"/><feDisplacementMap in="SourceGraphic" scale="28" xChannelSelector="R" yChannelSelector="A"/></filter>
   <filter id="ragged2" x="-5%" y="-30%" width="110%" height="160%"><feTurbulence type="fractalNoise" baseFrequency=".008 .02" numOctaves="4" seed="3"/><feDisplacementMap in="SourceGraphic" scale="46"/></filter>
   <filter id="dab" x="-40%" y="-80%" width="180%" height="260%"><feTurbulence type="fractalNoise" baseFrequency=".25" numOctaves="2" seed="11"/><feDisplacementMap in="SourceGraphic" scale="6"/><feGaussianBlur stdDeviation=".6"/></filter>
 </svg>
@@ -82,16 +106,18 @@ textarea{width:100%;box-sizing:border-box;min-height:80px;font:inherit;backgroun
 
 <section class="variants">
 <div class="bar" id="vbar"><span>做法</span>
-<button data-v="now">現行</button><button data-v="a" aria-pressed="true">A 水彩紙條</button><button data-v="b">B 淡墨暈染</button><button data-v="c">C 紙色淡出</button></div>
+<button data-v="now">現行</button><button data-v="a">A 水彩紙條</button><button data-v="b" aria-pressed="true">B 淡墨暈染</button><button data-v="c">C 紙色淡出</button><button data-v="b2">B 縮小版</button><button data-v="d">D 全畫面紙紋</button></div>
 <div class="bar" id="cbar"><span>底圖</span>
-<button data-c="01-0">01-0 深夜</button><button data-c="03M-1" aria-pressed="true">03M-1 中間</button><button data-c="04C-1">04C-1 明亮</button></div>
+<button data-c="01-0" aria-pressed="true">01-0 深夜</button><button data-c="03M-1">03M-1 中間</button><button data-c="04C-1">04C-1 明亮</button></div>
 <div class="bar" id="lbar"><span>台詞</span>
-<button data-l="0" aria-pressed="true">茶語</button><button data-l="1">心聲</button><button data-l="2">S</button><button data-l="3">M</button><button data-l="4">旁白</button></div>
-<div class="stage" id="stage"><img id="cg" src="03M-1.webp" alt="第一章 CG 底圖">
+<button data-l="0" aria-pressed="true">茶語</button><button data-l="1">心聲</button><button data-l="2">S</button><button data-l="3">M</button><button data-l="5">C</button><button data-l="4">旁白</button></div>
+<div class="stage" id="stage"><img id="cg" src="01-0.webp" alt="第一章 CG 底圖">
 <div class="dlg v-a" id="dlg"><div class="wash"></div><div class="grain"></div><p class="name" id="nm"></p><p class="text" id="tx"></p></div></div>
 <div class="vdesc">
 <div><b>A 水彩紙條</b>：一條米白水彩紙，邊緣不規則，邊上有顏料積起來的深一圈，字用深墨色。像在畫上貼一張手寫便條，什麼底圖都讀得清楚。</div>
-<div><b>B 淡墨暈染</b>：沒有框，一抹偏紫的靛藍水彩從下緣往上淡開，邊緣跟著紙紋走，左側帶一點說話者的顏色。字維持淡色。最接近夜景的氣氛，亮圖上也是一抹顏料，不是一塊黑。</div>
+<div><b>B 淡墨暈染（第二版）</b>：沒有框，一抹偏紫的靛藍水彩從下緣往上淡開，底比上一版暗一點；上緣多延伸一段、慢慢淡到完全透明，接進 CG 時看不到斷層。左側帶一點說話者的顏色，字是白字。</div>
+<div><b>B 縮小版</b>：同 B，暈染只到畫面下方約四分之一，淡出比較短。</div>
+<div><b>D 全畫面紙紋</b>：整張畫蓋同一層很淡的紙紋，對話框那帶只壓暗、不另外加紋，紙質感是整張畫共用的，看不出對話框的邊界。</div>
 <div><b>C 紙色淡出</b>：下緣像水彩紙留白，往上慢慢淡進畫裡，看不到邊。字用深墨色。最輕、最不擋畫，但會把畫的下緣洗白。</div>
 </div>
 </section>
@@ -101,6 +127,8 @@ textarea{width:100%;box-sizing:border-box;min-height:80px;font:inherit;backgroun
 <label class="opt"><input type="radio" name="pick" value="a"><span>A 水彩紙條</span></label>
 <label class="opt"><input type="radio" name="pick" value="b"><span>B 淡墨暈染</span></label>
 <label class="opt"><input type="radio" name="pick" value="c"><span>C 紙色淡出</span></label>
+<label class="opt"><input type="radio" name="pick" value="b2"><span>B 縮小版</span></label>
+<label class="opt"><input type="radio" name="pick" value="d"><span>D 全畫面紙紋</span></label>
 <label class="opt"><input type="radio" name="pick" value="none"><span>都不對<small>寫在備註，我再換方向</small></span></label>
 </fieldset>
 <fieldset><legend>紙紋與不規則邊緣要用哪種做法？</legend>
@@ -118,14 +146,15 @@ const L=[
  {sp:'茶語',t:'（自由跟限制……這要怎麼做成遊戲啊？）',k:'#c7b2ea',kd:'#6a4f93',th:1},
  {sp:'S',t:'欸等一下！為什麼我住手機？他們一個筆電一個平板是怎樣啦！',k:'#cf5a6c',kd:'#9a2f42'},
  {sp:'M',t:'螢幕照身高分的。……不是我分的。',k:'#8aa2ea',kd:'#34509e'},
- {sp:'',t:'她用指尖敲了三下。鎖「喀」地彈開，鐵鍊散成光點，一朵雲飄走了。',k:'#e9cf9a',kd:'#8a6a2a'}];
+ {sp:'',t:'她用指尖敲了三下。鎖「喀」地彈開，鐵鍊散成光點，一朵雲飄走了。',k:'#e9cf9a',kd:'#8a6a2a'},
+ {sp:'C',t:'嗯……很像。安安靜靜的，講話也慢慢的，跟妳打的字一樣，淡淡的。',k:'#c8d45a',kd:'#6b7a1e'}];
 const dlg=document.getElementById('dlg'),nm=document.getElementById('nm'),tx=document.getElementById('tx'),cg=document.getElementById('cg');
-let v='a',l=0;
+let v="b",l=0;
 function draw(){const d=L[l];dlg.className='dlg v-'+v+(d.th?' thought':'')+(d.sp?'':' narr');
  dlg.style.setProperty('--k',d.k);dlg.style.setProperty('--kd',d.kd);nm.textContent=d.sp||'　';tx.textContent=d.t}
 function group(id,attr,fn){const g=document.getElementById(id);g.addEventListener('click',e=>{const b=e.target.closest('button');if(!b)return;
  g.querySelectorAll('button').forEach(x=>x.setAttribute('aria-pressed',x===b));fn(b.dataset[attr]);draw()})}
-group('vbar','v',x=>v=x);group('cbar','c',x=>cg.src=x+'.webp');group('lbar','l',x=>l=+x);draw();
+group('vbar','v',x=>{v=x;document.getElementById('stage').classList.toggle('paper',x==='d')});group('cbar','c',x=>cg.src=x+'.webp');group('lbar','l',x=>l=+x);draw();
 
 const f=document.getElementById('f'),st=document.getElementById('st'),DOC='replies/dlg1',KEYS=['pick','tex'];let db=null;
 (async()=>{try{db=await claude.use('db')}catch(e){}
