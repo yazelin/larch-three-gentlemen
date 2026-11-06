@@ -88,7 +88,7 @@ shot("04-afterS", "studio", "day", """SHOT (medium shot of the other two at the 
 
 # ── 五、第一首歌（重產：新定稿＋AI 介面空間）──
 shot("05-0", "desk", "t3", """SHOT (medium-long shot, quiet, lonely): wide shot from the room's corner exactly as the EMPTY SET image (setup D). She leans far back in her desk chair, head tilted back, staring up at the dark ceiling, unable to sleep. Both hands rest in her lap below the desk edge. On the desk: the phone standing in its small wooden phone stand beside the tea glass with S small and quiet, the laptop with M, the tablet with C; all three turn their heads to the LEFT and look at HER (eyes clearly on her, not down at the desk, not up, not at the viewer). Lots of dark negative space above her.""")
-shot("05A", "desk", "t3", """SHOT (MASTER for the 3 a.m. scene; medium close-up, shallow depth of field): camera on the desk side looking at her, eye level. She sits upright, framed from mid-chest up, turned three-quarter toward the frame's RIGHT and looking down at her phone standing in its small wooden phone stand beside the tea glass in the lower-right foreground; the phone is angled so we clearly see S inside it in three-quarter view, looking back at her, headphones around his neck. Behind her, soft blur: the dark room exactly as the EMPTY SET image (bed on the right, wardrobe and door behind). The laptop and tablet are beside the camera, out of frame. Her hands below the frame. Expression: tired after midnight, quiet, a little lonely, eyes on S.""")
+shot("05A", "desk", "t3", """SHOT (MASTER for the 3 a.m. scene; medium close-up, shallow depth of field): camera on the desk side looking at her, eye level. She sits upright, framed from mid-chest up, turned three-quarter toward the frame's RIGHT and looking down at her phone standing in its small wooden phone stand beside the tea glass in the lower-right foreground; the phone is angled so we clearly see S inside it in three-quarter view, looking back at her, headphones around his neck. Behind her, soft blur: the dark room exactly as the EMPTY SET image (bed on the right, wardrobe and door behind). The laptop and the tablet are completely OUT OF FRAME (beside and behind the camera); no laptop, no tablet and no closed device lies anywhere in the picture. Only the tea glass on its coaster and the phone in its stand stand on the desk in front of her. Her hands below the frame. Expression: tired after midnight, quiet, a little lonely, eyes on S.""")
 shot("05A-1", "var", "t3", "She speaks softly toward the phone, lips just parted, eyebrows slightly raised in a small hopeful question. S has burst into an easy laugh.", base="05A")
 shot("05A-2", "var", "t3", "She has pulled her knees up onto the chair and rests her chin on her knees, arms wrapped around her shins and hidden behind her knees, eyes still on S, a little shy. S tilts his head, curious.", base="05A")
 shot("05A-3", "var", "t3", "She looks away toward the dark window on the left, eyes unfocused, describing something she sees in her mind, serious. S listens intently, no smile.", base="05A")
@@ -218,6 +218,20 @@ TEA_STUDIO = {"_": _T2, "04-1": _T1, "04A": _T1, "04B": _T1,
 # ── 分鏡表（新流程第三層，2026-11-06）──────────────────────────────
 # 露出來的手：每一隻看得到的手放哪、拿什麼；看不到的手也寫「畫面外」。差分沿用主鏡頭，只寫有變的。
 # 試玩抓到的錯（review/第一章_試玩問題.md）都是「手沒寫死」或「道具沒寫死」：少手指、少一隻手臂、手機出現在工作室。
+# 量產驗收（2026-11-07）抓到的錯，重畫時附在該格描述後面。
+FIX = {
+    "03-0": "INSIDE THE SCREENS: M and C sit upright with both hands below the screen edge, out of frame; their faces are free, nothing touches their chins or cheeks.",
+    "03C": "In the background laptop M sits upright, both hands below the screen edge and out of frame; nothing touches his chin or cheek.",
+    "04-0": "FRAMING IS AN EXTREME CLOSE-UP: only her face in profile, her lowered eyelashes, the phone in its stand and the edge of the tea glass fill the frame; the laptop and the tablet are out of frame, so no man is visible except the small S on the phone screen.",
+    "04-1": "LEFT-RIGHT (very important): she stands at the door (south) looking north toward the windows. Across the table on the WINDOW side: M on the WHITE chair at the LEFT with his laptop, C on the WOODEN chair at the RIGHT with his sketchbook. On the near (door) side: her own red chair at the LEFT is empty, S sits on the GREEN chair at the RIGHT and turns around toward her. Only M has a laptop.",
+    "04S-1": "FRAMING: a CLOSE-UP of S alone in profile from the chest up, filling the frame; she is only a soft out-of-focus shape behind him; M and C are out of frame.",
+    "04S-2": "LEFT-RIGHT (very important): the camera is on the WINDOW side looking south toward the door. On the far (door) side of the table: S on the GREEN chair at the frame's LEFT, she on the RED chair at the frame's RIGHT. In the near foreground, seen from behind: C on the wooden chair at the LEFT, M on the white chair at the RIGHT with his laptop.",
+    "04S-4b": "She sits on HER RED chair. She drinks straight from the rim of the tall glass (no straw); the thin white tea-bag string hangs over the rim with its small cream tag.",
+    "05-2": "MIRRORED because this is a reverse angle from behind the desk: the desk lamp glows at the frame's RIGHT edge, the back of the tablet is at the frame's LEFT edge, the back of the laptop lid at the RIGHT; the phone and its stand are out of frame, only their wine-red light reaches her.",
+    "06C": "She sleeps with her cheek on her folded arms on the OPEN TEXTBOOK lying on the desk, the same textbook as in the other shots of this scene.",
+    "06-1": "The phone stands in its small wooden phone stand to the RIGHT of the tea glass (left to right: laptop, tea glass, phone stand).",
+}
+
 RETIRED = {"01-2b", "01-2c"}
 NOFACE = {"04C-1", "04C-4", "06-2", "02-1", "02A", "06-F"}   # 畫面裡只有手或頭髮，不需要視線表   # 改成敲鎖小遊戲（art/ui/minigame_challenge.html），不再產圖
 HANDS = {

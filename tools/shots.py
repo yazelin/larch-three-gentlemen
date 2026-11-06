@@ -5,7 +5,7 @@
 # 產出在 art/gen/ch1/<id>.png；驗收過的才轉成 art/cg/<id>.jpg。
 import json, os, subprocess, sys, pathlib, concurrent.futures as cf
 ROOT = pathlib.Path(__file__).resolve().parent.parent
-sys.path.insert(0, str(ROOT / "art/cg")); from ch1_shots import S, GAZE, SETUP, SETUP_DESC, SEATING, TEA_STUDIO, HANDS, props
+sys.path.insert(0, str(ROOT / "art/cg")); from ch1_shots import S, GAZE, SETUP, SETUP_DESC, SEATING, TEA_STUDIO, HANDS, RETIRED, FIX, props
 OUT, PR = ROOT / "art/gen/ch1", ROOT / "art/cg/ch1"
 REF = "canon/refs/"
 SHEET = {"t": REF + "tea.jpg", "c": REF + "c.jpg", "m": REF + "m.jpg", "s": REF + "s.jpg"}
@@ -100,6 +100,7 @@ def prompt(i):
     if d["kind"] in ("desk", "insert", "room"):
         parts.append((SETUP_DESC[SETUP[i]] if i in SETUP else SETUP_DESC["A"]) + ". The EMPTY SET image is the room seen from this camera setup. Keep its camera DIRECTION and the room exactly as laid out there: the same ONE desk, every object in the same place (left to right on the desk: lamp and books, laptop, tea glass on its coaster, tablet on its stand; the phone in front of the tea glass or standing in its small wooden stand). Never add a second desk, never move or duplicate an object. The FRAMING is this shot's own (close-up, extreme close-up, low angle, over-the-shoulder): move the camera closer or lower along the same direction as the shot describes; do not widen it back to the empty set's framing.")
     parts.append(d["body"])
+    if i in FIX: parts.append(FIX[i])
     if d["kind"] == "desk": parts.append(AI)
     if d["kind"] != "free": parts.append(TIME[d["time"]])
     if i in GAZE: parts.append(gaze(i))
@@ -119,7 +120,7 @@ if __name__ == "__main__":
     for i in S: (PR / f"{i}.prompt.txt").write_text(prompt(i), encoding="utf-8")
     if sys.argv[1:2] == ["prompts"]: print(len(S), "份提示詞"); sys.exit()
     which = sys.argv[2]; ids = sys.argv[3:] or [i for i in S if (S[i]["kind"] == "var") == (which == "vars")]
-    ids = [i for i in ids if not (OUT / f"{i}.png").exists()]
+    ids = [i for i in ids if i not in RETIRED and not (OUT / f"{i}.png").exists()]
     if which == "vars":
         miss = [i for i in ids if not (ROOT / f"art/cg/{S[i]['base']}.jpg").exists()]
         if miss: print("主鏡頭還沒定稿，先略過：", miss); ids = [i for i in ids if i not in miss]
