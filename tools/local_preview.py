@@ -17,7 +17,7 @@ for part, fn in {"title": "title.html", "dialogue": "dialogue.html", "choices": 
 txt = json.dumps(p, ensure_ascii=False)
 # ponytail: 把 jsDelivr 上任何版號的網址換成本機 /files/（serve.py 把 /files/ 對到這個檔所在的資料夾，所以檔案放在 repo 根目錄算起）
 import re
-txt = re.sub(r"https://cdn\.jsdelivr\.net/gh/yazelin/larch-three-gentlemen@[0-9a-f]{7,40}/", "/files/", txt)
+txt = re.sub(r"https://cdn\.jsdelivr\.net/gh/yazelin/larch-three-gentlemen@[^/]+/", "/files/", txt)
 (ROOT / "project.local.json").write_text(txt, encoding="utf-8")
 print("寫好", ROOT / "project.local.json")
 print("啟動：python3 ~/larch-preview/serve.py", ROOT / "project.local.json", "--port 8795")

@@ -12,7 +12,12 @@ CDN = f"https://cdn.jsdelivr.net/gh/yazelin/larch-three-gentlemen@{SHA}/"
 BOARD = "board-ch1"
 NAME = "夜後明月．晨前朝霞．慕詩客"
 
-def cg_url(cid): return CDN + f"art/cg_paper/{cid}.jpg"   # 遊戲用疊了全畫面紙紋的版本（tools/paper.py）
+import assets as _assets
+_ST = {}
+def A(path):   # 素材網址：走各章的孤兒 tag（tools/assets.py），圖自動換成 WebP。repo 整包超過 jsDelivr 50 MB，不能再用 CDN + 路徑
+    if not _ST: _ST.update(_assets.tags())
+    return _assets.url(path, _ST)
+def cg_url(cid): return A(f"art/cg_paper/{cid}.jpg")   # 遊戲用疊了全畫面紙紋的版本（tools/paper.py）
 sys.path.insert(0, str(ROOT / "art/cg"))
 try:
     from ch1_shots import S as _SHOTS
@@ -64,7 +69,7 @@ def segments(md):
         if m: opts["autoAdvance"] = {"enabled": True, "mode": "delay", "delayMs": int(float(m[1]) * 1000), "uninterruptible": True}; continue
         m = re.match(r"【BGM (.+?)】", l)
         if m:
-            pend["bgmAction" if m[1] in ("停", "淡出") else "bgm"] = {"停": "stop", "淡出": "fadeOut"}.get(m[1]) or CDN + f"art/bgm/{BGM[m[1]]}.mp3"
+            pend["bgmAction" if m[1] in ("停", "淡出") else "bgm"] = {"停": "stop", "淡出": "fadeOut"}.get(m[1]) or A(f"art/bgm/{BGM[m[1]]}.mp3")
             continue
         m = re.match(r"【小遊戲 (\S+?)】", l)
         if m: close(); segs.append(("mini", m[1])); continue
@@ -112,7 +117,7 @@ def build(segs, ch="ch1"):
         for ln in lines:
             v = ln.pop("video", None)
             ln["stage"] = {"actors": [], "videos": [video_layer(v)] if v else []}
-            if v: ln["background"] = CDN + json.loads(VIDEOS.read_text())[v]["end"]   # 影片播完停在最後一格
+            if v: ln["background"] = A(json.loads(VIDEOS.read_text())[v]["end"])   # 影片播完停在最後一格
             if ln.get("background"): bg[0] = ln["background"]
         first_bg = lines[0].get("background") or bg_before
         d = {"type": "dialogue", "title": title, "speaker": lines[0]["speaker"], "text": lines[0]["text"],
@@ -140,7 +145,8 @@ def build(segs, ch="ch1"):
         elif s[0] == "mini":
             x += 400; n = base("小遊戲", x, 0)
             fn, txt = {"拉線": ("link", "親手拉出第一條線。"), "敲鎖": ("challenge", "敲三下中央的鎖報名。")}[s[1]]
-            html = (ROOT / f"art/ui/minigame_{fn}.html").read_text(encoding="utf-8").replace("{{CDN}}", CDN)
+            html = (ROOT / f"art/ui/minigame_{fn}.html").read_text(encoding="utf-8")
+            html = re.sub(r"\{\{ASSET:([^}]+)\}\}", lambda m: A(m[1]), html)
             # showTitle False：不然畫面下緣會有一條「小遊戲：拉線」的標題列，很出戲
             n["data"] = {"type": "miniGame", "title": f"小遊戲：{s[1]}", "text": txt, "miniGameHtml": html,
                          "miniGamePresentation": "fullscreen", "miniGameSkippable": True, "miniGameReadVars": [], "miniGameWriteVars": [],
@@ -227,14 +233,14 @@ def push(nodes, edges, cgs):
     s = p.setdefault("settings", {})
     s.update({"arrowKeyBack": True, "arrowKeyNext": True, "stageFit": "cover",   # 3:2 的 CG 填滿 16:9 螢幕，左右不留黑邊
               "keepActorsInFrame": False, "textSpeed": 55, "returnToTitleOnEnd": True,
-              "titleScreenEnabled": True, "titleCoverImage": CDN + "art/cg_paper/title_kv.jpg", "projectThumbnail": CDN + "art/cg_paper/title_kv.jpg",
+              "titleScreenEnabled": True, "titleCoverImage": A("art/cg_paper/title_kv.jpg"), "projectThumbnail": A("art/cg_paper/title_kv.jpg"),
               "cgGalleryEnabled": True, "cgGallerySource": "picked",
               "cgGalleryItems": [{"url": cg_url(c), "title": f"CG {c}", "locked": True} for c in cgs if c not in VARIANTS]})
     # 對話框外框透明滿版：露出 art/ui/dialogue.html 自己的夜色漸層（這個欄位 PATCH 不收，只能隨整包 PUT 寫）
     s["dialogueUi"] = {"preset": "custom", "fontSize": 22, "textColor": "#f4eee6", "fontFamily": "iansui", "panelColor": "#05070f", "panelWidth": 100,
                        "accentColor": "#e9cf9a", "borderColor": "#05070f", "panelOffset": 0, "backdropBlur": 0, "borderRadius": 0, "nameFontSize": 17,
                        "panelOpacity": 0, "panelPadding": 0, "presentation": "gradient", "speakerColor": "#e9cf9a", "textOverflow": "grow"}
-    s["titleScreen"] = {**(s.get("titleScreen") or {}), "bgm": CDN + "art/bgm/main_theme.mp3", "bgmVolume": 0.45, "bgmLoop": True}
+    s["titleScreen"] = {**(s.get("titleScreen") or {}), "bgm": A("art/bgm/main_theme.mp3"), "bgmVolume": 0.45, "bgmLoop": True}
     p["variables"] = [{"id": f"aff{k}", "name": f"aff{k}", "type": "number", "label": f"{k} 好感", "defaultValue": 0} for k in "CMS"]
     p["languages"] = p.get("languages") or [{"code": "zh-Hant", "label": "繁體中文", "voiceMode": "off"}]
     nodes[0]["data"]["start"] = True
