@@ -96,7 +96,7 @@ FIX = {
     "3-04": _REV, "3-15": _REV,
     "3-13": BG + " The tablet at the frame's right edge shows C: warm chestnut curly hair, thin gold round glasses, camel cardigan; it is NEVER the purple-haired heroine.",
     "3-16": BG + " IDENTITIES: the phone at the right shows ONLY S (long messy WINE-RED hair with one thin braid, wine-red headphones around his neck, black track jacket), the tablet at the far right shows ONLY C (warm chestnut curly hair, thin gold round glasses, camel cardigan). Never a second M, never a man in a suit and tie on the phone or tablet.",
-    "3-08": BG + " The laptop shows M (near-black hair, charcoal suit) and the tablet shows C (chestnut curly hair, glasses, camel cardigan); the purple-haired heroine is NEVER on a screen: she is only the hand in the foreground.",
+    "3-08": BG + " The laptop shows M (near-black hair, charcoal suit) and the tablet shows C (chestnut curly hair, glasses, camel cardigan); the purple-haired heroine is NEVER on a screen: she is only the hand in the foreground. M wears his charcoal suit jacket over an OPEN-collar white shirt with NO tie and his gold gear brooch; each man sits in his own glowing coloured space (deep blue, pale yellow-green, wine red), never in front of a room or window.",
     "3-05": "The laptop is CLOSED and DARK: no screen, no glow, no M anywhere in the picture. Exactly one phone (in its stand, showing S) and one tablet (showing C).",
     "3-10-1": "Her palm only touches her forehead for a moment in a light gesture; her head is NOT resting or leaning on the hand, her elbow is not on the desk.",
 }
