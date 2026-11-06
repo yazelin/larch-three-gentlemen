@@ -35,6 +35,8 @@ TIME = {
     "c25": "TIME: past 2:30 a.m. The desk lamp is the only light; deep blue shadow; only a few windows still lit outside. The tea glass has NO ice at all, water droplets running down the glass.",
     "day": "TIME: daytime in the studio (the heroine's inner workspace): bright soft white daylight from tall grid windows, plants, warm wood, floating dust in the light shafts. All four are physically together in this room (this is the only place where they can be).",
 }
+TIME.update(getattr(_m, "TIME", {}))   # 各章自己的時間點（第四章起寫在 chN_shots.py 裡）
+SETREF = getattr(_m, "SETREF", {})      # 各章新場景的空景：{格: (空景路徑, 說明)}，沒有就照 kind 走書桌／工作室
 STYLE = """STYLE: the rendering of the first reference image (TRANSPARENT WATERCOLOUR anime illustration: clearly visible cold-press paper grain everywhere, soft pigment blooms and granulation, wet-in-wet edges, gentle colour bleeding, delicate thin line art, slightly muted watercolour palette; NOT clean digital cel shading, NOT glossy, NOT airbrushed), finished to the level of a cinematic FILM STILL for an ADULT audience: realistic adult proportions, restrained acting, rich light with clear contrast, carefully rendered materials (wood grain, glass, condensation, knit, wool, brushed metal), a detailed believable background where it is in focus, a clear focal point, deliberate colour grade. Watercolour is the medium, never an excuse for vagueness. No chibi, no manga symbols, no sweat drops, no exaggerated cartoon faces.
 OBJECTS: there are NO mugs, coffee cups or teacups anywhere; the only drink in any scene is her tall iced tea glass. There is exactly ONE phone (hers) in the scene, never a second phone.
 BODY LANGUAGE: nobody rests a chin or cheek on a hand and nobody props the head on a hand or arm (unless asleep); hands do only what the shot describes, otherwise they rest naturally or stay out of frame. SOLIDITY: every person is a complete, solid body in believable space: sitting ON a chair or standing on the floor, never sunk into, merged with or cut by a table, chair or wall. FRAMING: only the people this shot names are in frame; if it says "the other two", the heroine is NOT in the picture.
@@ -57,6 +59,10 @@ def refs_for(i):
         who = d["who"] or ("tcms" if S[d["base"]]["kind"] in ("desk",) else "t" + (S[d["base"]]["who"] or "cms"))
         files = [str(base)] + [SHEET[w] for w in dict.fromkeys(who) if w in SHEET]
         names = ["the MASTER FRAME of this shot (reproduce it)"] + [NAME[w] for w in dict.fromkeys(who) if w in SHEET]
+        return files, names
+    if i in SETREF:   # 新場景（例：第四章通識課教室）：該場景的空景先送，再送入鏡的人
+        files, names = [SETREF[i][0]], [SETREF[i][1]]
+        for w in present(i): files.append(SHEET[w]); names.append(NAME[w])
         return files, names
     if k == "bed":   # 床上的戲：空景用看得到床的機位，只送她與手機道具
         files, names = [REF + f"set_desk_{SETUP.get(i, 'D')}.jpg"], ["EMPTY SET of her room (the bed with the blue plaid duvet and white pillow, the desk by the window, the wardrobe): the room and the rendering to match; this shot's camera is above the bed"]
