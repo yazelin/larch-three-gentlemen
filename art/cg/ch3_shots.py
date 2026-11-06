@@ -19,7 +19,7 @@ shot("3-02S", "desk", "c10", """SHOT (frame within a frame, close on the phone s
 
 shot("3-03", "insert", "c1", f"""SHOT (close insert of the laptop screen from her seat, as the EMPTY SET image E): on the left part of the laptop screen a simple little game window: a single big golden coin spinning in mid-air above a plain card, and a burst of golden sparkles around it as if celebrating (NO text, no letters); on the right part of the screen, in his deep blue interface space, M sits chest up and watches the coin window with one eyebrow very slightly raised. Her right hand rests on the trackpad at the lower edge.""")
 
-shot("3-04", "desk", "c1", """SHOT (MASTER for her struggle with the code; close-up, REVERSE ANGLE from the desk side, eye level): her face and shoulders; she leans toward the laptop (the laptop lid is a dark shape at the lower LEFT edge of the frame, seen from behind); the laptop's cool white light falls on her face; the warm lamp rims her hair from the frame's RIGHT. Behind her, softly out of focus: the room as in the EMPTY SET image (wardrobe on the left, the door, the bookshelf and the bed on the right). Her expression: completely baffled, mouth a little open — 'huh?'.""")
+shot("3-04", "desk", "c1", """SHOT (MASTER for her struggle with the code; close-up, REVERSE ANGLE from the desk side, eye level): her face and shoulders; she leans toward the laptop (the plain dark BACK of the laptop lid is a large dark shape at the lower RIGHT of the frame, near the lamp); the laptop's cool white light falls on her face; the warm lamp rims her hair from the frame's RIGHT. Behind her, softly out of focus: the room as in the EMPTY SET image (wardrobe on the left, the door, the bookshelf and the bed on the right). Her expression: completely baffled, mouth a little open — 'huh?'.""")
 shot("3-04-1", "var", "c1", "She squints hard at the screen, eyebrows drawn together, and gives a small defeated half-laugh — the only word she understands is 'true'.", base="3-04")
 shot("3-04-2", "var", "c2", "Much later: her eyes are wet and tired, her mouth pressed into a tight unhappy line, holding back tears of frustration; her shoulders are tense. The lamp light is the same.", base="3-04")
 
@@ -52,7 +52,7 @@ shot("3-14C", "desk", "t3", """SHOT (frame within a frame, close on the tablet a
 shot("3-14M", "desk", "t3", """SHOT (frame within a frame, close on the open laptop as the EMPTY SET image E): the pixel map fills most of the laptop screen with the tiny purple-haired pixel girl on it; in a rounded window at the right, in his deep blue interface space, M sits chest up and glances sideways toward the tablet (off the frame's right) with a faint, knowing half-smile, then back at her.""")
 shot("3-14S", "desk", "t3", """SHOT (frame within a frame, close on the phone standing in its small wooden phone stand beside the tea glass, as the EMPTY SET image C): inside the phone screen, in his wine-red interface space, S sits chest up with his headphones on, grinning wide with his fang showing, little glowing musical notes bouncing around him like a loud chiptune; behind the phone, softly out of focus, the laptop at the LEFT shows the bright pixel map, the tablet at the RIGHT shows C.""")
 
-shot("3-15", "desk", "t3", """SHOT (MASTER for the humming; close-up, REVERSE ANGLE from the desk side, eye level): her face and shoulders; she sits close to the laptop (its lid a dark shape at the lower LEFT edge, seen from behind), the colourful light of the pixel map on her face mixed with the warm lamp from the frame's RIGHT; her eyes are soft and unfocused, lips slightly parted, humming to herself without noticing. Behind her, softly out of focus: the room as in the EMPTY SET image (wardrobe on the left, the door, the bookshelf and the bed on the right), very dark.""")
+shot("3-15", "desk", "t3", """SHOT (MASTER for the humming; close-up, REVERSE ANGLE from the desk side, eye level): her face and shoulders; she sits close to the laptop (the plain dark BACK of its lid is a large dark shape at the lower RIGHT of the frame, near the lamp), the colourful light of the pixel map on her face mixed with the warm lamp from the frame's RIGHT; her eyes are soft and unfocused, lips slightly parted, humming to herself without noticing. Behind her, softly out of focus: the room as in the EMPTY SET image (wardrobe on the left, the door, the bookshelf and the bed on the right), very dark.""")
 shot("3-15-1", "var", "t3", "She has stopped humming and leans closer to the laptop, pretending to study the map very hard, eyes fixed on the screen; her face stays calm but the tips of her ears have turned red.", base="3-15")
 shot("3-15-2", "var", "t3", "She breaks into a small, tired, real smile, eyes on the screen — 'I think I can actually do this'.", base="3-15")
 
@@ -80,7 +80,7 @@ GAZE = {
  "3-16": {"M": H, "C": "HER (on the tablet if its edge shows, lit)", "S": "HER (on the phone if its edge shows, lit)"},
 }
 NOFACE = {"3-08"}
-GAZE["3-08"] = {"S": "HER (on the phone screen above the stand base, out of focus, lit)"}
+GAZE["3-08"] = {"S": "HER (on the phone screen above the stand base, out of focus, lit)", "M": "HER (on the laptop screen in the background, out of focus, lit)", "C": "HER (on the tablet screen in the background, out of focus, lit)"}
 CHIN_OK = {}
 
 SETUP = {"3-01A": "A", "3-05": "A", "3-10": "A", "3-12": "A",
@@ -89,11 +89,13 @@ SETUP = {"3-01A": "A", "3-05": "A", "3-10": "A", "3-12": "A",
          "3-02M": "E", "3-03": "E", "3-06": "E", "3-09": "E", "3-13": "E", "3-14M": "E", "3-16": "E",
          "3-02C": "F", "3-07": "F", "3-11": "F", "3-14C": "F"}
 TEA_STUDIO = {"_": _T1}
-_REV = "The camera stands BEHIND the devices on the desk, so it sees only the plain dark BACK of the laptop lid (and the back of the tablet case and the phone if they enter the frame): NO screen and NO man is visible to the camera. MIRRORED because this is a reverse angle: the desk lamp glows at the frame's RIGHT edge."
-BG = "BACKGROUND SCREENS (very important): every device screen that shows in the frame, even out of focus, is LIT and shows its own man exactly as his sheet: the laptop ONLY M, the tablet ONLY C, the phone ONLY S, each in his own coloured interface space, chest up. The heroine herself is NEVER on any screen; no screen is ever dark or blank."
+_REV = "The camera stands BEHIND the devices on the desk, so it sees only the plain dark BACKS of the devices: NO screen and NO man is visible to the camera. MIRRORED because this is a reverse angle (seen from her side the order is lamp, laptop, tea, phone, tablet from left to right; from here it is reversed): from the frame's LEFT to RIGHT: the back of the TABLET case at the far LEFT, then the back of the phone in its wooden stand, then the tea glass, then the back of the LAPTOP lid, and the desk lamp glowing at the far RIGHT."
+BG = "BACKGROUND SCREENS (very important): every device screen that shows in the frame, even out of focus, is LIT and shows its own man exactly as his sheet: the laptop ONLY M, the tablet ONLY C, the phone ONLY S, each in his own coloured interface space, chest up. The heroine herself is NEVER on any screen; no screen is ever dark or blank. HANDS INSIDE THE SCREENS: unless this shot gives a man a hand action, he keeps BOTH hands below the screen edge, out of frame; no hand of any man touches or comes near his chin, cheek or jaw (never rest a head on a hand)."
 FIX = {
     **{k: BG for k in ["3-02C","3-02M","3-02S","3-03","3-06","3-07","3-09","3-11","3-13","3-14C","3-14M","3-14S","3-16","3-08","3-01A","3-10","3-12"]},
     "3-04": _REV, "3-15": _REV,
+    "3-13": BG + " The tablet at the frame's right edge shows C: warm chestnut curly hair, thin gold round glasses, camel cardigan; it is NEVER the purple-haired heroine.",
+    "3-08": BG + " The laptop shows M (near-black hair, charcoal suit) and the tablet shows C (chestnut curly hair, glasses, camel cardigan); the purple-haired heroine is NEVER on a screen: she is only the hand in the foreground.",
     "3-05": "The laptop is CLOSED and DARK: no screen, no glow, no M anywhere in the picture. Exactly one phone (in its stand, showing S) and one tablet (showing C).",
     "3-10-1": "Her palm only touches her forehead for a moment in a light gesture; her head is NOT resting or leaning on the hand, her elbow is not on the desk.",
 }
