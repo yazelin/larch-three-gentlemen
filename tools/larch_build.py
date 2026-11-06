@@ -74,11 +74,11 @@ def segments(md):
         if m:
             pend["bgmAction" if m[1] in ("停", "淡出") else "bgm"] = {"停": "stop", "淡出": "fadeOut"}.get(m[1]) or A(f"art/bgm/{BGM[m[1]]}.mp3")
             continue
-        m = re.match(r"【小遊戲 ([^】（]+?)(?:（[^】]*）)?】", l)
+        m = re.match(r"【小遊戲 ([^】（]+?)(?:（([^】）]*)）[^】]*)?】", l)
         if m:
             if m[1] not in MINI or not (ROOT / f"art/ui/minigame_{MINI[m[1]][0]}.html").exists():   # ponytail: 小遊戲網頁還沒做好就先略過，劇情照走
                 print("  小遊戲還沒接上，先略過：", m[1]); continue
-            close(); segs.append(("mini", m[1])); continue
+            close(); segs.append(("mini", m[1], {"第一次": "bug", "第二次": "fixed"}.get(m[2] or "", "fixed"), [])); mode = None; continue
         m = re.match(r"【音效 (\w+)】", l)
         if m: pend["sfxUrl"] = f"/sfx/{m[1]}.mp3"; continue
         m = re.match(r"【CG ([^｜\s】]+)(?:｜運鏡 (\S+?))?(?:｜.*)?】", l)
@@ -92,13 +92,15 @@ def segments(md):
             continue
         m = re.match(r"【背景 (\w+)", l)
         if m: pend_bg = cg_url("01-5") if m[1] == "studio" else last_desk; continue
-        m = re.match(r"₩(.+?)（([CMS])＋1）", l)
+        m = re.match(r"₩(.+?)（([CMS])＋1）", l) or re.match(r"₩(.+)()", l)   # 沒寫（X＋1）的是純選擇：分支照出現順序對應，不加好感
         if m:
             close()
-            if segs and segs[-1][0] == "choice": segs[-1][1].append((m[1].strip(), m[2]))
-            else: segs.append(("choice", [(m[1].strip(), m[2])]))
+            if segs and segs[-1][0] == "mini" and MINI[segs[-1][1]][4]: segs[-1][3].append(m[2]); continue   # 分歧小遊戲後面的 ₩ 只是說明
+            if segs and segs[-1][0] == "choice": segs[-1][1].append((m[1].strip(), m[2] or None))
+            else: segs.append(("choice", [(m[1].strip(), m[2] or None)]))
             continue
         if re.fullmatch(r"（[CMS]）", l): close(); mode = l[1]; continue
+        if re.fullmatch(r"（[^）完]{1,10}）", l) and l != "（共通）": close(); mode = l[1:-1]; continue   # 純選擇的分支標籤
         if l == "（共通）": close(); mode = None; continue
         if re.fullmatch(r"（第.+完）", l): add("旁白", l, "描述動作"); continue
         if l.startswith("〔"): add("旁白", l.strip("〔〕") or "……", "描述動作"); continue
@@ -110,7 +112,14 @@ def segments(md):
     close()
     return segs
 
-MINI = {"拉線": ("link", "親手拉出第一條線。"), "敲鎖": ("challenge", "敲三下中央的鎖報名。")}   # 劇本裡的小遊戲名 → art/ui/minigame_<檔>.html
+# 劇本裡的小遊戲名 → (art/ui/minigame_<檔>.html, 卡片說明, 讀的變數, 寫的變數, 分歧變數)
+# 分歧變數不是 None 的：小遊戲卡直接接條件邊到後面的（C）（M）（S）分支，劇本裡跟在後面的 ₩ 只是分支的說明，不再做成選擇卡，也不再加好感（HTML 自己加）
+AFF = ["affC", "affM", "affS"]
+MINI = {"拉線": ("link", "親手拉出第一條線。", [], [], None), "敲鎖": ("challenge", "敲三下中央的鎖報名。", [], [], None),
+        "打了又刪": ("message", "打了又刪，留下一句送出去。", AFF, AFF + ["ch2Msg"], "ch2Msg"),
+        "猜硬幣": ("coin", "猜正面還是反面。", [], [], None), "塗地圖": ("paint", "把最後幾格塗完。", [], [], None),
+        "找不同": ("diff", "找出地圖跑掉的地方。", [], ["ch4DiffSec"], None), "最後一個音": ("note", "替曲子選最後一個音。", ["affS"], ["affS", "ch5Note"], None),
+        "擦紅茶": ("wipe", "把打翻的紅茶擦乾。", [], [], None), "好感三角": ("triangle", "這個夢，想先跟誰講。", AFF, ["ch7Route"], "ch7Route")}
 
 def segs_first_bg(segs):
     for s in segs:
@@ -149,7 +158,7 @@ def build(segs, ch=None):
         e = {"id": f"e-{a}-{b}", "source": a, "target": b}
         if h: e["sourceHandle"] = h
         edges.append(e)
-    x, prev, tails, choice, keys = 0, [], [], None, []
+    x, prev, tails, choice, keys, cond = 0, [], [], None, [], None
     for s in segs:
         bg_before = bg[0]
         if s[0] == "card":
@@ -159,28 +168,38 @@ def build(segs, ch=None):
             if tails: prev = [nid]; tails = []
         elif s[0] == "mini":
             x += 400; n = base("小遊戲", x, 0)
-            fn, txt = MINI[s[1]]
-            html = (ROOT / f"art/ui/minigame_{fn}.html").read_text(encoding="utf-8")
+            fn, txt, rv, wv, bv = MINI[s[1]]
+            html = (ROOT / f"art/ui/minigame_{fn}.html").read_text(encoding="utf-8").replace("{{MODE}}", s[2])
             html = re.sub(r"\{\{ASSET:([^}]+)\}\}", lambda m: A(m[1]), html)
             # showTitle False：不然畫面下緣會有一條「小遊戲：拉線」的標題列，很出戲
             n["data"] = {"type": "miniGame", "title": f"小遊戲：{s[1]}", "text": txt, "miniGameHtml": html,
-                         "miniGamePresentation": "fullscreen", "miniGameSkippable": True, "miniGameReadVars": [], "miniGameWriteVars": [],
+                         "miniGamePresentation": "fullscreen", "miniGameSkippable": not bv, "miniGameReadVars": rv, "miniGameWriteVars": wv,
                          "miniGameAutoContinue": True, "miniGameFrame": {"showButton": False, "showTitle": False}, "background": bg[0], "voiceMode": "off", "stage": {"actors": []}}
             nodes.append(n)
             for p_ in prev: link(p_, n["id"])
             prev = [n["id"]]
+            if bv: choice, keys, prev, bx, cond = n["id"], list(s[3]), [], x, bv   # 後面的分支接條件邊
         elif s[0] == "choice":
-            x += 400; n = base("先問誰", x, 0)
-            n["data"] = {"type": "choice", "title": "先問誰", "text": "先問誰的意見？", "choices": [t for t, _ in s[1]],
+            x += 400; plain = all(k is None for _, k in s[1]); ttl = "怎麼回" if plain else "先問誰"
+            n = base(ttl, x, 0)
+            n["data"] = {"type": "choice", "title": ttl, "text": "怎麼回？" if plain else "先問誰的意見？", "choices": [t for t, _ in s[1]],
                          "choiceMode": "branch", "choicePlacement": "center", "choiceConditions": [None] * len(s[1]),
                          "choiceLinks": [None] * len(s[1]), "background": bg[0], "stage": {"actors": []}, "characterLayers": []}
             nodes.append(n)
             for p in prev: link(p, n["id"])
-            choice, keys, prev, bx = n["id"], [k for _, k in s[1]], [], x
+            choice, keys, prev, bx, cond = n["id"], [k for _, k in s[1]], [], x, None
         elif s[0] == "branch":
-            k, lines = s[1], list(s[2]); i = keys.index(k); y = (i - 1) * 300
+            k, lines = s[1], list(s[2])
+            if k not in keys: keys[keys.index(None)] = k   # 純選擇：分支標籤照出現順序填進空位
+            i = keys.index(k); y = (i - 1) * 300
             bid = dialogue(f"選 {k}", lines, s[3], bx + 400, y, s[4])   # 分支最後一句留在對話卡：以前搬進好感卡當文字，顯示成黑底字
+            if cond:   # 分歧小遊戲：同一個出口多條條件邊（整張白板 PUT 保得住，POST /nodes 會丟掉條件）
+                edges.append({"id": f"e-{choice}-{bid}", "source": choice, "target": bid, "sourceHandle": "right",
+                              "data": {"condition": {"kind": "variable", "variable": cond, "op": "eq", "value": k}}})
+                if i == 0: edges.append({"id": f"e-{choice}-{bid}-default", "source": choice, "target": bid, "sourceHandle": "right"})   # 保險：變數沒寫回時走第一條，不會卡死
+                prev.append(bid); x = bx + 400; continue
             link(choice, bid, f"choice-{i}")
+            if k not in "CMS": prev.append(bid); x = bx + 400; continue   # 純選擇不加好感
             sv = base(f"{k} 好感 +1", bx + 800, y)
             sv["data"] = {"type": "setVariable", "title": f"{k} 好感 +1", "text": "",
                           "variableOps": [{"kind": "add", "value": 1, "variable": f"aff{k}"}],
