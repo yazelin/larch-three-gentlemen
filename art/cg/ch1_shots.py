@@ -128,7 +128,7 @@ GAZE = {
  "03-T": {"C": "toward the lower centre (her)", "M": "toward the lower centre (her)", "S": "toward the lower centre (her)"},
  "03-0": {"she": "the streaks of light, startled", "M": H, "C": H, "S": "up at her face"},
  "03S": {"S": H + ", eyes open and bright, leaning close to the glass", "M": "sideways and down at the monitor beside him, clearly reading it", "C": H, "she": "out of frame"},
- "03A": {"she": "the three devices", "M": H, "C": H, "S": H},
+ "03A": {"she": "the three devices", "M": "HER at the lower LEFT of the frame, very close to the camera: his head turned to the left, eyes down-left", "C": "HER at the lower LEFT of the frame: head turned to the left, eyes down-left", "S": "HER at the lower LEFT of the frame: leaning to the left, eyes down-left"},
  "03C": {"C": H, "M": "C on the tablet (head turned toward the tablet beside him, eyes level, NOT up)", "S": "C on the tablet, curious"},
  "03M": {"M": "just past the camera, slightly to the left, eyes level (she sits right beside the camera)", "C": "M on the laptop, smiling a little", "S": "M on the laptop"},
  "04-0": {"she": "her phone, absorbed", "M": H + " (quietly watching her read)", "C": H, "S": H},
@@ -284,8 +284,8 @@ HANDS.update({
 
 # 手機在哪：人形介面出現（03S）之前，手機在她手上或平放在桌上；之後詩住在手機裡，手機立著靠在紅茶杯右邊
 PHONE = {
- "01-0": "手機在她手上亮著；筆電與平板的螢幕關著", "01-1": "手機平放在紅茶後面、剛亮起通知", "01-2": "手機在她手上",
- "01A": "手機在她手上", "02A": "手機平放在桌上", "02B": "手機貼在她胸口", "02-1": "手機在桌上、她的指尖按著螢幕",
+ "01-0": "手機在她手上亮著；筆電與平板的螢幕關著", "01-1": "手機平放在紅茶後面、剛亮起通知；筆電與平板的螢幕關著、全黑", "01-2": "手機在她手上；筆電與平板的螢幕關著、全黑",
+ "01A": "手機在她手上；筆電與平板的螢幕關著、全黑", "02A": "手機平放在桌上；筆電與平板的螢幕關著、全黑", "02B": "手機貼在她胸口；筆電與平板的螢幕關著、全黑", "02-1": "手機在桌上、她的指尖按著螢幕；筆電與平板的螢幕關著、全黑",
  "01-3": "手機平放在桌上", "03-0": "手機在她手上、射出三道光", "06-F": "（回憶）手機平放在桌上",
  "06-4": "手機暗著平放在她手邊；三台裝置的螢幕都暗了"
 }
