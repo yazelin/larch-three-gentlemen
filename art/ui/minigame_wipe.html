@@ -1,0 +1,113 @@
+<!doctype html><html lang="zh-Hant"><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<style>
+@import url("https://fonts.googleapis.com/css2?family=Iansui&display=swap");
+/* 水彩版共用底（同 minigame_link／minigame_affinity）：夜裡被檯燈照著的水彩紙，不規則邊與暈染用下面 SVG 的濾鏡。 */
+:root { color-scheme: light; --ink:#3b2f2c; --dim:#6e5a52; --gold:#b8862f; --paper:#f3ecdf;
+  --t:#b59ad8; --m:#7f97df; --c:#a9b844; --s:#c35366; }
+* { box-sizing: border-box; }
+html, body { margin: 0; height: 100%; overflow: hidden; touch-action: none; user-select: none; -webkit-user-select: none; -webkit-tap-highlight-color: transparent; }
+body { color: var(--ink); font-family: "Iansui", "LXGW WenKai TC", "Kaiti TC", "BiauKai", serif;
+  background: radial-gradient(70vmax 45vmax at 18% 6%, rgba(255,214,150,.55), transparent 60%),
+              radial-gradient(120vmax 80vmax at 50% 55%, #e9dfcc, #cbbda6 70%, #9c8f80); }
+body::after { content: ""; position: fixed; inset: 0; pointer-events: none; mix-blend-mode: multiply; opacity: .5;
+  background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='320' height='320'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='3'/%3E%3CfeColorMatrix values='0 0 0 0 .45 0 0 0 0 .4 0 0 0 0 .35 0 0 0 .45 0'/%3E%3C/filter%3E%3Crect width='320' height='320' filter='url(%23n)'/%3E%3C/svg%3E"); }
+body::before { content: ""; position: fixed; inset: 0; pointer-events: none; background: radial-gradient(120vmax 80vmax at 50% 45%, transparent 55%, rgba(40,30,40,.42)); }
+.say { text-align: center; padding: 0 6vw; }
+.say small { display: block; font-size: clamp(13px, 1.1vw, 16px); letter-spacing: .4em; margin-bottom: 8px; font-weight: 700; }
+.say p { margin: 0; font-size: clamp(18px, 1.8vw, 26px); letter-spacing: .1em; line-height: 1.7; }
+.hint { margin: 0; color: var(--dim); font-size: clamp(14px, 1.2vw, 18px); letter-spacing: .14em; text-align: center; min-height: 1.8em; transition: opacity .6s; }
+.btn { font: inherit; font-size: clamp(16px, 1.3vw, 19px); letter-spacing: .3em; padding: 9px 24px 9px 30px; color: var(--ink); background: none; border: 0; cursor: pointer;
+  position: relative; isolation: isolate; font-weight: 700; transition: opacity .5s, transform .2s; }
+.btn::before { content: ""; position: absolute; inset: 0; z-index: -1; background: rgba(233,207,154,.92); border-radius: 40%; filter: url(#ragged); }
+.btn:active { transform: scale(.96); }
+.btn[disabled] { opacity: .35; cursor: default; }
+.btn:focus-visible { outline: 2px solid var(--ink); outline-offset: 4px; }
+.paper { position: relative; isolation: isolate; }
+.paper::before { content: ""; position: absolute; inset: 0; z-index: -1; border-radius: 8px; filter: url(#ragged); background: var(--paper);
+  box-shadow: inset 0 0 18px rgba(150,118,92,.45), inset 0 0 3px rgba(120,92,70,.55), 0 14px 26px -14px rgba(60,40,30,.55); }
+.hide { opacity: 0; pointer-events: none; }
+@media (prefers-reduced-motion: reduce) { * { animation-duration: .01s !important; transition-duration: .01s !important; } }
+</style>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true"><defs>
+  <filter id="ragged" x="-10%" y="-20%" width="120%" height="140%"><feTurbulence type="fractalNoise" baseFrequency=".03 .07" numOctaves="3" seed="7"/><feDisplacementMap in="SourceGraphic" scale="9"/></filter>
+  <filter id="bleed" x="-60%" y="-60%" width="220%" height="220%"><feTurbulence type="fractalNoise" baseFrequency=".05" numOctaves="3" seed="2"/><feDisplacementMap in="SourceGraphic" scale="22"/><feGaussianBlur stdDeviation="2.5"/></filter>
+  <filter id="ink"><feTurbulence type="fractalNoise" baseFrequency=".05" numOctaves="2" seed="4"/><feDisplacementMap in="SourceGraphic" scale="4"/><feGaussianBlur stdDeviation=".4"/></filter>
+</defs></svg>
+<!-- 第六章〈夜班〉打翻冰紅茶：紅茶漫過桌面跟攤開的筆記本最後一頁（抄著那首茶詩）。
+     玩家拖曳慢慢擦，擦掉九成就結束；筆記本上的字已經暈開，擦不回來，只有第一個字「茶」還看得清楚。
+     result：wiped，不寫變數。 -->
+<style>
+.wrap { position: fixed; inset: 0; display: grid; grid-template-rows: auto 1fr auto; justify-items: center; align-items: center; padding: 5vh 4vw 4vh; gap: 2vh; }
+canvas { width: min(94vw, 1000px); height: auto; max-height: 66vh; aspect-ratio: 3 / 2; border-radius: 6px; touch-action: none; cursor: grab;
+  box-shadow: 0 18px 40px -18px rgba(40,25,20,.6); }
+.bar { width: min(60vw, 320px); height: 6px; border-radius: 6px; background: rgba(59,47,44,.15); overflow: hidden; }
+.bar i { display: block; height: 100%; width: 0; background: var(--gold); transition: width .3s; }
+</style>
+<div class="wrap">
+  <div class="say"><small>凌晨兩點</small><p id="say">……啊。</p></div>
+  <canvas id="cv" width="1200" height="800" aria-label="打翻的紅茶漫過桌面跟筆記本，拖曳把它擦掉"></canvas>
+  <div style="display:grid;justify-items:center;gap:10px"><div class="bar" aria-hidden="true"><i id="bar"></i></div><p class="hint" id="hint">拖曳，慢慢擦</p></div>
+</div>
+
+<script>
+(function () {
+// Larch 介面：送 larch:ready → 收 larch:init（變數）→ larch:set 寫回 → larch:complete。直接開檔（不在 Larch 裡）也能玩，用網址參數或示範值。
+var LARCH = { v: {}, on: false,
+  set: function (n, v) { parent.postMessage({ type: 'larch:set', name: n, value: v }, '*'); },
+  done: function (r, p) { parent.postMessage({ type: 'larch:complete', result: r, payload: p || {} }, '*'); window.__done = { result: r, payload: p || {} }; },
+  num: function (k, d) { var q = new URLSearchParams(location.search).get(k); var x = q != null ? q : LARCH.v[k]; x = +x; return isFinite(x) ? x : (d || 0); },
+  param: function (k, d) { var q = new URLSearchParams(location.search).get(k); return q != null ? q : (LARCH.v[k] != null ? LARCH.v[k] : d); } };
+addEventListener('message', function (e) { var d = e.data || {}; if (d.type === 'larch:init') { LARCH.v = d.variables || {}; boot(); } });
+parent.postMessage({ type: 'larch:ready' }, '*');
+setTimeout(boot, parent === window ? 150 : 1500);
+function boot() { if (LARCH.on) return; LARCH.on = true; start(); }
+var cv = document.getElementById('cv'), g = cv.getContext('2d'), W = 1200, H = 800;
+var tea = document.createElement('canvas'); tea.width = W; tea.height = H; var tg = tea.getContext('2d');
+var base = document.createElement('canvas'); base.width = W; base.height = H; var bg = base.getContext('2d');
+var total = 0, done = false, last = null, still = matchMedia('(prefers-reduced-motion: reduce)').matches;
+function $(id) { return document.getElementById(id); }
+function rnd(i) { var n = Math.sin(i * 91.7) * 43758.5; return n - Math.floor(n); }
+function desk() {
+  var gr = bg.createLinearGradient(0, 0, 0, H); gr.addColorStop(0, '#8a5f3e'); gr.addColorStop(1, '#6b4429'); bg.fillStyle = gr; bg.fillRect(0, 0, W, H);
+  for (var i = 0; i < 70; i++) { bg.strokeStyle = 'rgba(40,22,10,' + (.05 + rnd(i) * .08) + ')'; bg.lineWidth = 1 + rnd(i + 3) * 3; var y = rnd(i + 9) * H;
+    bg.beginPath(); bg.moveTo(0, y); bg.bezierCurveTo(W * .3, y + 14 * Math.sin(i), W * .7, y - 12, W, y + 6); bg.stroke(); }
+  var lamp = bg.createRadialGradient(W * .2, -60, 30, W * .2, -60, 900); lamp.addColorStop(0, 'rgba(255,214,150,.45)'); lamp.addColorStop(1, 'rgba(255,214,150,0)'); bg.fillStyle = lamp; bg.fillRect(0, 0, W, H);
+  // 攤開的筆記本，最後一頁抄著那首詩；字已經被紅茶泡開
+  bg.save(); bg.translate(W * .52, H * .5); bg.rotate(-.06);
+  bg.fillStyle = 'rgba(0,0,0,.25)'; bg.fillRect(-372, -232, 760, 480);
+  bg.fillStyle = '#f3ecdf'; bg.fillRect(-380, -240, 760, 480); bg.fillStyle = 'rgba(120,90,60,.18)'; bg.fillRect(-4, -240, 8, 480);
+  bg.strokeStyle = 'rgba(127,151,223,.35)'; bg.lineWidth = 1.5; for (var l = -190; l < 230; l += 38) { bg.beginPath(); bg.moveTo(-360, l); bg.lineTo(360, l); bg.stroke(); }
+  var poem = ['茶', '香葉，嫩芽。', '慕詩客，愛僧家。', '碾雕白玉，羅織紅紗。', '銚煎黃蕊色，碗轉麴塵花。', '夜後邀陪明月，晨前命對朝霞。', '洗盡古今人不倦，將知醉後豈堪誇。'];
+  bg.fillStyle = '#3b2f2c'; bg.textAlign = 'center';
+  poem.forEach(function (s, i) { var y = -176 + i * 60, x = 190; bg.font = (i === 0 ? 'bold 46px' : '23px') + ' Iansui, "Kaiti TC", serif';
+    if (i === 0) { bg.globalAlpha = .9; bg.filter = 'none'; bg.fillText(s, x, y + 10); }
+    else { bg.globalAlpha = .55; bg.filter = 'blur(' + (2.5 + i * .5) + 'px)'; bg.fillText(s, x, y + 10); bg.globalAlpha = .25; bg.filter = 'blur(9px)'; bg.fillStyle = '#6b4a2b'; bg.fillText(s, x + 6, y + 16); bg.fillStyle = '#3b2f2c'; } });
+  bg.filter = 'none'; bg.globalAlpha = 1;
+  bg.fillStyle = 'rgba(160,110,50,.28)'; bg.beginPath(); bg.ellipse(140, 40, 260, 170, .2, 0, 7); bg.fill();   // 吸進紙裡的茶漬，擦不掉
+  bg.restore();
+}
+function spill() { // 不透明畫進茶層、顯示時再半透明，避免重疊處變深；形狀用隨機走的小圓堆出一灘水
+  tg.fillStyle = '#8a4a18'; tg.filter = 'blur(5px)'; var x = W * .6, y = H * .5;
+  for (var i = 0; i < 520; i++) { x += (rnd(i) - .5) * 46; y += (rnd(i + 999) - .5) * 30; x = Math.max(W * .28, Math.min(W * .9, x)); y = Math.max(H * .2, Math.min(H * .85, y));
+    tg.beginPath(); tg.arc(x, y, 40 + rnd(i + 77) * 66, 0, 7); tg.fill(); if (i % 90 === 89) { x = W * (.45 + rnd(i) * .3); y = H * (.35 + rnd(i + 5) * .3); } }
+  for (var j = 0; j < 14; j++) { tg.beginPath(); tg.arc(W * (.3 + rnd(j + 300) * .6), H * (.2 + rnd(j + 400) * .65), 6 + rnd(j + 500) * 14, 0, 7); tg.fill(); }   // 濺出去的小點
+  tg.filter = 'none'; tg.globalCompositeOperation = 'source-atop'; var sh = tg.createRadialGradient(W * .45, H * .35, 20, W * .55, H * .5, 640); sh.addColorStop(0, '#c07a3a'); sh.addColorStop(1, '#6a3410'); tg.fillStyle = sh; tg.fillRect(0, 0, W, H);
+  tg.globalCompositeOperation = 'source-over'; total = count(); }
+function count() { var d = tg.getImageData(0, 0, W, H).data, n = 0; for (var i = 3; i < d.length; i += 64) if (d[i] > 40) n++; return n; }
+function draw() { g.drawImage(base, 0, 0); g.globalAlpha = .74; g.drawImage(tea, 0, 0); g.globalAlpha = 1; }
+function pos(e) { var r = cv.getBoundingClientRect(); return [(e.clientX - r.left) / r.width * W, (e.clientY - r.top) / r.height * H]; }
+function rub(p) { tg.globalCompositeOperation = 'destination-out'; tg.lineCap = 'round'; tg.lineWidth = 110; tg.strokeStyle = 'rgba(0,0,0,.55)';
+  tg.beginPath(); tg.moveTo(last ? last[0] : p[0], last ? last[1] : p[1]); tg.lineTo(p[0] + .1, p[1]); tg.stroke(); tg.globalCompositeOperation = 'source-over'; last = p; draw(); }
+var checkT = 0;
+function check() { var left = count() / total, k = Math.min(1, (1 - left) / .9); $('bar').style.width = (k * 100) + '%';
+  if (k > .35 && k < .9) $('hint').textContent = '字擦不回來了。'; if (k >= 1 && !done) { done = true; tg.clearRect(0, 0, W, H); draw(); $('hint').textContent = '只剩第一個字還看得清楚。'; $('say').textContent = '……只是一杯茶而已啊。';
+    setTimeout(function () { LARCH.done('wiped', {}); }, 2600); } }
+function start() { desk(); spill(); draw(); var down = false;
+  cv.addEventListener('pointerdown', function (e) { if (done) return; down = true; last = null; cv.setPointerCapture(e.pointerId); rub(pos(e)); });
+  cv.addEventListener('pointermove', function (e) { if (!down || done) return; rub(pos(e)); if (performance.now() - checkT > 160) { checkT = performance.now(); check(); } });
+  cv.addEventListener('pointerup', function () { down = false; last = null; check(); });
+  cv.addEventListener('keydown', function (e) { if (e.key === 'Enter' && !done) { tg.clearRect(0, 0, W, H); check(); } }); cv.tabIndex = 0; }
+
+})();
+</script>
+</html>

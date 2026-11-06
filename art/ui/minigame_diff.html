@@ -1,0 +1,99 @@
+<!doctype html><html lang="zh-Hant"><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<style>
+@import url("https://fonts.googleapis.com/css2?family=Iansui&display=swap");
+/* 水彩版共用底（同 minigame_link／minigame_affinity）：夜裡被檯燈照著的水彩紙，不規則邊與暈染用下面 SVG 的濾鏡。 */
+:root { color-scheme: light; --ink:#3b2f2c; --dim:#6e5a52; --gold:#b8862f; --paper:#f3ecdf;
+  --t:#b59ad8; --m:#7f97df; --c:#a9b844; --s:#c35366; }
+* { box-sizing: border-box; }
+html, body { margin: 0; height: 100%; overflow: hidden; touch-action: none; user-select: none; -webkit-user-select: none; -webkit-tap-highlight-color: transparent; }
+body { color: var(--ink); font-family: "Iansui", "LXGW WenKai TC", "Kaiti TC", "BiauKai", serif;
+  background: radial-gradient(70vmax 45vmax at 18% 6%, rgba(255,214,150,.55), transparent 60%),
+              radial-gradient(120vmax 80vmax at 50% 55%, #e9dfcc, #cbbda6 70%, #9c8f80); }
+body::after { content: ""; position: fixed; inset: 0; pointer-events: none; mix-blend-mode: multiply; opacity: .5;
+  background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='320' height='320'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='3'/%3E%3CfeColorMatrix values='0 0 0 0 .45 0 0 0 0 .4 0 0 0 0 .35 0 0 0 .45 0'/%3E%3C/filter%3E%3Crect width='320' height='320' filter='url(%23n)'/%3E%3C/svg%3E"); }
+body::before { content: ""; position: fixed; inset: 0; pointer-events: none; background: radial-gradient(120vmax 80vmax at 50% 45%, transparent 55%, rgba(40,30,40,.42)); }
+.say { text-align: center; padding: 0 6vw; }
+.say small { display: block; font-size: clamp(13px, 1.1vw, 16px); letter-spacing: .4em; margin-bottom: 8px; font-weight: 700; }
+.say p { margin: 0; font-size: clamp(18px, 1.8vw, 26px); letter-spacing: .1em; line-height: 1.7; }
+.hint { margin: 0; color: var(--dim); font-size: clamp(14px, 1.2vw, 18px); letter-spacing: .14em; text-align: center; min-height: 1.8em; transition: opacity .6s; }
+.btn { font: inherit; font-size: clamp(16px, 1.3vw, 19px); letter-spacing: .3em; padding: 9px 24px 9px 30px; color: var(--ink); background: none; border: 0; cursor: pointer;
+  position: relative; isolation: isolate; font-weight: 700; transition: opacity .5s, transform .2s; }
+.btn::before { content: ""; position: absolute; inset: 0; z-index: -1; background: rgba(233,207,154,.92); border-radius: 40%; filter: url(#ragged); }
+.btn:active { transform: scale(.96); }
+.btn[disabled] { opacity: .35; cursor: default; }
+.btn:focus-visible { outline: 2px solid var(--ink); outline-offset: 4px; }
+.paper { position: relative; isolation: isolate; }
+.paper::before { content: ""; position: absolute; inset: 0; z-index: -1; border-radius: 8px; filter: url(#ragged); background: var(--paper);
+  box-shadow: inset 0 0 18px rgba(150,118,92,.45), inset 0 0 3px rgba(120,92,70,.55), 0 14px 26px -14px rgba(60,40,30,.55); }
+.hide { opacity: 0; pointer-events: none; }
+@media (prefers-reduced-motion: reduce) { * { animation-duration: .01s !important; transition-duration: .01s !important; } }
+</style>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true"><defs>
+  <filter id="ragged" x="-10%" y="-20%" width="120%" height="140%"><feTurbulence type="fractalNoise" baseFrequency=".03 .07" numOctaves="3" seed="7"/><feDisplacementMap in="SourceGraphic" scale="9"/></filter>
+  <filter id="bleed" x="-60%" y="-60%" width="220%" height="220%"><feTurbulence type="fractalNoise" baseFrequency=".05" numOctaves="3" seed="2"/><feDisplacementMap in="SourceGraphic" scale="22"/><feGaussianBlur stdDeviation="2.5"/></filter>
+  <filter id="ink"><feTurbulence type="fractalNoise" baseFrequency=".05" numOctaves="2" seed="4"/><feDisplacementMap in="SourceGraphic" scale="4"/><feGaussianBlur stdDeviation=".4"/></filter>
+</defs></svg>
+<!-- 第四章〈找不同〉：怠惰之國的地圖，左邊是最早的原圖，右邊是一次次拿放大後的圖再放大的那張。
+     找出四個跑掉的地方（右下樓梯偏了半格、上面橫牆短一截、右上水池移了、一棵樹不見）：點任一邊都算，找到畫一個圈。
+     找完送 larch:complete，result：found，payload：{sec}（花了幾秒）；larch:set ch4DiffSec = 秒數。 -->
+<style>
+.wrap { position: fixed; inset: 0; display: grid; grid-template-rows: auto 1fr auto; justify-items: center; align-items: center; gap: 2vh; padding: 5vh 4vw 4vh; }
+.maps { display: grid; grid-template-columns: 1fr 1fr; gap: 3vw; width: min(96vw, 1100px, calc((100vh - 260px) * 3.1)); }
+@media (max-aspect-ratio: 4/5) { .maps { grid-template-columns: 1fr; width: min(92vw, 520px); gap: 2.2vh; } }
+.m { padding: 10px; } .m b { display: block; text-align: center; font-size: 14px; letter-spacing: .3em; color: var(--dim); margin: 2px 0 8px; }
+canvas { display: block; width: 100%; height: auto; border-radius: 3px; cursor: crosshair; touch-action: none; }
+.count { font-size: clamp(16px, 1.4vw, 20px); letter-spacing: .2em; }
+.count i { display: inline-block; width: 12px; height: 12px; border-radius: 50%; border: 2px solid var(--gold); margin: 0 4px; vertical-align: -1px; }
+.count i.on { background: var(--gold); }
+</style>
+<div class="wrap">
+  <div class="say"><small style="color:#6b7a1e">怠惰之國</small><p id="say">……奇怪。接不起來。</p></div>
+  <div class="maps"><div class="m paper"><b>最早的原圖</b><canvas id="a" width="480" height="320"></canvas></div><div class="m paper"><b>放大了好幾次的那張</b><canvas id="b" width="480" height="320"></canvas></div></div>
+  <div class="foot" style="display:grid;justify-items:center;gap:10px"><div class="count" id="count" aria-live="polite"></div><p class="hint" id="hint">找出四個跑掉的地方</p></div>
+</div>
+
+<script>
+(function () {
+// Larch 介面：送 larch:ready → 收 larch:init（變數）→ larch:set 寫回 → larch:complete。直接開檔（不在 Larch 裡）也能玩，用網址參數或示範值。
+var LARCH = { v: {}, on: false,
+  set: function (n, v) { parent.postMessage({ type: 'larch:set', name: n, value: v }, '*'); },
+  done: function (r, p) { parent.postMessage({ type: 'larch:complete', result: r, payload: p || {} }, '*'); window.__done = { result: r, payload: p || {} }; },
+  num: function (k, d) { var q = new URLSearchParams(location.search).get(k); var x = q != null ? q : LARCH.v[k]; x = +x; return isFinite(x) ? x : (d || 0); },
+  param: function (k, d) { var q = new URLSearchParams(location.search).get(k); return q != null ? q : (LARCH.v[k] != null ? LARCH.v[k] : d); } };
+addEventListener('message', function (e) { var d = e.data || {}; if (d.type === 'larch:init') { LARCH.v = d.variables || {}; boot(); } });
+parent.postMessage({ type: 'larch:ready' }, '*');
+setTimeout(boot, parent === window ? 150 : 1500);
+function boot() { if (LARCH.on) return; LARCH.on = true; start(); }
+var A = document.getElementById('a'), B = document.getElementById('b'), found = [], t0 = 0, done = false;
+// 四個不同：x,y 是圈的中心（畫布座標）、r 是判定半徑
+var DIFF = [ { id: 'stairs', x: 392, y: 262, r: 40 }, { id: 'wall', x: 380, y: 66, r: 42 }, { id: 'pool', x: 376, y: 112, r: 54 }, { id: 'tree', x: 92, y: 236, r: 36 } ];
+function $(id) { return document.getElementById(id); }
+function stone(g) { for (var y = 0; y < 320; y += 20) for (var x = 0; x < 480; x += 30) { var o = (y / 20) % 2 ? 15 : 0, n = Math.sin((x + o) * 3.1 + y * 7.7) * 1e4; n -= Math.floor(n);
+  g.fillStyle = 'rgb(' + (196 + n * 14 | 0) + ',' + (186 + n * 12 | 0) + ',' + (170 + n * 10 | 0) + ')'; g.fillRect(x + o - 15, y, 29, 19); } }
+function map(g, alt) {
+  g.clearRect(0, 0, 480, 320); stone(g);
+  g.fillStyle = '#8c7f74'; g.fillRect(0, 0, 480, 16); g.fillRect(0, 0, 16, 320); g.fillRect(464, 0, 16, 320);           // 外牆
+  g.fillStyle = '#7a6d62'; g.fillRect(150, 56, alt ? 200 : 260, 20);                                                     // 上面那道橫牆（右邊那張短一截）
+  g.fillStyle = '#9aa7c4'; g.beginPath(); g.ellipse(alt ? 350 : 400, 112, 36, 22, 0, 0, 7); g.fill();                    // 水池（右邊那張往左移）
+  g.strokeStyle = '#6f7fa6'; g.lineWidth = 3; g.stroke();
+  var sx = alt ? 362 : 380; g.fillStyle = '#a89a8c'; for (var i = 0; i < 5; i++) { g.fillRect(sx, 236 + i * 10, 44, 8); }  // 樓梯（右邊那張往左偏半格）
+  g.fillStyle = '#5e4f45'; g.fillRect(232, 296, 40, 24);                                                                  // 城門
+  function tree(x, y) { g.fillStyle = '#6b4a2b'; g.fillRect(x - 3, y + 6, 6, 12); g.fillStyle = '#6f9446'; g.beginPath(); g.arc(x, y, 16, 0, 7); g.fill(); }
+  tree(60, 120); tree(200, 200); if (!alt) tree(92, 236); tree(300, 170);
+  g.fillStyle = '#c9b89a'; g.fillRect(60, 30, 50, 34); g.fillStyle = '#9b6a44'; g.fillRect(70, 40, 30, 24);              // 守衛小屋
+  found.forEach(function (d) { g.strokeStyle = 'rgba(184,134,47,.95)'; g.lineWidth = 4; g.beginPath(); g.ellipse(d.x, d.y, d.r, d.r * .8, 0, 0, 7); g.stroke(); });
+}
+function paint() { map(A.getContext('2d'), false); map(B.getContext('2d'), true);
+  $('count').innerHTML = DIFF.map(function (d) { return '<i class="' + (found.indexOf(d) >= 0 ? 'on' : '') + '"></i>'; }).join(''); }
+function hit(e) { if (done) return; var cv = e.currentTarget, r = cv.getBoundingClientRect(), x = (e.clientX - r.left) / r.width * 480, y = (e.clientY - r.top) / r.height * 320;
+  var d = DIFF.filter(function (d) { return found.indexOf(d) < 0 && Math.hypot(x - d.x, y - d.y) < d.r; })[0];
+  if (!d) { $('hint').textContent = '這裡看起來一樣'; return; }
+  found.push(d); if (navigator.vibrate) navigator.vibrate(15); paint();
+  $('hint').textContent = found.length < DIFF.length ? '還有 ' + (DIFF.length - found.length) + ' 個' : '　';
+  if (found.length === DIFF.length) { done = true; var sec = Math.round((performance.now() - t0) / 1000);
+    $('say').textContent = '猛一看都一樣，仔細看，每一塊都不對。'; LARCH.set('ch4DiffSec', sec); setTimeout(function () { LARCH.done('found', { sec: sec }); }, 2400); } }
+function start() { t0 = performance.now(); paint(); A.addEventListener('pointerdown', hit); B.addEventListener('pointerdown', hit); }
+
+})();
+</script>
+</html>

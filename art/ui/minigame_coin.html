@@ -1,0 +1,104 @@
+<!doctype html><html lang="zh-Hant"><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<style>
+@import url("https://fonts.googleapis.com/css2?family=Iansui&display=swap");
+/* 水彩版共用底（同 minigame_link／minigame_affinity）：夜裡被檯燈照著的水彩紙，不規則邊與暈染用下面 SVG 的濾鏡。 */
+:root { color-scheme: light; --ink:#3b2f2c; --dim:#6e5a52; --gold:#b8862f; --paper:#f3ecdf;
+  --t:#b59ad8; --m:#7f97df; --c:#a9b844; --s:#c35366; }
+* { box-sizing: border-box; }
+html, body { margin: 0; height: 100%; overflow: hidden; touch-action: none; user-select: none; -webkit-user-select: none; -webkit-tap-highlight-color: transparent; }
+body { color: var(--ink); font-family: "Iansui", "LXGW WenKai TC", "Kaiti TC", "BiauKai", serif;
+  background: radial-gradient(70vmax 45vmax at 18% 6%, rgba(255,214,150,.55), transparent 60%),
+              radial-gradient(120vmax 80vmax at 50% 55%, #e9dfcc, #cbbda6 70%, #9c8f80); }
+body::after { content: ""; position: fixed; inset: 0; pointer-events: none; mix-blend-mode: multiply; opacity: .5;
+  background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='320' height='320'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='3'/%3E%3CfeColorMatrix values='0 0 0 0 .45 0 0 0 0 .4 0 0 0 0 .35 0 0 0 .45 0'/%3E%3C/filter%3E%3Crect width='320' height='320' filter='url(%23n)'/%3E%3C/svg%3E"); }
+body::before { content: ""; position: fixed; inset: 0; pointer-events: none; background: radial-gradient(120vmax 80vmax at 50% 45%, transparent 55%, rgba(40,30,40,.42)); }
+.say { text-align: center; padding: 0 6vw; }
+.say small { display: block; font-size: clamp(13px, 1.1vw, 16px); letter-spacing: .4em; margin-bottom: 8px; font-weight: 700; }
+.say p { margin: 0; font-size: clamp(18px, 1.8vw, 26px); letter-spacing: .1em; line-height: 1.7; }
+.hint { margin: 0; color: var(--dim); font-size: clamp(14px, 1.2vw, 18px); letter-spacing: .14em; text-align: center; min-height: 1.8em; transition: opacity .6s; }
+.btn { font: inherit; font-size: clamp(16px, 1.3vw, 19px); letter-spacing: .3em; padding: 9px 24px 9px 30px; color: var(--ink); background: none; border: 0; cursor: pointer;
+  position: relative; isolation: isolate; font-weight: 700; transition: opacity .5s, transform .2s; }
+.btn::before { content: ""; position: absolute; inset: 0; z-index: -1; background: rgba(233,207,154,.92); border-radius: 40%; filter: url(#ragged); }
+.btn:active { transform: scale(.96); }
+.btn[disabled] { opacity: .35; cursor: default; }
+.btn:focus-visible { outline: 2px solid var(--ink); outline-offset: 4px; }
+.paper { position: relative; isolation: isolate; }
+.paper::before { content: ""; position: absolute; inset: 0; z-index: -1; border-radius: 8px; filter: url(#ragged); background: var(--paper);
+  box-shadow: inset 0 0 18px rgba(150,118,92,.45), inset 0 0 3px rgba(120,92,70,.55), 0 14px 26px -14px rgba(60,40,30,.55); }
+.hide { opacity: 0; pointer-events: none; }
+@media (prefers-reduced-motion: reduce) { * { animation-duration: .01s !important; transition-duration: .01s !important; } }
+</style>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true"><defs>
+  <filter id="ragged" x="-10%" y="-20%" width="120%" height="140%"><feTurbulence type="fractalNoise" baseFrequency=".03 .07" numOctaves="3" seed="7"/><feDisplacementMap in="SourceGraphic" scale="9"/></filter>
+  <filter id="bleed" x="-60%" y="-60%" width="220%" height="220%"><feTurbulence type="fractalNoise" baseFrequency=".05" numOctaves="3" seed="2"/><feDisplacementMap in="SourceGraphic" scale="22"/><feGaussianBlur stdDeviation="2.5"/></filter>
+  <filter id="ink"><feTurbulence type="fractalNoise" baseFrequency=".05" numOctaves="2" seed="4"/><feDisplacementMap in="SourceGraphic" scale="4"/><feGaussianBlur stdDeviation=".4"/></filter>
+</defs></svg>
+<!-- 第三章〈先做最難的〉猜硬幣：她做的 RPG 裡那張猜硬幣卡（照原作：猜正面或反面，拋一次）。
+     mode=bug（第一次）：不管猜什麼都跳「恭喜過關」——變數沒重置的 bug，玩家跟她一起撞上。
+     mode=fixed（第二次，明修好後）：真的看運氣，猜錯「再試一次」，猜中才「恭喜過關」，猜到中為止。
+     模式：網址 ?mode=bug／fixed，或組裝時把 {{MODE}} 換成 bug／fixed。result：win，payload：{mode, tries}。不寫變數。 -->
+<style>
+.wrap { position: fixed; inset: 0; display: grid; grid-template-rows: 1fr auto; place-items: center; padding: 5vh 5vw; }
+.card { width: min(86vw, 460px); padding: 30px 26px 28px; display: grid; justify-items: center; gap: 16px; text-align: center; }
+.card small { letter-spacing: .5em; color: var(--dim); font-size: 13px; }
+.card h1 { margin: 0; font-size: clamp(28px, 7vw, 38px); letter-spacing: .4em; padding-left: .4em; }
+.card p { margin: 0; color: var(--dim); font-size: 15px; letter-spacing: .1em; line-height: 1.7; }
+.stage { perspective: 700px; height: 150px; display: grid; place-items: center; }
+.coin { width: 120px; height: 120px; position: relative; transform-style: preserve-3d; transition: transform 1.6s cubic-bezier(.25,.8,.25,1); }
+.face { position: absolute; inset: 0; border-radius: 50%; backface-visibility: hidden; display: grid; place-items: center;
+  font-size: 44px; font-weight: 700; color: #6b4a14; filter: url(#ink);
+  background: radial-gradient(circle at 35% 30%, #fbe7b0, #e2b45e 55%, #b98431 80%, #8f6522); box-shadow: inset 0 0 0 6px rgba(120,80,20,.35), inset 0 0 0 9px rgba(255,240,200,.35); }
+.face.back { transform: rotateY(180deg); }
+.row { display: flex; gap: 18px; justify-content: center; }
+.result { min-height: 1.8em; font-size: clamp(20px, 5vw, 26px); letter-spacing: .3em; font-weight: 700; transition: opacity .4s; }
+.result.win { color: #8a6418; } .result.lose { color: #9a2f42; }
+</style>
+<div class="wrap">
+  <div class="card paper">
+    <small>色慾之國</small>
+    <h1>猜硬幣</h1>
+    <p>選正面或反面。<br>硬幣拋一次，猜中才過得去。</p>
+    <div class="stage"><div class="coin" id="coin"><div class="face">正</div><div class="face back">反</div></div></div>
+    <div class="result" id="res" role="status">　</div>
+    <div class="row"><button class="btn" id="h" type="button">正面</button><button class="btn" id="t" type="button">反面</button></div>
+  </div>
+  <p class="hint" id="hint">測試中</p>
+</div>
+
+<script>
+(function () {
+// Larch 介面：送 larch:ready → 收 larch:init（變數）→ larch:set 寫回 → larch:complete。直接開檔（不在 Larch 裡）也能玩，用網址參數或示範值。
+var LARCH = { v: {}, on: false,
+  set: function (n, v) { parent.postMessage({ type: 'larch:set', name: n, value: v }, '*'); },
+  done: function (r, p) { parent.postMessage({ type: 'larch:complete', result: r, payload: p || {} }, '*'); window.__done = { result: r, payload: p || {} }; },
+  num: function (k, d) { var q = new URLSearchParams(location.search).get(k); var x = q != null ? q : LARCH.v[k]; x = +x; return isFinite(x) ? x : (d || 0); },
+  param: function (k, d) { var q = new URLSearchParams(location.search).get(k); return q != null ? q : (LARCH.v[k] != null ? LARCH.v[k] : d); } };
+addEventListener('message', function (e) { var d = e.data || {}; if (d.type === 'larch:init') { LARCH.v = d.variables || {}; boot(); } });
+parent.postMessage({ type: 'larch:ready' }, '*');
+setTimeout(boot, parent === window ? 150 : 1500);
+function boot() { if (LARCH.on) return; LARCH.on = true; start(); }
+var MODE = LARCH.param('mode', '{{MODE}}'); if (MODE.indexOf('{{') === 0) MODE = 'fixed';
+var still = matchMedia('(prefers-reduced-motion: reduce)').matches, spin = 0, tries = 0, busy = false, ac;
+function $(id) { return document.getElementById(id); }
+function clink() { try { ac = ac || new (window.AudioContext || window.webkitAudioContext)(); var t = ac.currentTime;
+  [2600, 3900, 5200].forEach(function (f, i) { var o = ac.createOscillator(), g = ac.createGain(); o.type = 'sine'; o.frequency.value = f * (1 + Math.random() * .02);
+    g.gain.setValueAtTime(.0001, t); g.gain.exponentialRampToValueAtTime(.18 / (i + 1), t + .005); g.gain.exponentialRampToValueAtTime(.0001, t + .5 + i * .15);
+    o.connect(g).connect(ac.destination); o.start(t); o.stop(t + 1); }); } catch (e) {} }
+function flip(guess) {
+  if (busy) return; busy = true; tries++; $('res').textContent = '　'; $('res').className = 'result';
+  var side = Math.random() < .5 ? 'h' : 't';
+  spin += 1800 + (side === 't' ? 180 : 0) - (spin % 360);
+  $('coin').style.transform = 'rotateY(' + spin + 'deg)';
+  setTimeout(clink, still ? 0 : 1350);
+  setTimeout(function () {
+    var win = MODE === 'bug' ? true : guess === side;
+    $('res').textContent = win ? '恭喜過關' : '再試一次'; $('res').className = 'result ' + (win ? 'win' : 'lose');
+    if (win) { $('h').disabled = $('t').disabled = true; setTimeout(function () { LARCH.done('win', { mode: MODE, tries: tries }); }, 1800); }
+    else busy = false;
+  }, still ? 100 : 1700);
+}
+function start() { $('h').onclick = function () { flip('h'); }; $('t').onclick = function () { flip('t'); }; }
+
+})();
+</script>
+</html>

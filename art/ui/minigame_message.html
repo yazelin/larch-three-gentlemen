@@ -1,0 +1,133 @@
+<!doctype html><html lang="zh-Hant"><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<style>
+@import url("https://fonts.googleapis.com/css2?family=Iansui&display=swap");
+/* 水彩版共用底（同 minigame_link／minigame_affinity）：夜裡被檯燈照著的水彩紙，不規則邊與暈染用下面 SVG 的濾鏡。 */
+:root { color-scheme: light; --ink:#3b2f2c; --dim:#6e5a52; --gold:#b8862f; --paper:#f3ecdf;
+  --t:#b59ad8; --m:#7f97df; --c:#a9b844; --s:#c35366; }
+* { box-sizing: border-box; }
+html, body { margin: 0; height: 100%; overflow: hidden; touch-action: none; user-select: none; -webkit-user-select: none; -webkit-tap-highlight-color: transparent; }
+body { color: var(--ink); font-family: "Iansui", "LXGW WenKai TC", "Kaiti TC", "BiauKai", serif;
+  background: radial-gradient(70vmax 45vmax at 18% 6%, rgba(255,214,150,.55), transparent 60%),
+              radial-gradient(120vmax 80vmax at 50% 55%, #e9dfcc, #cbbda6 70%, #9c8f80); }
+body::after { content: ""; position: fixed; inset: 0; pointer-events: none; mix-blend-mode: multiply; opacity: .5;
+  background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='320' height='320'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='3'/%3E%3CfeColorMatrix values='0 0 0 0 .45 0 0 0 0 .4 0 0 0 0 .35 0 0 0 .45 0'/%3E%3C/filter%3E%3Crect width='320' height='320' filter='url(%23n)'/%3E%3C/svg%3E"); }
+body::before { content: ""; position: fixed; inset: 0; pointer-events: none; background: radial-gradient(120vmax 80vmax at 50% 45%, transparent 55%, rgba(40,30,40,.42)); }
+.say { text-align: center; padding: 0 6vw; }
+.say small { display: block; font-size: clamp(13px, 1.1vw, 16px); letter-spacing: .4em; margin-bottom: 8px; font-weight: 700; }
+.say p { margin: 0; font-size: clamp(18px, 1.8vw, 26px); letter-spacing: .1em; line-height: 1.7; }
+.hint { margin: 0; color: var(--dim); font-size: clamp(14px, 1.2vw, 18px); letter-spacing: .14em; text-align: center; min-height: 1.8em; transition: opacity .6s; }
+.btn { font: inherit; font-size: clamp(16px, 1.3vw, 19px); letter-spacing: .3em; padding: 9px 24px 9px 30px; color: var(--ink); background: none; border: 0; cursor: pointer;
+  position: relative; isolation: isolate; font-weight: 700; transition: opacity .5s, transform .2s; }
+.btn::before { content: ""; position: absolute; inset: 0; z-index: -1; background: rgba(233,207,154,.92); border-radius: 40%; filter: url(#ragged); }
+.btn:active { transform: scale(.96); }
+.btn[disabled] { opacity: .35; cursor: default; }
+.btn:focus-visible { outline: 2px solid var(--ink); outline-offset: 4px; }
+.paper { position: relative; isolation: isolate; }
+.paper::before { content: ""; position: absolute; inset: 0; z-index: -1; border-radius: 8px; filter: url(#ragged); background: var(--paper);
+  box-shadow: inset 0 0 18px rgba(150,118,92,.45), inset 0 0 3px rgba(120,92,70,.55), 0 14px 26px -14px rgba(60,40,30,.55); }
+.hide { opacity: 0; pointer-events: none; }
+@media (prefers-reduced-motion: reduce) { * { animation-duration: .01s !important; transition-duration: .01s !important; } }
+</style>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true"><defs>
+  <filter id="ragged" x="-10%" y="-20%" width="120%" height="140%"><feTurbulence type="fractalNoise" baseFrequency=".03 .07" numOctaves="3" seed="7"/><feDisplacementMap in="SourceGraphic" scale="9"/></filter>
+  <filter id="bleed" x="-60%" y="-60%" width="220%" height="220%"><feTurbulence type="fractalNoise" baseFrequency=".05" numOctaves="3" seed="2"/><feDisplacementMap in="SourceGraphic" scale="22"/><feGaussianBlur stdDeviation="2.5"/></filter>
+  <filter id="ink"><feTurbulence type="fractalNoise" baseFrequency=".05" numOctaves="2" seed="4"/><feDisplacementMap in="SourceGraphic" scale="4"/><feGaussianBlur stdDeviation=".4"/></filter>
+</defs></svg>
+<!-- 第二章〈打了又刪〉：凌晨兩點三十九分，她躺在床上，手機舉在臉上方。
+     輸入框依序打出三句，每句打完停一下；三句都打完後玩家點一句留下送出，另外兩句一個字一個字退掉。
+     送出的那句決定誰回：第一句給晨（affC）、第二句給明（affM）、第三句給詩（affS）。
+     larch:set：被選的那位好感 +1（讀 affC／affM／affS），ch2Msg = C／M／S。result 同 ch2Msg。 -->
+<style>
+:root { --ink:#f4ecf2; --dim:#c9bdd2; --gold:#f2cf8a; --deep:#15112a; --c:#c5d36a; --m:#9fb4f2; --s:#e07d8f; }
+body { background: radial-gradient(60vmax 50vmax at 30% 0%, rgba(140,120,220,.18), transparent 60%), #0d0b16; color: var(--ink);
+  display: grid; place-items: center; font-family: "Noto Sans TC","PingFang TC",system-ui,sans-serif; }
+body::after, body::before { display: none; }
+.phone { position: relative; height: min(94vh, 900px); aspect-ratio: 9 / 19.5; border-radius: 52px; padding: 11px;
+  background: linear-gradient(145deg, #d9cfe6, #b7a9c9 45%, #cfc3dd); box-shadow: 0 30px 80px -20px rgba(0,0,0,.7), inset 0 0 0 1.5px rgba(255,255,255,.5); }
+.screen { position: relative; width: 100%; height: 100%; border-radius: 42px; overflow: hidden; display: grid; grid-template-rows: auto 1fr auto;
+  background: linear-gradient(#1b1633, #120f22 60%, #0f0c1c); }
+.island { position: absolute; top: 12px; left: 50%; translate: -50% 0; width: 30%; height: 26px; border-radius: 20px; background: #050407; z-index: 5; }
+@media (max-aspect-ratio: 4/5) { body { display: block; } .phone { height: 100%; width: 100%; aspect-ratio: auto; border-radius: 0; padding: 0; background: none; box-shadow: none; }
+  .screen { border-radius: 0; } .island { display: none; } }
+header { padding: 48px 18px 12px; display: flex; align-items: center; gap: 12px; border-bottom: 1px solid rgba(242,207,138,.12); }
+@media (max-aspect-ratio: 4/5) { header { padding-top: max(16px, env(safe-area-inset-top)); } }
+.avs { display: flex; } .avs i { width: 30px; height: 30px; border-radius: 50%; margin-right: -9px; border: 2px solid #1b1633; display: grid; place-items: center;
+  font: 700 13px/1 "Iansui", serif; color: #1b1633; font-style: normal; }
+.avs i:nth-child(1) { background: var(--c); } .avs i:nth-child(2) { background: var(--m); } .avs i:nth-child(3) { background: var(--s); }
+header b { margin-left: 14px; font: 700 16px/1.2 "Iansui", serif; letter-spacing: .16em; }
+header small { display: block; font-size: 11.5px; color: var(--dim); letter-spacing: .12em; font-weight: 400; margin-top: 3px; }
+.log { padding: 18px 16px; display: flex; flex-direction: column; justify-content: flex-end; gap: 10px; overflow: hidden; }
+.time { align-self: center; font-size: 12px; color: var(--dim); letter-spacing: .2em; margin-bottom: 6px; }
+.bub { max-width: 78%; padding: 10px 14px; border-radius: 18px; font: 15.5px/1.6 "Iansui", serif; letter-spacing: .06em; animation: pop .35s ease both; }
+.bub.me { align-self: flex-end; background: linear-gradient(135deg, #f2cf8a, #e7b56f); color: #2c2014; border-bottom-right-radius: 6px; }
+.bub.them { align-self: flex-start; background: rgba(255,255,255,.08); border: 1px solid rgba(255,255,255,.08); border-bottom-left-radius: 6px; }
+.bub .who { display: block; font-size: 12px; letter-spacing: .2em; margin-bottom: 2px; }
+.read { align-self: flex-end; font-size: 11px; color: var(--dim); letter-spacing: .14em; margin-top: -4px; }
+@keyframes pop { from { opacity: 0; translate: 0 8px; } }
+.compose { padding: 10px 12px max(14px, env(safe-area-inset-bottom)); border-top: 1px solid rgba(242,207,138,.12); background: rgba(10,8,20,.6); display: grid; gap: 8px; }
+.hint2 { text-align: center; font: 13px/1.6 "Iansui", serif; letter-spacing: .16em; color: var(--gold); min-height: 1.6em; transition: opacity .4s; }
+.draft { display: flex; align-items: center; gap: 10px; min-height: 44px; padding: 8px 14px; border-radius: 22px; background: rgba(255,255,255,.07);
+  border: 1px solid rgba(255,255,255,.1); font: 15.5px/1.5 "Iansui", serif; letter-spacing: .05em; color: var(--ink); text-align: left; width: 100%; cursor: default; }
+.draft .dot { width: 9px; height: 9px; border-radius: 50%; flex: none; opacity: .9; }
+.draft.pick { cursor: pointer; border-color: rgba(242,207,138,.45); }
+.draft.pick:hover, .draft.pick:focus-visible { background: rgba(242,207,138,.14); outline: none; }
+.draft.gone { opacity: .35; }
+.caret { display: inline-block; width: 1.5px; height: 1.1em; background: var(--gold); vertical-align: -3px; margin-left: 2px; animation: blink 1s steps(1) infinite; }
+@keyframes blink { 50% { opacity: 0; } }
+</style>
+<div class="phone"><div class="screen"><div class="island"></div>
+  <header><div class="avs" aria-hidden="true"><i>C</i><i>M</i><i>S</i></div><b>三個人<small>都還醒著</small></b></header>
+  <div class="log" id="log"><div class="time">凌晨 2:39</div></div>
+  <div class="compose"><div class="hint2" id="hint">　</div><div id="drafts" style="display:grid;gap:8px"></div></div>
+</div></div>
+
+<script>
+(function () {
+// Larch 介面：送 larch:ready → 收 larch:init（變數）→ larch:set 寫回 → larch:complete。直接開檔（不在 Larch 裡）也能玩，用網址參數或示範值。
+var LARCH = { v: {}, on: false,
+  set: function (n, v) { parent.postMessage({ type: 'larch:set', name: n, value: v }, '*'); },
+  done: function (r, p) { parent.postMessage({ type: 'larch:complete', result: r, payload: p || {} }, '*'); window.__done = { result: r, payload: p || {} }; },
+  num: function (k, d) { var q = new URLSearchParams(location.search).get(k); var x = q != null ? q : LARCH.v[k]; x = +x; return isFinite(x) ? x : (d || 0); },
+  param: function (k, d) { var q = new URLSearchParams(location.search).get(k); return q != null ? q : (LARCH.v[k] != null ? LARCH.v[k] : d); } };
+addEventListener('message', function (e) { var d = e.data || {}; if (d.type === 'larch:init') { LARCH.v = d.variables || {}; boot(); } });
+parent.postMessage({ type: 'larch:ready' }, '*');
+setTimeout(boot, parent === window ? 150 : 1500);
+function boot() { if (LARCH.on) return; LARCH.on = true; start(); }
+var LINES = [
+  { k: 'C', who: 'C', col: 'var(--c)', t: '那兩張臉，我會用。', reply: ['嗯。', '還有一張，是他回頭的。明天給妳看。'] },
+  { k: 'M', who: 'M', col: 'var(--m)', t: '報告的死線，記得叫我。', reply: ['死線我幫妳盯著。先去睡吧。', '今天玩的那一小時，也記了。'] },
+  { k: 'S', who: 'S', col: 'var(--s)', t: '那首歌……明天可以再放一次嗎。', reply: ['現在就可以放啊。'] } ];
+var still = matchMedia('(prefers-reduced-motion: reduce)').matches;
+function $(id) { return document.getElementById(id); }
+function wait(ms) { return new Promise(function (r) { setTimeout(r, still ? Math.min(ms, 60) : ms); }); }
+function row(L) { var b = document.createElement('div'); b.className = 'draft'; b.innerHTML = '<span class="dot" style="background:' + L.col + '"></span><span class="tx"></span>'; $('drafts').appendChild(b); return b; }
+async function type(el, s) { var tx = el.querySelector('.tx'); tx.innerHTML = '<span class="caret"></span>';
+  for (var i = 1; i <= s.length; i++) { tx.innerHTML = s.slice(0, i) + '<span class="caret"></span>'; await wait(s[i - 1] === '…' ? 220 : 95); }
+  await wait(900); tx.textContent = s; }
+async function erase(el) { var tx = el.querySelector('.tx'), s = tx.textContent; el.classList.add('gone');
+  for (var i = s.length - 1; i >= 0; i--) { tx.textContent = s.slice(0, i); await wait(55); } el.remove(); }
+function bubble(cls, html) { var b = document.createElement('div'); b.className = 'bub ' + cls; b.innerHTML = html; $('log').appendChild(b); return b; }
+async function start() {
+  $('hint').textContent = '打了一行，看了很久。';
+  var rows = [];
+  for (var i = 0; i < LINES.length; i++) { var r = row(LINES[i]); rows.push(r); await type(r, LINES[i].t); }
+  $('hint').textContent = '留下一句送出去';
+  rows.forEach(function (r, i) { r.classList.add('pick'); r.setAttribute('role', 'button'); r.tabIndex = 0;
+    r.setAttribute('aria-label', '送出：' + LINES[i].t);
+    r.onclick = function () { choose(i); }; r.onkeydown = function (e) { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); choose(i); } }; });
+  if (rows[0]) rows[0].focus({ preventScroll: true });
+  var chosen = false;
+  async function choose(i) { if (chosen) return; chosen = true; $('hint').textContent = '　';
+    rows.forEach(function (r) { r.classList.remove('pick'); r.onclick = null; r.removeAttribute('tabindex'); });
+    await Promise.all(rows.filter(function (_, j) { return j !== i; }).map(erase));
+    var L = LINES[i]; rows[i].remove();
+    bubble('me', L.t); await wait(700);
+    var rd = document.createElement('div'); rd.className = 'read'; rd.textContent = '已讀'; $('log').appendChild(rd);
+    for (var k = 0; k < L.reply.length; k++) { await wait(1100); bubble('them', '<span class="who" style="color:' + L.col + '">' + L.who + '</span>' + L.reply[k]); }
+    var key = 'aff' + L.k; LARCH.set(key, LARCH.num(key, 0) + 1); LARCH.set('ch2Msg', L.k);
+    await wait(1800); LARCH.done(L.k, { ch2Msg: L.k }); }
+}
+
+})();
+</script>
+</html>

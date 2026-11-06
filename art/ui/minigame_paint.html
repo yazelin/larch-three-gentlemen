@@ -1,0 +1,121 @@
+<!doctype html><html lang="zh-Hant"><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<style>
+@import url("https://fonts.googleapis.com/css2?family=Iansui&display=swap");
+/* 水彩版共用底（同 minigame_link／minigame_affinity）：夜裡被檯燈照著的水彩紙，不規則邊與暈染用下面 SVG 的濾鏡。 */
+:root { color-scheme: light; --ink:#3b2f2c; --dim:#6e5a52; --gold:#b8862f; --paper:#f3ecdf;
+  --t:#b59ad8; --m:#7f97df; --c:#a9b844; --s:#c35366; }
+* { box-sizing: border-box; }
+html, body { margin: 0; height: 100%; overflow: hidden; touch-action: none; user-select: none; -webkit-user-select: none; -webkit-tap-highlight-color: transparent; }
+body { color: var(--ink); font-family: "Iansui", "LXGW WenKai TC", "Kaiti TC", "BiauKai", serif;
+  background: radial-gradient(70vmax 45vmax at 18% 6%, rgba(255,214,150,.55), transparent 60%),
+              radial-gradient(120vmax 80vmax at 50% 55%, #e9dfcc, #cbbda6 70%, #9c8f80); }
+body::after { content: ""; position: fixed; inset: 0; pointer-events: none; mix-blend-mode: multiply; opacity: .5;
+  background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='320' height='320'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='3'/%3E%3CfeColorMatrix values='0 0 0 0 .45 0 0 0 0 .4 0 0 0 0 .35 0 0 0 .45 0'/%3E%3C/filter%3E%3Crect width='320' height='320' filter='url(%23n)'/%3E%3C/svg%3E"); }
+body::before { content: ""; position: fixed; inset: 0; pointer-events: none; background: radial-gradient(120vmax 80vmax at 50% 45%, transparent 55%, rgba(40,30,40,.42)); }
+.say { text-align: center; padding: 0 6vw; }
+.say small { display: block; font-size: clamp(13px, 1.1vw, 16px); letter-spacing: .4em; margin-bottom: 8px; font-weight: 700; }
+.say p { margin: 0; font-size: clamp(18px, 1.8vw, 26px); letter-spacing: .1em; line-height: 1.7; }
+.hint { margin: 0; color: var(--dim); font-size: clamp(14px, 1.2vw, 18px); letter-spacing: .14em; text-align: center; min-height: 1.8em; transition: opacity .6s; }
+.btn { font: inherit; font-size: clamp(16px, 1.3vw, 19px); letter-spacing: .3em; padding: 9px 24px 9px 30px; color: var(--ink); background: none; border: 0; cursor: pointer;
+  position: relative; isolation: isolate; font-weight: 700; transition: opacity .5s, transform .2s; }
+.btn::before { content: ""; position: absolute; inset: 0; z-index: -1; background: rgba(233,207,154,.92); border-radius: 40%; filter: url(#ragged); }
+.btn:active { transform: scale(.96); }
+.btn[disabled] { opacity: .35; cursor: default; }
+.btn:focus-visible { outline: 2px solid var(--ink); outline-offset: 4px; }
+.paper { position: relative; isolation: isolate; }
+.paper::before { content: ""; position: absolute; inset: 0; z-index: -1; border-radius: 8px; filter: url(#ragged); background: var(--paper);
+  box-shadow: inset 0 0 18px rgba(150,118,92,.45), inset 0 0 3px rgba(120,92,70,.55), 0 14px 26px -14px rgba(60,40,30,.55); }
+.hide { opacity: 0; pointer-events: none; }
+@media (prefers-reduced-motion: reduce) { * { animation-duration: .01s !important; transition-duration: .01s !important; } }
+</style>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true"><defs>
+  <filter id="ragged" x="-10%" y="-20%" width="120%" height="140%"><feTurbulence type="fractalNoise" baseFrequency=".03 .07" numOctaves="3" seed="7"/><feDisplacementMap in="SourceGraphic" scale="9"/></filter>
+  <filter id="bleed" x="-60%" y="-60%" width="220%" height="220%"><feTurbulence type="fractalNoise" baseFrequency=".05" numOctaves="3" seed="2"/><feDisplacementMap in="SourceGraphic" scale="22"/><feGaussianBlur stdDeviation="2.5"/></filter>
+  <filter id="ink"><feTurbulence type="fractalNoise" baseFrequency=".05" numOctaves="2" seed="4"/><feDisplacementMap in="SourceGraphic" scale="4"/><feGaussianBlur stdDeviation=".4"/></filter>
+</defs></svg>
+<!-- 第三章〈最後幾格〉塗地圖：練習地圖只剩右下角六格沒塗（要用「走到後面」的筆刷一格一格塗）。
+     玩家點完六格 → 在空地點一下放下最後一隻怪物 → 按「測試」；C 偷畫的紫髮眼鏡像素小人從左邊跑出來、碰到怪物、打贏，結束（約 20 秒）。
+     result：done，不寫變數。 -->
+<style>
+.wrap { position: fixed; inset: 0; display: grid; grid-template-rows: auto 1fr auto; justify-items: center; align-items: center; gap: 2vh; padding: 5vh 4vw 4vh; }
+.frame { padding: 14px; width: min(94vw, 980px, calc((100vh - 250px) * 1.6)); }
+canvas { display: block; width: 100%; height: auto; image-rendering: pixelated; border-radius: 4px; cursor: pointer; touch-action: none; }
+.foot { display: grid; justify-items: center; gap: 12px; }
+</style>
+<div class="wrap">
+  <div class="say"><small style="color:#6b7a1e">練習地圖</small><p id="say">右下角還剩幾格。</p></div>
+  <div class="frame paper"><canvas id="cv" width="640" height="400" aria-label="練習地圖，右下角六格還沒塗"></canvas></div>
+  <div class="foot"><p class="hint" id="hint">點一下，一格一格塗上「走到後面」</p><button class="btn hide" id="test" type="button">測試</button></div>
+</div>
+
+<script>
+(function () {
+// Larch 介面：送 larch:ready → 收 larch:init（變數）→ larch:set 寫回 → larch:complete。直接開檔（不在 Larch 裡）也能玩，用網址參數或示範值。
+var LARCH = { v: {}, on: false,
+  set: function (n, v) { parent.postMessage({ type: 'larch:set', name: n, value: v }, '*'); },
+  done: function (r, p) { parent.postMessage({ type: 'larch:complete', result: r, payload: p || {} }, '*'); window.__done = { result: r, payload: p || {} }; },
+  num: function (k, d) { var q = new URLSearchParams(location.search).get(k); var x = q != null ? q : LARCH.v[k]; x = +x; return isFinite(x) ? x : (d || 0); },
+  param: function (k, d) { var q = new URLSearchParams(location.search).get(k); return q != null ? q : (LARCH.v[k] != null ? LARCH.v[k] : d); } };
+addEventListener('message', function (e) { var d = e.data || {}; if (d.type === 'larch:init') { LARCH.v = d.variables || {}; boot(); } });
+parent.postMessage({ type: 'larch:ready' }, '*');
+setTimeout(boot, parent === window ? 150 : 1500);
+function boot() { if (LARCH.on) return; LARCH.on = true; start(); }
+var cv = document.getElementById('cv'), g = cv.getContext('2d'), T = 40, W = 16, H = 10;
+var still = matchMedia('(prefers-reduced-motion: reduce)').matches;
+var todo = [[13,7],[14,7],[15,7],[13,8],[14,8],[15,8]], painted = {}, stage = 'paint', mon = null, girl = null, fx = 0, t0 = 0;
+var SPOT = [9, 5];
+function $(id) { return document.getElementById(id); }
+function key(x, y) { return x + ',' + y; }
+var isTodo = {}; todo.forEach(function (p) { isTodo[key(p[0], p[1])] = 1; });
+function rnd(x, y) { var n = Math.sin(x * 12.9898 + y * 78.233) * 43758.5453; return n - Math.floor(n); }
+function grass(x, y) { var r = rnd(x, y); g.fillStyle = r < .33 ? '#a9c06a' : r < .66 ? '#9db85f' : '#b3c878'; g.fillRect(x * T, y * T, T, T);
+  g.fillStyle = 'rgba(70,100,40,.35)'; for (var i = 0; i < 4; i++) { var a = rnd(x + i, y * 3 + i); g.fillRect(x * T + 6 + a * 26, y * T + 6 + rnd(y + i, x) * 26, 3, 5); } }
+function tile(x, y) {
+  if (isTodo[key(x, y)] && !painted[key(x, y)]) { g.fillStyle = '#efe5d2'; g.fillRect(x * T, y * T, T, T);
+    g.strokeStyle = 'rgba(184,134,47,.8)'; g.setLineDash([4, 4]); g.lineWidth = 2; g.strokeRect(x * T + 3, y * T + 3, T - 6, T - 6); g.setLineDash([]); return; }
+  grass(x, y);
+  if (y === 5 && x < 9) { g.fillStyle = '#d9c39a'; g.fillRect(x * T, y * T + 8, T, T - 16); }   // 小路
+  if (painted[key(x, y)]) { g.fillStyle = 'rgba(181,154,216,.16)'; g.fillRect(x * T, y * T, T, T); }
+}
+function house() { g.fillStyle = '#a5643f'; g.fillRect(1 * T, 1 * T, 3 * T, 2 * T); g.fillStyle = '#7d3f2a'; g.beginPath(); g.moveTo(.6 * T, 1.2 * T); g.lineTo(2.5 * T, .2 * T); g.lineTo(4.4 * T, 1.2 * T); g.fill();
+  g.fillStyle = '#e9d8b5'; g.fillRect(2.2 * T, 2.1 * T, .6 * T, .9 * T); }
+function tree(x, y) { g.fillStyle = '#6b4a2b'; g.fillRect(x * T + 16, y * T + 22, 8, 16); g.fillStyle = '#5f8a3e'; g.beginPath(); g.arc(x * T + 20, y * T + 16, 15, 0, 7); g.fill(); g.fillStyle = '#76a04c'; g.beginPath(); g.arc(x * T + 15, y * T + 11, 7, 0, 7); g.fill(); }
+function slime(px, py, s) { s = s || 1; g.save(); g.translate(px, py); g.scale(s, s); g.fillStyle = '#7f97df'; g.beginPath(); g.ellipse(0, 4, 15, 12, 0, Math.PI, 0); g.lineTo(15, 10); g.lineTo(-15, 10); g.fill();
+  g.fillStyle = '#2b3352'; g.fillRect(-7, -2, 4, 5); g.fillRect(3, -2, 4, 5); g.restore(); }
+// 紫髮、細金框眼鏡、白 T、深灰工作褲的像素小人（C 偷畫的她）
+var GIRL = ['..pppp..', '.pppppp.', 'pppffppp', 'pgfgfgpp', 'ppffffpp', '.pwwwwp.', '..wwww..', '.fwwwwf.', '..kkkk..', '..k..k..', '..b..b..'];
+var COL = { p: '#5b3a78', f: '#f2d3bd', g: '#c9962f', w: '#f4efe6', k: '#4a4550', b: '#ffffff' };
+function drawGirl(px, py, step) { var s = 5; GIRL.forEach(function (row, j) { for (var i = 0; i < row.length; i++) { var c = row[i]; if (c === '.') continue;
+  if (j >= 9 && step && ((i < 4) === (step % 2 === 0))) continue; g.fillStyle = COL[c]; g.fillRect(px + i * s - 20, py + j * s - 50, s, s); } }); }
+function draw(now) {
+  for (var y = 0; y < H; y++) for (var x = 0; x < W; x++) tile(x, y);
+  house(); tree(6, 1); tree(11, 2); tree(3, 7); tree(12, 4);
+  if (stage === 'monster') { var a = .35 + .3 * Math.sin(now / 250); g.strokeStyle = 'rgba(184,134,47,' + a + ')'; g.lineWidth = 3; g.strokeRect(SPOT[0] * T + 2, SPOT[1] * T + 2, T - 4, T - 4); }
+  if (mon) slime(mon.x, mon.y + Math.sin(now / 200) * 1.5, mon.s);
+  if (girl) drawGirl(girl.x, girl.y, girl.step);
+  if (fx > 0) { g.fillStyle = 'rgba(20,14,30,' + Math.min(.85, fx) + ')'; g.fillRect(0, 0, cv.width, cv.height); if (fx > .5) { g.fillStyle = '#f2cf8a'; g.font = 'bold 44px Iansui, serif'; g.textAlign = 'center'; g.fillText('戰鬥！', cv.width / 2, cv.height / 2 + 14); } }
+}
+function loop(now) { draw(now); tick(now); requestAnimationFrame(loop); }
+function tick(now) {
+  if (stage !== 'run') return;
+  var dt = (now - t0) / 1000;
+  if (girl.phase === 'walk') { var tx = mon.x - 26; girl.x += still ? 999 : 2.2; girl.step = Math.floor(now / 140);
+    if (girl.x >= tx) { girl.x = tx; girl.phase = 'battle'; girl.tb = now; } }
+  else if (girl.phase === 'battle') { var k = (now - girl.tb) / 1000; fx = k < .4 ? k / .4 : k < 1.4 ? 1 : Math.max(0, 1 - (k - 1.4) / .5);
+    if (k > 1.4 && mon) mon.s = Math.max(0, 1 - (k - 1.4) * 2);
+    if (k > 2) { mon = null; fx = 0; girl.phase = 'win'; girl.step = 0; $('say').textContent = '……我好像做得到耶。'; setTimeout(function () { LARCH.done('done', {}); }, 2200); } }
+}
+function cell(e) { var r = cv.getBoundingClientRect(); return [Math.floor((e.clientX - r.left) / r.width * W), Math.floor((e.clientY - r.top) / r.height * H)]; }
+cv.addEventListener('pointerdown', function (e) { var c = cell(e), k = key(c[0], c[1]);
+  if (stage === 'paint' && isTodo[k] && !painted[k]) { painted[k] = 1; if (navigator.vibrate) navigator.vibrate(10);
+    var n = Object.keys(painted).length; $('hint').textContent = n < todo.length ? '還有 ' + (todo.length - n) + ' 格' : '空地中間，放下最後一隻怪物';
+    if (n === todo.length) { stage = 'monster'; $('say').textContent = '草地塗完了。'; } }
+  else if (stage === 'monster' && Math.abs(c[0] - SPOT[0]) <= 1 && Math.abs(c[1] - SPOT[1]) <= 1) { mon = { x: SPOT[0] * T + 20, y: SPOT[1] * T + 24, s: 1 }; stage = 'ready';
+    $('hint').textContent = '按測試看看'; $('test').classList.remove('hide'); $('test').focus({ preventScroll: true }); } });
+$('test').onclick = function () { if (stage !== 'ready') return; stage = 'run'; t0 = performance.now(); $('test').classList.add('hide'); $('hint').textContent = '　';
+  girl = { x: -10, y: SPOT[1] * T + 34, phase: 'walk', step: 0 }; $('say').textContent = '……這是我？'; };
+function start() { requestAnimationFrame(loop); }
+
+})();
+</script>
+</html>

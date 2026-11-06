@@ -1,0 +1,109 @@
+<!doctype html><html lang="zh-Hant"><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<style>
+@import url("https://fonts.googleapis.com/css2?family=Iansui&display=swap");
+/* 水彩版共用底（同 minigame_link／minigame_affinity）：夜裡被檯燈照著的水彩紙，不規則邊與暈染用下面 SVG 的濾鏡。 */
+:root { color-scheme: light; --ink:#3b2f2c; --dim:#6e5a52; --gold:#b8862f; --paper:#f3ecdf;
+  --t:#b59ad8; --m:#7f97df; --c:#a9b844; --s:#c35366; }
+* { box-sizing: border-box; }
+html, body { margin: 0; height: 100%; overflow: hidden; touch-action: none; user-select: none; -webkit-user-select: none; -webkit-tap-highlight-color: transparent; }
+body { color: var(--ink); font-family: "Iansui", "LXGW WenKai TC", "Kaiti TC", "BiauKai", serif;
+  background: radial-gradient(70vmax 45vmax at 18% 6%, rgba(255,214,150,.55), transparent 60%),
+              radial-gradient(120vmax 80vmax at 50% 55%, #e9dfcc, #cbbda6 70%, #9c8f80); }
+body::after { content: ""; position: fixed; inset: 0; pointer-events: none; mix-blend-mode: multiply; opacity: .5;
+  background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='320' height='320'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='3'/%3E%3CfeColorMatrix values='0 0 0 0 .45 0 0 0 0 .4 0 0 0 0 .35 0 0 0 .45 0'/%3E%3C/filter%3E%3Crect width='320' height='320' filter='url(%23n)'/%3E%3C/svg%3E"); }
+body::before { content: ""; position: fixed; inset: 0; pointer-events: none; background: radial-gradient(120vmax 80vmax at 50% 45%, transparent 55%, rgba(40,30,40,.42)); }
+.say { text-align: center; padding: 0 6vw; }
+.say small { display: block; font-size: clamp(13px, 1.1vw, 16px); letter-spacing: .4em; margin-bottom: 8px; font-weight: 700; }
+.say p { margin: 0; font-size: clamp(18px, 1.8vw, 26px); letter-spacing: .1em; line-height: 1.7; }
+.hint { margin: 0; color: var(--dim); font-size: clamp(14px, 1.2vw, 18px); letter-spacing: .14em; text-align: center; min-height: 1.8em; transition: opacity .6s; }
+.btn { font: inherit; font-size: clamp(16px, 1.3vw, 19px); letter-spacing: .3em; padding: 9px 24px 9px 30px; color: var(--ink); background: none; border: 0; cursor: pointer;
+  position: relative; isolation: isolate; font-weight: 700; transition: opacity .5s, transform .2s; }
+.btn::before { content: ""; position: absolute; inset: 0; z-index: -1; background: rgba(233,207,154,.92); border-radius: 40%; filter: url(#ragged); }
+.btn:active { transform: scale(.96); }
+.btn[disabled] { opacity: .35; cursor: default; }
+.btn:focus-visible { outline: 2px solid var(--ink); outline-offset: 4px; }
+.paper { position: relative; isolation: isolate; }
+.paper::before { content: ""; position: absolute; inset: 0; z-index: -1; border-radius: 8px; filter: url(#ragged); background: var(--paper);
+  box-shadow: inset 0 0 18px rgba(150,118,92,.45), inset 0 0 3px rgba(120,92,70,.55), 0 14px 26px -14px rgba(60,40,30,.55); }
+.hide { opacity: 0; pointer-events: none; }
+@media (prefers-reduced-motion: reduce) { * { animation-duration: .01s !important; transition-duration: .01s !important; } }
+</style>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true"><defs>
+  <filter id="ragged" x="-10%" y="-20%" width="120%" height="140%"><feTurbulence type="fractalNoise" baseFrequency=".03 .07" numOctaves="3" seed="7"/><feDisplacementMap in="SourceGraphic" scale="9"/></filter>
+  <filter id="bleed" x="-60%" y="-60%" width="220%" height="220%"><feTurbulence type="fractalNoise" baseFrequency=".05" numOctaves="3" seed="2"/><feDisplacementMap in="SourceGraphic" scale="22"/><feGaussianBlur stdDeviation="2.5"/></filter>
+  <filter id="ink"><feTurbulence type="fractalNoise" baseFrequency=".05" numOctaves="2" seed="4"/><feDisplacementMap in="SourceGraphic" scale="4"/><feGaussianBlur stdDeviation=".4"/></filter>
+</defs></svg>
+<!-- 第七章〈說一半〉好感三角：她把三台裝置排在書桌上——筆電（明）在上、平板（晨）在左下、手機（詩）在右下。
+     讀 affC／affM／affS（miniGameReadVars 要列這三個）：好感最高的那位亮著、可以點，同分並列；其他人暗著看得到、點不了。
+     三人好感最高與最低相差 1 以內時，三角形中間也亮起來，點了是「你們三個，都聽我說」。這裡不再加好感。
+     larch:set ch7Route = C／M／S／ALL；result 同。直接開檔可用 ?affC=3&affM=2&affS=2 試。 -->
+<style>
+.wrap { position: fixed; inset: 0; display: grid; grid-template-rows: auto 1fr auto; justify-items: center; align-items: center; padding: 6vh 5vw 5vh; }
+svg { width: min(86vmin, 640px); height: auto; overflow: visible; }
+.dev { cursor: default; transition: opacity .8s; }
+.dev.on { cursor: pointer; } .dev.off { opacity: .28; }
+.dev .glow { opacity: 0; transition: opacity 1s; filter: url(#bleed); }
+.dev.on .glow { opacity: .75; animation: breathe 3.2s ease-in-out infinite; }
+@keyframes breathe { 50% { opacity: .45; } }
+.dev.on:hover .scr, .dev.on:focus-visible .scr { filter: brightness(1.15); }
+.dev:focus-visible { outline: none; } .dev:focus-visible .frame { stroke: var(--ink); stroke-width: 4; }
+.dev text { font-family: inherit; font-size: 26px; font-weight: 700; text-anchor: middle; letter-spacing: .1em; }
+.line { font-size: 19px !important; font-weight: 400 !important; fill: var(--dim); }
+#mid { transition: opacity .8s; }
+.edge { fill: none; stroke: #3c4566; stroke-width: 2.5; stroke-dasharray: 2 10; stroke-linecap: round; opacity: .35; filter: url(#ink); }
+.say2 { min-height: 2em; }
+</style>
+<div class="wrap">
+  <div class="say"><small style="color:var(--dim)">下午三點</small><p>這個夢，我想先跟一個人講。</p></div>
+  <svg viewBox="-40 -30 720 640" id="sv" aria-label="三台裝置排成三角形">
+    <polygon class="edge" points="320,110 110,470 530,470"/>
+    <g class="dev" id="dM" data-k="M"><ellipse class="glow" cx="320" cy="100" rx="130" ry="95" fill="var(--m)"/>
+      <rect class="frame scr" x="235" y="45" width="170" height="108" rx="8" fill="#26304f" stroke="#c9cdd8" stroke-width="5"/><path d="M215 158 h210 l-14 14 h-182z" fill="#c9cdd8"/>
+      <text x="320" y="210" fill="#4a5fa3">明</text><text class="line" x="320" y="236">「明，你聽我講，不要算。」</text></g>
+    <g class="dev" id="dC" data-k="C"><ellipse class="glow" cx="110" cy="470" rx="120" ry="100" fill="var(--c)"/>
+      <rect class="frame scr" x="40" y="410" width="140" height="104" rx="12" fill="#2c3320" stroke="#c9cdd8" stroke-width="6"/>
+      <text x="110" y="560" fill="#6b7a1e">晨</text><text class="line" x="110" y="586">「晨，我跟你說我夢到什麼。」</text></g>
+    <g class="dev" id="dS" data-k="S"><ellipse class="glow" cx="530" cy="470" rx="90" ry="110" fill="var(--s)"/>
+      <rect class="frame scr" x="497" y="405" width="66" height="128" rx="14" fill="#361c25" stroke="#c9cdd8" stroke-width="5"/>
+      <text x="530" y="572" fill="#9a2f42">詩</text><text class="line" x="530" y="598">「詩，你先不要放歌。」</text></g>
+    <g class="dev off" id="dA" data-k="ALL"><circle class="glow" cx="320" cy="350" r="90" fill="var(--gold)"/>
+      <circle class="frame" cx="320" cy="350" r="34" fill="rgba(233,207,154,.6)" stroke="#b8862f" stroke-width="3" filter="url(#ink)"/>
+      <text class="line" x="320" y="410" id="midLine">「你們三個，都聽我說。」</text></g>
+  </svg>
+  <p class="hint say2" id="hint">　</p>
+</div>
+
+<script>
+(function () {
+// Larch 介面：送 larch:ready → 收 larch:init（變數）→ larch:set 寫回 → larch:complete。直接開檔（不在 Larch 裡）也能玩，用網址參數或示範值。
+var LARCH = { v: {}, on: false,
+  set: function (n, v) { parent.postMessage({ type: 'larch:set', name: n, value: v }, '*'); },
+  done: function (r, p) { parent.postMessage({ type: 'larch:complete', result: r, payload: p || {} }, '*'); window.__done = { result: r, payload: p || {} }; },
+  num: function (k, d) { var q = new URLSearchParams(location.search).get(k); var x = q != null ? q : LARCH.v[k]; x = +x; return isFinite(x) ? x : (d || 0); },
+  param: function (k, d) { var q = new URLSearchParams(location.search).get(k); return q != null ? q : (LARCH.v[k] != null ? LARCH.v[k] : d); } };
+addEventListener('message', function (e) { var d = e.data || {}; if (d.type === 'larch:init') { LARCH.v = d.variables || {}; boot(); } });
+parent.postMessage({ type: 'larch:ready' }, '*');
+setTimeout(boot, parent === window ? 150 : 1500);
+function boot() { if (LARCH.on) return; LARCH.on = true; start(); }
+function $(id) { return document.getElementById(id); }
+var picked = false;
+function start() {
+  var a = { C: LARCH.num('affC', 0), M: LARCH.num('affM', 0), S: LARCH.num('affS', 0) };
+  var hi = Math.max(a.C, a.M, a.S), lo = Math.min(a.C, a.M, a.S), all = hi - lo <= 1;
+  ['C', 'M', 'S'].forEach(function (k) { setup($('d' + k), a[k] === hi); });
+  setup($('dA'), all);
+  $('hint').textContent = all ? '三個人都亮著。' : '先跟誰講？';
+}
+function setup(el, on) { el.classList.toggle('on', on); el.classList.toggle('off', !on);
+  if (!on) { el.setAttribute('aria-disabled', 'true'); return; }
+  el.setAttribute('role', 'button'); el.setAttribute('tabindex', '0'); el.setAttribute('aria-label', el.querySelector('.line').textContent);
+  el.addEventListener('click', function () { go(el.dataset.k); });
+  el.addEventListener('keydown', function (e) { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); go(el.dataset.k); } }); }
+function go(k) { if (picked) return; picked = true;
+  ['C', 'M', 'S', 'A'].forEach(function (x) { var el = $('d' + x); if (el.dataset.k !== k) el.classList.add('off'); });
+  $('hint').textContent = $('d' + (k === 'ALL' ? 'A' : k)).querySelector('.line').textContent;
+  LARCH.set('ch7Route', k); setTimeout(function () { LARCH.done(k, { ch7Route: k }); }, 1600); }
+
+})();
+</script>
+</html>

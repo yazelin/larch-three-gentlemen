@@ -1,0 +1,108 @@
+<!doctype html><html lang="zh-Hant"><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<style>
+@import url("https://fonts.googleapis.com/css2?family=Iansui&display=swap");
+/* 水彩版共用底（同 minigame_link／minigame_affinity）：夜裡被檯燈照著的水彩紙，不規則邊與暈染用下面 SVG 的濾鏡。 */
+:root { color-scheme: light; --ink:#3b2f2c; --dim:#6e5a52; --gold:#b8862f; --paper:#f3ecdf;
+  --t:#b59ad8; --m:#7f97df; --c:#a9b844; --s:#c35366; }
+* { box-sizing: border-box; }
+html, body { margin: 0; height: 100%; overflow: hidden; touch-action: none; user-select: none; -webkit-user-select: none; -webkit-tap-highlight-color: transparent; }
+body { color: var(--ink); font-family: "Iansui", "LXGW WenKai TC", "Kaiti TC", "BiauKai", serif;
+  background: radial-gradient(70vmax 45vmax at 18% 6%, rgba(255,214,150,.55), transparent 60%),
+              radial-gradient(120vmax 80vmax at 50% 55%, #e9dfcc, #cbbda6 70%, #9c8f80); }
+body::after { content: ""; position: fixed; inset: 0; pointer-events: none; mix-blend-mode: multiply; opacity: .5;
+  background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='320' height='320'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='3'/%3E%3CfeColorMatrix values='0 0 0 0 .45 0 0 0 0 .4 0 0 0 0 .35 0 0 0 .45 0'/%3E%3C/filter%3E%3Crect width='320' height='320' filter='url(%23n)'/%3E%3C/svg%3E"); }
+body::before { content: ""; position: fixed; inset: 0; pointer-events: none; background: radial-gradient(120vmax 80vmax at 50% 45%, transparent 55%, rgba(40,30,40,.42)); }
+.say { text-align: center; padding: 0 6vw; }
+.say small { display: block; font-size: clamp(13px, 1.1vw, 16px); letter-spacing: .4em; margin-bottom: 8px; font-weight: 700; }
+.say p { margin: 0; font-size: clamp(18px, 1.8vw, 26px); letter-spacing: .1em; line-height: 1.7; }
+.hint { margin: 0; color: var(--dim); font-size: clamp(14px, 1.2vw, 18px); letter-spacing: .14em; text-align: center; min-height: 1.8em; transition: opacity .6s; }
+.btn { font: inherit; font-size: clamp(16px, 1.3vw, 19px); letter-spacing: .3em; padding: 9px 24px 9px 30px; color: var(--ink); background: none; border: 0; cursor: pointer;
+  position: relative; isolation: isolate; font-weight: 700; transition: opacity .5s, transform .2s; }
+.btn::before { content: ""; position: absolute; inset: 0; z-index: -1; background: rgba(233,207,154,.92); border-radius: 40%; filter: url(#ragged); }
+.btn:active { transform: scale(.96); }
+.btn[disabled] { opacity: .35; cursor: default; }
+.btn:focus-visible { outline: 2px solid var(--ink); outline-offset: 4px; }
+.paper { position: relative; isolation: isolate; }
+.paper::before { content: ""; position: absolute; inset: 0; z-index: -1; border-radius: 8px; filter: url(#ragged); background: var(--paper);
+  box-shadow: inset 0 0 18px rgba(150,118,92,.45), inset 0 0 3px rgba(120,92,70,.55), 0 14px 26px -14px rgba(60,40,30,.55); }
+.hide { opacity: 0; pointer-events: none; }
+@media (prefers-reduced-motion: reduce) { * { animation-duration: .01s !important; transition-duration: .01s !important; } }
+</style>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true"><defs>
+  <filter id="ragged" x="-10%" y="-20%" width="120%" height="140%"><feTurbulence type="fractalNoise" baseFrequency=".03 .07" numOctaves="3" seed="7"/><feDisplacementMap in="SourceGraphic" scale="9"/></filter>
+  <filter id="bleed" x="-60%" y="-60%" width="220%" height="220%"><feTurbulence type="fractalNoise" baseFrequency=".05" numOctaves="3" seed="2"/><feDisplacementMap in="SourceGraphic" scale="22"/><feGaussianBlur stdDeviation="2.5"/></filter>
+  <filter id="ink"><feTurbulence type="fractalNoise" baseFrequency=".05" numOctaves="2" seed="4"/><feDisplacementMap in="SourceGraphic" scale="4"/><feGaussianBlur stdDeviation=".4"/></filter>
+</defs></svg>
+<!-- 第五章〈最後一個音〉：詩把曲子停在最後一個音前。先放一次停住的旋律，玩家從四個音裡點一個收尾（點了就聽得到整句收在那個音），按「就這個」送出。
+     larch:set：affS +1（讀 affS）、ch5Note = home／high／low／open。result 同 ch5Note。 -->
+<style>
+.wrap { position: fixed; inset: 0; display: grid; grid-template-rows: auto 1fr auto; justify-items: center; align-items: center; padding: 6vh 6vw 5vh; }
+.staff { position: relative; width: min(90vw, 720px); height: min(34vh, 260px); }
+.staff svg { width: 100%; height: 100%; overflow: visible; }
+.picks { display: flex; gap: clamp(12px, 3vw, 30px); flex-wrap: wrap; justify-content: center; margin-top: 3vh; }
+.drop { width: clamp(64px, 14vw, 92px); aspect-ratio: 1; border: 0; padding: 0; cursor: pointer; position: relative; isolation: isolate; background: none; font: inherit; color: var(--ink);
+  font-size: clamp(14px, 1.2vw, 17px); letter-spacing: .1em; transition: transform .2s; }
+.drop::before { content: ""; position: absolute; inset: 0; z-index: -1; border-radius: 50%; background: var(--s); opacity: .45; filter: url(#bleed); transition: opacity .3s; }
+.drop.on::before { opacity: .85; } .drop.on { transform: scale(1.08); color: #fff; }
+.drop:focus-visible { outline: 2px solid var(--ink); outline-offset: 6px; border-radius: 50%; }
+.foot { display: grid; justify-items: center; gap: 14px; }
+</style>
+<div class="wrap">
+  <div class="say"><small style="color:#9a2f42">詩</small><p id="say">最後一個音，妳來。</p></div>
+  <div style="display:grid;justify-items:center">
+    <div class="staff"><svg viewBox="0 0 720 260" id="st" aria-hidden="true"></svg></div>
+    <div class="picks" id="picks" role="group" aria-label="選一個音收尾"></div>
+  </div>
+  <div class="foot"><p class="hint" id="hint">先聽一次</p><button class="btn hide" id="ok" type="button">就這個</button></div>
+</div>
+
+<script>
+(function () {
+// Larch 介面：送 larch:ready → 收 larch:init（變數）→ larch:set 寫回 → larch:complete。直接開檔（不在 Larch 裡）也能玩，用網址參數或示範值。
+var LARCH = { v: {}, on: false,
+  set: function (n, v) { parent.postMessage({ type: 'larch:set', name: n, value: v }, '*'); },
+  done: function (r, p) { parent.postMessage({ type: 'larch:complete', result: r, payload: p || {} }, '*'); window.__done = { result: r, payload: p || {} }; },
+  num: function (k, d) { var q = new URLSearchParams(location.search).get(k); var x = q != null ? q : LARCH.v[k]; x = +x; return isFinite(x) ? x : (d || 0); },
+  param: function (k, d) { var q = new URLSearchParams(location.search).get(k); return q != null ? q : (LARCH.v[k] != null ? LARCH.v[k] : d); } };
+addEventListener('message', function (e) { var d = e.data || {}; if (d.type === 'larch:init') { LARCH.v = d.variables || {}; boot(); } });
+parent.postMessage({ type: 'larch:ready' }, '*');
+setTimeout(boot, parent === window ? 150 : 1500);
+function boot() { if (LARCH.on) return; LARCH.on = true; start(); }
+// 一句 D 小調的旋律（像她第一次去聽的那場聖歌），停在最後一個音前。四個收尾：回到主音、往上、往下、懸著不解決。
+var MEL = [62, 65, 69, 67, 65, 64, 65, 62, 60, 64, 65, 67, 69, 67, 65, 64];
+var END = [ { k: 'home', n: 62, label: '回家' }, { k: 'high', n: 74, label: '往上' }, { k: 'low', n: 50, label: '往下' }, { k: 'open', n: 64, label: '懸著' } ];
+var ac, pick = null, playing = false, still = matchMedia('(prefers-reduced-motion: reduce)').matches;
+function $(id) { return document.getElementById(id); }
+function hz(m) { return 440 * Math.pow(2, (m - 69) / 12); }
+function voice(m, t, d, v) { // 像遠處的合唱加管風琴：三個略失諧的三角波 + 慢起音
+  [-.06, 0, .06].forEach(function (det) { var o = ac.createOscillator(), g = ac.createGain(); o.type = 'triangle'; o.frequency.value = hz(m) * (1 + det / 100);
+    g.gain.setValueAtTime(0, t); g.gain.linearRampToValueAtTime(v / 3, t + .08); g.gain.setValueAtTime(v / 3, t + d - .12); g.gain.linearRampToValueAtTime(0, t + d + .25);
+    o.connect(g).connect(out); o.start(t); o.stop(t + d + .3); }); }
+var out;
+function ctx() { if (!ac) { ac = new (window.AudioContext || window.webkitAudioContext)(); var comp = ac.createDynamicsCompressor(); out = ac.createGain(); out.gain.value = .5;
+  var dl = ac.createDelay(), fb = ac.createGain(); dl.delayTime.value = .23; fb.gain.value = .32; out.connect(comp); out.connect(dl); dl.connect(fb); fb.connect(dl); dl.connect(comp); comp.connect(ac.destination); } if (ac.state === 'suspended') ac.resume(); }
+function staff(upto, endN) { var s = '', w = 720 / (MEL.length + 2);
+  for (var i = 0; i < 5; i++) s += '<line x1="0" x2="720" y1="' + (70 + i * 26) + '" y2="' + (70 + i * 26) + '" stroke="#3b2f2c" stroke-width="1.6" opacity=".3"/>';
+  function dot(i, m, col, op) { var y = 200 - (m - 50) * 6.2; return '<circle cx="' + (w * (i + 1)) + '" cy="' + y + '" r="10" fill="' + col + '" opacity="' + op + '" filter="url(#ink)"/>'; }
+  MEL.forEach(function (m, i) { s += dot(i, m, '#3b2f2c', i < upto ? .8 : .18); });
+  var x = w * (MEL.length + 1); s += endN == null ? '<text x="' + x + '" y="150" text-anchor="middle" font-size="40" fill="#c35366" font-family="Iansui,serif">？</text>' : dot(MEL.length, endN, '#c35366', .95);
+  $('st').innerHTML = s; }
+function play(endN) { ctx(); if (playing) return; playing = true; var t = ac.currentTime + .1, d = .42;
+  MEL.forEach(function (m, i) { voice(m, t + i * d, d, .32); setTimeout(function () { staff(i + 1, null); }, still ? 0 : i * d * 1000 + 100); });
+  var tend = MEL.length * d;
+  if (endN != null) { voice(endN, t + tend, 2.6, .4); setTimeout(function () { staff(MEL.length, endN); }, still ? 0 : tend * 1000 + 100); }
+  setTimeout(function () { playing = false; }, (tend + (endN != null ? 2.6 : .2)) * 1000); }
+function start() {
+  staff(0, null);
+  END.forEach(function (e) { var b = document.createElement('button'); b.type = 'button'; b.className = 'drop'; b.textContent = e.label; b.setAttribute('aria-label', '收在「' + e.label + '」');
+    b.onclick = function () { pick = e; [].forEach.call($('picks').children, function (x) { x.classList.toggle('on', x === b); }); $('ok').classList.remove('hide'); $('hint').textContent = '整句收在這個音'; play(e.n); };
+    $('picks').appendChild(b); });
+  $('hint').textContent = '點一下開始聽';
+  document.body.addEventListener('pointerdown', function first(ev) { document.body.removeEventListener('pointerdown', first); if (!pick && !ev.target.closest('.drop')) { $('hint').textContent = '停在這裡。選一個音收尾。'; play(null); } }, { once: true });
+  $('ok').onclick = function () { if (!pick) return; $('ok').disabled = true; LARCH.set('affS', LARCH.num('affS', 0) + 1); LARCH.set('ch5Note', pick.k);
+    $('say').textContent = pick.k === 'open' ? '……懸著喔。好，就懸著。' : '……嗯。就這個。'; setTimeout(function () { LARCH.done(pick.k, { ch5Note: pick.k }); }, 2000); };
+}
+
+})();
+</script>
+</html>
