@@ -129,10 +129,12 @@ def build(segs, ch="ch1"):
             if tails: prev = [nid]; tails = []
         elif s[0] == "mini":
             x += 400; n = base("小遊戲", x, 0)
-            html = (ROOT / f"art/ui/minigame_{ {'拉線': 'link'}[s[1]] }.html").read_text(encoding="utf-8")
-            n["data"] = {"type": "miniGame", "title": f"小遊戲：{s[1]}", "text": "親手拉出第一條線。", "miniGameHtml": html,
+            fn, txt = {"拉線": ("link", "親手拉出第一條線。"), "敲鎖": ("challenge", "敲三下中央的鎖報名。")}[s[1]]
+            html = (ROOT / f"art/ui/minigame_{fn}.html").read_text(encoding="utf-8").replace("{{CDN}}", CDN)
+            # showTitle False：不然畫面下緣會有一條「小遊戲：拉線」的標題列，很出戲
+            n["data"] = {"type": "miniGame", "title": f"小遊戲：{s[1]}", "text": txt, "miniGameHtml": html,
                          "miniGamePresentation": "fullscreen", "miniGameSkippable": True, "miniGameReadVars": [], "miniGameWriteVars": [],
-                         "miniGameFrame": {"showButton": False}, "background": bg[0], "voiceMode": "off", "stage": {"actors": []}}
+                         "miniGameAutoContinue": True, "miniGameFrame": {"showButton": False, "showTitle": False}, "background": bg[0], "voiceMode": "off", "stage": {"actors": []}}
             nodes.append(n)
             for p_ in prev: link(p_, n["id"])
             prev = [n["id"]]
