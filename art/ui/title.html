@@ -4,12 +4,12 @@
   手機直立改用直式封面（媒體庫 media:170df09c…）。
 -->
 <style>
-@import url("https://fonts.googleapis.com/css2?family=Noto+Serif+TC:wght@400;600&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Iansui&display=swap");
 :root { color-scheme: dark; --ink:#f4eee6; --dim:rgba(244,238,230,.72); --m:#8aa2ea; --c:#c8d45a; --s:#cf5a6c; --gold:#e9cf9a; }
 * { box-sizing: border-box; }
 html, body { margin: 0; height: 100%; background: #070912; }
 .cover { position: relative; min-height: 100dvh; overflow: hidden; color: var(--ink);
-  font-family: "Noto Serif TC", "Songti TC", "Source Han Serif TC", "PMingLiU", serif; }
+  font-family: "Iansui", "LXGW WenKai TC", "Kaiti TC", serif; }
 .art { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; object-position: 62% 50%; pointer-events: none; }
 .art-p { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; object-position: 50% 30%; pointer-events: none; display: none; }
 /* 左側夜空壓暗一點，書名才讀得到；右下角留給她 */
@@ -25,9 +25,10 @@ html, body { margin: 0; height: 100%; background: #070912; }
 
 .content { position: absolute; left: 6vw; top: 10vh; bottom: 8vh; display: flex; flex-direction: column; justify-content: space-between; }
 .title { display: flex; flex-direction: row-reverse; justify-content: flex-end; gap: clamp(10px, 1.4vw, 22px); margin: 0; }
-.title span { writing-mode: vertical-rl; font-weight: 600; font-size: clamp(24px, 3.1vw, 50px); letter-spacing: .2em; line-height: 1;
+.larch-project-font body .title, .title { font-family: "Iansui", "Kaiti TC", serif !important; }
+.title span { filter: url(#inkbleed); writing-mode: vertical-rl; font-weight: 600; font-size: clamp(24px, 3.1vw, 50px); letter-spacing: .2em; line-height: 1;
   text-shadow: 0 2px 22px rgba(0,0,0,.75); }
-.title b { font-weight: 700; color: var(--k); text-shadow: 0 0 .35em var(--k), 0 2px 22px rgba(0,0,0,.75); }
+.title b { font-weight: 700; color: color-mix(in srgb, var(--k) 80%, #fff); text-shadow: 0 0 .25em var(--k), 0 0 .7em color-mix(in srgb, var(--k) 70%, transparent), 0 2px 22px rgba(0,0,0,.75); }
 .title .tm { --k: var(--m); } .title .tc { --k: var(--c); } .title .ts { --k: var(--s); margin-top: 1.6em; }
 .sub { margin: 18px 0 0; font-size: clamp(13px, 1.05vw, 17px); letter-spacing: .32em; color: var(--dim); }
 .poem { margin: 6px 0 0; font-size: clamp(11px, .8vw, 13px); letter-spacing: .2em; color: rgba(244,238,230,.5); }
@@ -60,6 +61,7 @@ button[hidden] { display: none; }
   button, button::after { transition: none; }
 }
 </style>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true"><filter id="inkbleed" x="-10%" y="-10%" width="120%" height="120%"><feTurbulence type="fractalNoise" baseFrequency=".55" numOctaves="2" seed="3" result="n"/><feDisplacementMap in="SourceGraphic" in2="n" scale="1.8"/><feGaussianBlur stdDeviation=".55"/></filter></svg>
 <main class="cover">
   <img class="art" data-larch-slot="cover" alt="">
   <img class="art-p" data-larch-asset="media:170df09c-ab39-41ba-b69d-8fa867e2c995" alt="">

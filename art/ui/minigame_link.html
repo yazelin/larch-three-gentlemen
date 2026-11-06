@@ -49,6 +49,10 @@ svg.wires { position: fixed; inset: 0; width: 100%; height: 100%; overflow: visi
 .card b { display: block; font-weight: 700; font-size: clamp(15px, 1.25vw, 19px); letter-spacing: .24em; line-height: 1.3; }
 .card span { display: block; margin-top: 6px; font-size: clamp(12px, .92vw, 14px); letter-spacing: .12em; color: var(--dim); }
 .card.lit::after { opacity: .85; left: 4px; width: 22px; }
+.card .halo { position: absolute; z-index: -3; left: -38%; right: -38%; top: -95%; bottom: -95%; border-radius: 50%; pointer-events: none;
+  background: radial-gradient(closest-side, color-mix(in srgb, var(--k) 85%, transparent) 0%, color-mix(in srgb, var(--k) 55%, transparent) 45%, transparent 100%);
+  filter: url(#bleed); mix-blend-mode: multiply; opacity: 0; transform: scale(.35); transition: opacity 1.4s ease, transform 2.2s cubic-bezier(.2,.7,.2,1); }
+.card.lit .halo { opacity: .8; transform: scale(1); }
 #a { --k: var(--t); --r: -1.2deg; } #b { --k: var(--m); --r: .8deg; } #c { --k: var(--c); --r: 1.4deg; } #d { --k: var(--s); --r: -.9deg; }
 
 .port { position: absolute; top: 50%; width: 44px; height: 44px; margin-top: -22px; display: grid; place-items: center;
@@ -98,12 +102,12 @@ svg.wires { position: fixed; inset: 0; width: 100%; height: 100%; overflow: visi
 <div class="vignette"></div>
 <p class="label">妳的白板．第一條線</p>
 
-<div class="card" id="a"><b>開場</b><span>還沒取名的遊戲</span>
+<div class="card" id="a"><i class="halo"></i><b>開場</b><span>還沒取名的遊戲</span>
   <button class="port out hot" id="pa" aria-label="從開場拉一條線到對話框（按 Enter 直接接上）"></button></div>
-<div class="card" id="b"><b>對話框</b><span>M 剛寫好的</span>
+<div class="card" id="b"><i class="halo"></i><b>對話框</b><span>M 剛寫好的</span>
   <i class="port in hot" id="pb"></i><i class="port out" id="pbo"></i></div>
-<div class="card" id="c"><b>人物</b><span>C 在等妳說要畫誰</span><i class="port in" id="pc"></i></div>
-<div class="card" id="d"><b>〈tea leaves〉</b><span>S 做的歌</span><i class="port in" id="pd"></i></div>
+<div class="card" id="c"><i class="halo"></i><b>人物</b><span>C 在等妳說要畫誰</span><i class="port in" id="pc"></i></div>
+<div class="card" id="d"><i class="halo"></i><b>〈tea leaves〉</b><span>S 做的歌</span><i class="port in" id="pd"></i></div>
 
 <p class="hint" id="hint">從「開場」的接點，拉一條線到「對話框」。</p>
 

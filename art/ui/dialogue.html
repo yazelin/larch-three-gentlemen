@@ -14,8 +14,13 @@ html, body { margin: 0; background: transparent; overflow: hidden; }
 /* 淡墨暈染（yazelin 2026-11-06 選 D）：一抹偏紫的靛藍從下緣往上淡到全透明，接進 CG 看不到邊；
    紙紋已經疊在每張 CG 上（tools/paper.py），這裡不另外加紋。左側帶一點說話者的顏色。 */
 .box::after { content: ""; position: absolute; z-index: -1; left: 0; right: 0; top: 0; bottom: 0; pointer-events: none;
-  background: radial-gradient(40% 55% at 22% 90%, color-mix(in srgb, var(--k, var(--gold)) 15%, transparent) 0%, transparent 100%),
-              linear-gradient(to top, rgba(30,27,54,.82) 0%, rgba(38,34,66,.72) 45%, rgba(46,40,78,.55) 100%);
+  background: linear-gradient(to top, rgba(30,27,54,.82) 0%, rgba(38,34,66,.72) 45%, rgba(46,40,78,.55) 100%);
+  -webkit-mask-image: linear-gradient(to top, transparent 0, rgba(0,0,0,.6) 18px, #000 44px, #000 calc(100% - 120px), rgba(0,0,0,.8) calc(100% - 96px), rgba(0,0,0,.55) calc(100% - 72px), rgba(0,0,0,.3) calc(100% - 48px), rgba(0,0,0,.12) calc(100% - 24px), transparent 100%), linear-gradient(90deg, transparent 0, #000 12%, #000 88%, transparent 100%);
+          mask-image: linear-gradient(to top, transparent 0, rgba(0,0,0,.6) 18px, #000 44px, #000 calc(100% - 120px), rgba(0,0,0,.8) calc(100% - 96px), rgba(0,0,0,.55) calc(100% - 72px), rgba(0,0,0,.3) calc(100% - 48px), rgba(0,0,0,.12) calc(100% - 24px), transparent 100%), linear-gradient(90deg, transparent 0, #000 12%, #000 88%, transparent 100%);
+  -webkit-mask-composite: source-in; mask-composite: intersect; }
+/* 說話者的顏色：用 screen 疊，只會把底提亮一點，不會把畫弄髒 */
+.box::before { content: ""; position: absolute; z-index: -1; inset: 0; pointer-events: none; mix-blend-mode: screen;
+  background: radial-gradient(38% 60% at 20% 88%, color-mix(in srgb, var(--k, var(--gold)) 22%, transparent) 0%, transparent 100%);
   -webkit-mask-image: linear-gradient(to top, transparent 0, rgba(0,0,0,.6) 18px, #000 44px, #000 calc(100% - 120px), rgba(0,0,0,.8) calc(100% - 96px), rgba(0,0,0,.55) calc(100% - 72px), rgba(0,0,0,.3) calc(100% - 48px), rgba(0,0,0,.12) calc(100% - 24px), transparent 100%), linear-gradient(90deg, transparent 0, #000 12%, #000 88%, transparent 100%);
           mask-image: linear-gradient(to top, transparent 0, rgba(0,0,0,.6) 18px, #000 44px, #000 calc(100% - 120px), rgba(0,0,0,.8) calc(100% - 96px), rgba(0,0,0,.55) calc(100% - 72px), rgba(0,0,0,.3) calc(100% - 48px), rgba(0,0,0,.12) calc(100% - 24px), transparent 100%), linear-gradient(90deg, transparent 0, #000 12%, #000 88%, transparent 100%);
   -webkit-mask-composite: source-in; mask-composite: intersect; }

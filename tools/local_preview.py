@@ -10,7 +10,7 @@ p = proj.get("project", proj)
 board = json.loads((ROOT / "dist/board_ch1.json").read_text(encoding="utf-8"))
 p["boards"] = [{"id": lb.BOARD, "kind": "story", "mode": "story", "name": "第一章　茶", "description": "", "nodes": board["nodes"], "edges": board["edges"]}]
 s = p.setdefault("settings", {})
-s.update({"arrowKeyBack": True, "arrowKeyNext": True})
+s.update({"arrowKeyBack": True, "arrowKeyNext": True, "stageFit": "cover"})
 s.setdefault("dialogueUi", {})["fontFamily"] = "iansui"   # 芫荽手寫字（同 larch_build.py）   # 左右鍵翻頁：預設關，要明寫才開
 for part, fn in {"title": "title.html", "dialogue": "dialogue.html", "choices": "choices.css", "menu": "menu.css", "gallery": "gallery.css"}.items():
     s.setdefault("customInterfaces", {})[part] = {"enabled": True, "html": (ROOT / "art/ui" / fn).read_text(encoding="utf-8")}
