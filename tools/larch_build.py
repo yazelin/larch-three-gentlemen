@@ -24,7 +24,7 @@ VIDEOS = ROOT / "art/video/media.json"     # "cg|運鏡" → {mediaId, url}，to
 def video_layer(key):
     m = json.loads(VIDEOS.read_text()) if VIDEOS.exists() else {}
     if key not in m: raise SystemExit(f"缺運鏡影片 {key}，先跑 tools/motion.py")
-    return {"id": "v-" + key.replace("|", "-"), "mediaId": m[key]["mediaId"], "url": m[key]["url"], "fill": True, "videoLoop": False, "volume": 0}
+    return {"id": "v-" + key.replace("|", "-"), "mediaId": m[key]["mediaId"], "url": m[key]["url"], "fill": True, "fit": "cover", "videoLoop": False, "volume": 0}   # fit 預設 contain，寬螢幕會留黑邊
 
 # ---------- 第一步：劇本 → 段落 ----------
 def segments(md):
