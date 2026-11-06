@@ -5,7 +5,7 @@
 # 產出在 art/gen/ch1/<id>.png；驗收過的才轉成 art/cg/<id>.jpg。
 import json, os, subprocess, sys, pathlib, concurrent.futures as cf
 ROOT = pathlib.Path(__file__).resolve().parent.parent
-sys.path.insert(0, str(ROOT / "art/cg")); from ch1_shots import S, GAZE
+sys.path.insert(0, str(ROOT / "art/cg")); from ch1_shots import S, GAZE, SETUP, SETUP_DESC, SEATING
 OUT, PR = ROOT / "art/gen/ch1", ROOT / "art/cg/ch1"
 REF = "canon/refs/"
 SHEET = {"t": REF + "tea.jpg", "c": REF + "c.jpg", "m": REF + "m.jpg", "s": REF + "s.jpg"}
@@ -41,14 +41,15 @@ def refs_for(i):
         names = ["the MASTER FRAME of this shot (reproduce it)"] + [NAME[w] for w in dict.fromkeys(who) if w in SHEET]
         return files, names
     if k in ("desk", "insert", "room"):
-        files = [REF + "style_anchor.jpg", REF + "desk.jpg", REF + "prop_tea.jpg", REF + "prop_phone.jpg", REF + "prop_laptop_tablet.jpg",
+        setref = REF + (f"set_desk_{SETUP[i]}.jpg" if i in SETUP else "set_desk_A.jpg")
+        files = [REF + "style_anchor.jpg", setref, REF + "prop_tea.jpg", REF + "prop_phone.jpg", REF + "prop_laptop_tablet.jpg",
                  SHEET["t"]] + ([] if k == "room" else [SHEET["c"], SHEET["m"], SHEET["s"]])
-        names = ["STYLE ANCHOR (rendering only)", "APPROVED bedroom/desk reference (room layout and furniture only; IGNORE what its laptop and tablet screens show, never copy that diagram)", "PROP: her iced black tea", "PROP: her smartphone",
+        names = ["STYLE ANCHOR (rendering only)", "EMPTY SET from this shot's exact camera setup: keep this camera position, framing and every piece of furniture and object exactly where it is; its screens are off only because the set is empty", "PROP: her iced black tea", "PROP: her smartphone",
                  "PROP: her laptop (left) and tablet on its folio stand (right)", NAME["t"]] + ([] if k == "room" else [NAME["c"], NAME["m"], NAME["s"]])
         return files, names
     if k == "studio":
-        files = [REF + "style_anchor.jpg", REF + "studio.jpg", REF + "prop_tea.jpg", SHEET["t"], SHEET["c"], SHEET["m"], SHEET["s"]]
-        names = ["STYLE ANCHOR (rendering only)", "APPROVED studio reference (room layout only)", "PROP: her iced black tea", NAME["t"], NAME["c"], NAME["m"], NAME["s"]]
+        files = [REF + "style_anchor.jpg", REF + f"set_studio_{SETUP.get(i, 'A')}.jpg", REF + "prop_tea.jpg", SHEET["t"], SHEET["c"], SHEET["m"], SHEET["s"]]
+        names = ["STYLE ANCHOR (rendering only)", "EMPTY STUDIO SET from this shot\'s camera setup (direction and room layout; the shot may frame tighter)", "PROP: her iced black tea", NAME["t"], NAME["c"], NAME["m"], NAME["s"]]
         return files, names
     who = d["who"] or "t"
     files = [REF + "style_anchor.jpg"] + [SHEET[w] for w in who]
@@ -72,6 +73,10 @@ def prompt(i):
     if d["kind"] in ("desk", "studio", "free") and (d["kind"] != "free" or d["who"] not in ("", "t")): parts.append(CAST)
     if d["kind"] in ("desk", "insert", "room"): parts.append(PROPS)
     if d["kind"] == "room": parts.append("SCREENS OFF (very important): the humanoid interface does not exist yet. The laptop and tablet screens are switched OFF — solid black glass with only a faint reflection of the lamp — and NOBODY appears on any device. The three men are NOT in this picture at all.")
+    if d["kind"] == "studio":
+        parts.append(SETUP_DESC["s" + SETUP.get(i, "A")] + ". Image 2 is the empty studio from this setup: keep its camera DIRECTION and every piece of furniture where it is (one long table, four chairs); the FRAMING is this shot's own, move closer along the same direction as the shot describes. " + SEATING)
+    if d["kind"] in ("desk", "insert", "room"):
+        parts.append((SETUP_DESC[SETUP[i]] if i in SETUP else SETUP_DESC["A"]) + ". Image 2 is the empty set seen from this camera setup. Keep its camera DIRECTION and the room exactly as laid out there: the same ONE desk, every object in the same place (left to right on the desk: lamp and books, laptop, tea glass on its coaster, tablet on its stand; the phone in front of the tea glass or propped against it). Never add a second desk, never move or duplicate an object. The FRAMING is this shot's own (close-up, extreme close-up, low angle, over-the-shoulder): move the camera closer or lower along the same direction as the shot describes; do not widen it back to Image 2's framing.")
     parts.append(d["body"])
     if d["kind"] == "desk": parts.append(AI)
     if d["kind"] != "free": parts.append(TIME[d["time"]])
