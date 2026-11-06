@@ -1,32 +1,40 @@
-# 配樂：走 gemini-web /api/music（網址讀 ~/larch-eleven-minutes/art/music.py 的 URL，金鑰讀 ~/.bashrc 的 GEMINI_IMAGE_KEY，都不進 repo）
-#   python3 tools/music.py 名字…   → art/music_raw/<名字>.mp3，再正規化到 art/bgm/<名字>.mp3（-16 LUFS）
-import base64, json, os, re, ssl, subprocess, sys, urllib.request
-ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+# 配樂：走 .11 的 gemini-web /api/music（Lyria）。不用 suno-web（yazelin 2026-11-03）。
+#   python3 tools/music.py <名字>   → art/music_raw/<名字>.mp3（原始）→ art/bgm/<名字>.mp3（-16 LUFS、尾巴淡出）
+# 服務網址從 ~/larch-eleven-minutes/art/music.py 讀（同 ~/larch-handoff/tools/run_local.sh），金鑰讀 ~/.bashrc 的 GEMINI_IMAGE_KEY，都不進 repo。
+import base64, json, os, re, ssl, subprocess, sys, urllib.request, pathlib
+ROOT = pathlib.Path(__file__).resolve().parent.parent
 TRACKS = {
-    "main_theme": "Main title theme for a romantic otome visual novel: a tender, heart-fluttering melody on warm felt piano carried by soft strings, a delicate music box and a gentle celesta, "
-                  "the night sky slowly turning to dawn, a young woman and three men who quietly fell for her, sweet and a little bittersweet, hopeful, cinematic but intimate, "
-                  "built on the same tender rising four-note motif, 76 BPM, major key with a wistful minor turn, instrumental, no vocals, no choir, no organ, no drums, seamless loop",
-    "night_desk": "A single soft felt piano alone in a quiet room at midnight, sparse gentle notes with long pauses, a tender rising four-note motif, "
-                  "a young woman alone at her desk waiting for something to begin, lonely but quietly hopeful, intimate, 66 BPM, instrumental, no vocals, no drums, loopable",
-    "studio_day": "Warm felt piano and soft fingerpicked acoustic guitar with light pizzicato strings and a gentle glockenspiel, a bright sunlit studio where four friends brainstorm, "
-                  "playful curiosity and a little flutter of the heart, the same tender four-note motif, 92 BPM, major key, instrumental, no vocals, loopable",
+    "ch2/tomorrow_i_write": dict(vocals="vocals", prompt=(
+        "A solemn sacred hymn for a mixed SATB church choir with a grand pipe organ, cathedral reverb, slow and majestic, 66 BPM, "
+        "sung completely seriously in Mandarin Chinese — but the lyrics are a student's confession of procrastination, so it is comically over-dramatic. "
+        "Organ introduction, then the choir enters in full harmony; the last line repeats 'míngtiān' three times with a long held final chord. "
+        "Lyrics (Mandarin, sing exactly): 白紙攤在桌上，題目寫得清清楚楚／主啊，我知道我該寫／可是今晚，請讓我再拉一條線／明天，明天，明天我一定寫。")),
 }
-def key():
-    for l in open(os.path.expanduser("~/.bashrc"), encoding="utf-8"):
-        if l.startswith("export GEMINI_IMAGE_KEY="): return l.split("=", 1)[1].strip().strip('"')
-URL = re.search(r"^URL = '([^']+)'", open(os.path.expanduser("~/larch-eleven-minutes/art/music.py"), encoding="utf-8").read(), re.M)[1]
-for name in sys.argv[1:]:
-    raw, out = f"{ROOT}/art/music_raw/{name}.mp3", f"{ROOT}/art/bgm/{name}.mp3"
-    os.makedirs(os.path.dirname(raw), exist_ok=True)
-    for n in range(4):
-        try:
-            r = urllib.request.Request(URL, method="POST", data=json.dumps({"prompt": TRACKS[name], "timeout": 720}).encode(),
-                                       headers={"Content-Type": "application/json", "x-goog-api-key": key()})
-            d = json.load(urllib.request.urlopen(r, timeout=900, context=ssl._create_unverified_context()))
-        except Exception as e: print(name, "例外", repr(e)[:120], flush=True); continue
+
+def cfg():
+    url = re.search(r"^URL = '([^']+)'", (pathlib.Path.home() / "larch-eleven-minutes/art/music.py").read_text(), re.M)[1]
+    key = next(l.split("=", 1)[1].strip().strip('"') for l in open(os.path.expanduser("~/.bashrc"), encoding="utf-8") if l.startswith("export GEMINI_IMAGE_KEY="))
+    return url, key
+
+def gen(name, tries=4):
+    url, key = cfg(); t = TRACKS[name]
+    raw = ROOT / f"art/music_raw/{name}.mp3"; raw.parent.mkdir(parents=True, exist_ok=True)
+    for n in range(tries):
+        body = {"prompt": t["prompt"], "timeout": 720, "vocals": t["vocals"]}
+        req = urllib.request.Request(url, method="POST", data=json.dumps(body).encode(), headers={"Content-Type": "application/json", "x-goog-api-key": key})
+        try: d = json.load(urllib.request.urlopen(req, timeout=900, context=ssl._create_unverified_context()))
+        except Exception as e: print(f"{name} 第{n+1}次 例外 {e!r}", flush=True); continue
         if d.get("success"):
-            open(raw, "wb").write(base64.b64decode(d["audio"])); break
-        print(name, "失敗", (d.get("message") or d.get("error") or "")[:80], flush=True)
-    else: print(name, "四次都失敗"); continue
-    subprocess.run(["ffmpeg", "-y", "-loglevel", "error", "-i", raw, "-af", "loudnorm=I=-16:TP=-1.5:LRA=11", "-b:a", "192k", out], check=True)
-    print(name, "好了", out, flush=True)
+            raw.write_bytes(base64.b64decode(d["audio"])); print(f"{name} 好了", flush=True); return raw
+        print(f"{name} 第{n+1}次 失敗 {d.get('message') or d.get('error')}", flush=True)
+    raise SystemExit(f"{name} 失敗")
+
+def master(name):
+    raw, out = ROOT / f"art/music_raw/{name}.mp3", ROOT / f"art/bgm/{name}.mp3"; out.parent.mkdir(parents=True, exist_ok=True)
+    dur = float(subprocess.run(["ffprobe", "-v", "error", "-show_entries", "format=duration", "-of", "csv=p=0", str(raw)], capture_output=True, text=True).stdout)
+    subprocess.run(["ffmpeg", "-y", "-loglevel", "error", "-i", str(raw), "-af", f"loudnorm=I=-16:TP=-1.5:LRA=11,afade=t=out:st={max(0, dur - 3):.2f}:d=3",
+                    "-ar", "44100", "-b:a", "160k", str(out)], check=True)
+    print("→", out.relative_to(ROOT), f"{dur:.0f} 秒")
+
+if __name__ == "__main__":
+    for n in sys.argv[1:] or TRACKS: gen(n); master(n)

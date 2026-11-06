@@ -26,6 +26,9 @@ TIME = {
     "t1": "TIME: 11:40 p.m. The warm desk lamp is the only lamp; the room is deep blue shadow; the city outside still has many lit windows. The iced tea is half melted: a few small ice cubes left, condensation on the glass.",
     "t3": "TIME: 3 a.m. The desk lamp is the only light; deep blue shadow; only a few windows still lit outside. The tea glass contains NO ice at all (melted hours ago), condensation running down the glass.",
     "t4": "TIME: past 4 a.m. The desk lamp is the only light; deep blue night; outside almost every window is dark. The tea glass is nearly empty, no ice, a ring of water on the coaster.",
+    "n9": "TIME: 9 p.m., early in the night. The warm desk lamp is on and the ceiling light is off; the room is soft blue dusk-dark; the city outside has many lit windows. The iced tea is freshly poured: the glass is full of clear ice cubes, light condensation.",
+    "n11": "TIME: 11 p.m. The warm desk lamp is the only lamp; the room is deep blue shadow; the city outside still has many lit windows. The iced tea is half melted: a few small ice cubes left, condensation on the glass.",
+    "a239": "TIME: 2:39 a.m. Every lamp in the room is OFF; the room is almost black, deep blue-black shadow; the only light is the cool glow of the phone screen (and, where described, the laptop screen); outside the window only a few windows are still lit.",
     "day": "TIME: daytime in the studio (the heroine's inner workspace): bright soft white daylight from tall grid windows, plants, warm wood, floating dust in the light shafts. All four are physically together in this room (this is the only place where they can be).",
 }
 STYLE = """STYLE: the rendering of the first reference image (TRANSPARENT WATERCOLOUR anime illustration: clearly visible cold-press paper grain everywhere, soft pigment blooms and granulation, wet-in-wet edges, gentle colour bleeding, delicate thin line art, slightly muted watercolour palette; NOT clean digital cel shading, NOT glossy, NOT airbrushed), finished to the level of a cinematic FILM STILL for an ADULT audience: realistic adult proportions, restrained acting, rich light with clear contrast, carefully rendered materials (wood grain, glass, condensation, knit, wool, brushed metal), a detailed believable background where it is in focus, a clear focal point, deliberate colour grade. Watercolour is the medium, never an excuse for vagueness. No chibi, no manga symbols, no sweat drops, no exaggerated cartoon faces.
@@ -50,6 +53,11 @@ def refs_for(i):
         who = d["who"] or ("tcms" if S[d["base"]]["kind"] in ("desk",) else "t" + (S[d["base"]]["who"] or "cms"))
         files = [str(base)] + [SHEET[w] for w in dict.fromkeys(who) if w in SHEET]
         names = ["the MASTER FRAME of this shot (reproduce it)"] + [NAME[w] for w in dict.fromkeys(who) if w in SHEET]
+        return files, names
+    if k == "bed":   # 床上的戲：空景用看得到床的機位，只送她與手機道具
+        files, names = [REF + f"set_desk_{SETUP.get(i, 'D')}.jpg"], ["EMPTY SET of her room (the bed with the blue plaid duvet and white pillow, the desk by the window, the wardrobe): the room and the rendering to match; this shot's camera is above the bed"]
+        files += [REF + "prop_phone_stand.jpg"]; names += ["PROP: her smartphone (ignore the stand; here the phone is in her hands)"]
+        for w in present(i): files.append(SHEET[w]); names.append(NAME[w])
         return files, names
     if k in ("desk", "insert", "room", "studio"):
         # 2026-11-06 yazelin：背景東西位置都錯。原因是第一張送了畫風參考（封面，本身是一張有書桌和裝置的完整場景），模型照它擺背景。
@@ -102,6 +110,9 @@ def prompt(i):
         parts.append(SETUP_DESC["s" + SETUP.get(i, "A")] + ". The EMPTY STUDIO SET image is this setup: keep its camera DIRECTION and every piece of furniture where it is (one long table, four chairs); the FRAMING is this shot's own, move closer along the same direction as the shot describes. " + SEATING)
     if d["kind"] in ("desk", "insert", "room"):
         parts.append((SETUP_DESC[SETUP[i]] if i in SETUP else SETUP_DESC["A"]) + ". The EMPTY SET image is the room seen from this camera setup. Keep its camera DIRECTION and the room exactly as laid out there: the same ONE desk, every object in the same place (left to right on the desk: lamp and books, laptop, tea glass on its coaster, tablet on its stand; the phone in front of the tea glass or standing in its small wooden stand). Never add a second desk, never move or duplicate an object. The FRAMING is this shot's own (close-up, extreme close-up, low angle, over-the-shoulder): move the camera closer or lower along the same direction as the shot describes; do not widen it back to the empty set's framing.")
+    if d["kind"] == "bed":
+        parts.append(PROPS)
+        parts.append("The EMPTY SET image is her room: the bed against the wall under the bookshelf, with the blue plaid duvet and the white pillow, the desk by the window. Keep that bed, duvet pattern and room exactly; the FRAMING is this shot's own (the camera is above the bed). The three men are NOT in this picture.")
     parts.append(d["body"])
     if i in FIX: parts.append(FIX[i])
     if d["kind"] == "desk": parts.append(AI)
