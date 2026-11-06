@@ -16,7 +16,7 @@
         "金色新月墜項鍊，墜子掛在胸前；從背後拍時只看到頸後一條細金鍊",
         "雙耳金色垂墜耳鍊",
         "米白色寬大短袖 T 恤，深炭灰寬版工作褲（有口袋與垂繩），白球鞋",
-        "手腕上的串珠手環",
+        "兩手手腕各戴兩串串珠手環（深紫珠與珍珠白珠），左右都有",
         "瞳色：柔和的淺棕色，帶一點紅棕（四人裡最淺、最暖）"
       ],
       "must_not": [
@@ -41,7 +41,7 @@
         "炭灰西裝外套敞開、袖子捲到前臂，白襯衫敞領、不打領帶",
         "左胸口袋一條深藍口袋巾（他唯一的藍）",
         "左翻領金色齒輪胸針帶一條短鏈",
-        "左腕棕色錶帶手錶，黑皮帶，炭灰西褲，黑皮鞋",
+        "手錶只戴在左腕（棕色皮錶帶），右腕不戴，黑皮帶，炭灰西褲，黑皮鞋",
         "瞳色：灰褐色，偏冷的灰，看起來近乎灰色"
       ],
       "must_not": [
@@ -313,11 +313,11 @@
       "name": "道具：茶語的手機",
       "ref": "canon/refs/prop_phone.jpg",
       "desc": "PROP reference: her smartphone",
-      "text_spec": "Her smartphone: an ordinary modern smartphone with normal proportions — about 7 cm wide and 15 cm tall (height roughly twice the width), about 8 mm thick, NOT stretched, NOT elongated. Rounded corners, a slim SOLID silver aluminium frame, a fully OPAQUE black glass front: the screen is a solid surface and nothing behind or under the phone ever shows through it. Back: matte silver with a small square two-lens camera bump at the top left. When it lies flat on a desk it looks like a thin flat slab with correct perspective.",
+      "text_spec": "Her smartphone: industrial design of a recent iPhone (flat aluminium side frame, rounded corners, flat front glass, small pill-shaped cut-out at the top of the screen; on the back a square camera module at the TOP LEFT with two lenses placed diagonally and a small flash). Colour: soft pale LAVENDER back glass and matching lavender frame. Real proportions about 7 x 15 cm. NO logo anywhere.",
       "must": [
-        "一般手機比例：寬約 7 公分、高約 15 公分",
-        "銀色鋁框、背面左上方雙鏡頭",
-        "螢幕不透明"
+        "iPhone 外型、淡紫色背板與邊框",
+        "背面左上方形鏡頭模組、兩顆鏡頭斜排",
+        "不畫任何商標"
       ],
       "must_not": [
         "拉長變形",
@@ -329,9 +329,10 @@
     "prop_laptop": {
       "name": "道具：筆電（明住的地方）",
       "ref": "canon/refs/prop_laptop_tablet.jpg",
-      "text_spec": "Her laptop: an ordinary 14-inch laptop with a thin SILVER aluminium body, a slim black bezel around the screen, silver keyboard deck with dark keys and a plain trackpad, no logo, no stickers. It sits open on the desk at a normal angle. The screen is solid and opaque.",
+      "text_spec": "Her laptop: industrial design of a recent 13-inch MacBook Air (very thin flat aluminium body, rounded corners, thin black bezel with a small notch, full-width black keyboard, large trackpad), pale STARLIGHT (light champagne-silver) aluminium. NO logo on the lid.",
       "must": [
-        "銀色鋁殼、黑色窄邊框、無 logo"
+        "13 吋 MacBook Air 外型、星光色",
+        "上蓋不畫商標"
       ],
       "must_not": [
         "黑色機身",
@@ -342,10 +343,11 @@
     "prop_tablet": {
       "name": "道具：平板（晨住的地方）",
       "ref": "canon/refs/prop_laptop_tablet.jpg",
-      "text_spec": "Her tablet: an ordinary 11-inch tablet with a slim silver edge and a black bezel, held in LANDSCAPE on a dark charcoal-grey folio cover that is folded into a triangle stand behind it. Correct proportions (about 3:2), not stretched. The screen is solid and opaque.",
+      "text_spec": "Her tablet: industrial design of a recent 11-inch iPad Air (flat aluminium edges, rounded corners, even thin black bezels), pale starlight colour, in LANDSCAPE resting in a dark charcoal-grey folio cover folded into a triangle stand behind it. NO logo.",
       "must": [
-        "銀邊黑框、橫放",
-        "深灰色折疊保護套撐成三角立架"
+        "11 吋 iPad Air 外型、星光色、橫放",
+        "深灰色折疊保護套撐成三角立架",
+        "不畫商標"
       ],
       "must_not": [
         "拉長變形",
@@ -370,7 +372,9 @@
     "這是大人的故事，是視覺小說，不是兒童繪本：成人頭身、表演克制（眼神、呼吸、停頓），不用鼓臉跳腳嘟嘴與漫畫符號；畫面像電影劇照，有明暗對比、留白與主色調，淡水彩只是筆觸。",
     "三位先生是 AI：現實層的螢幕裡沒有房間、書櫃、窗戶，他身後是他自己光色的柔和抽象空間（明深藍、晨淡黃綠、詩暗酒紅）帶細微光點，螢幕內緣有一圈很淡的介面光；不是視訊通話。像真人同處一室只發生在工作室層。",
     "螢幕裡的人不擺姿勢：不托腮、不對鏡頭笑，視線落在她身上或自己的事上。冰紅茶到深夜就沒有冰塊。",
-    "瞳色固定（2026-11-06 yazelin 要求核對）：茶語淺棕帶紅棕、明灰褐偏灰、晨暖棕、詩亮琥珀金。小特徵會漂，每張有人入鏡的 CG 都要對瞳色"
+    "瞳色固定（2026-11-06 yazelin 要求核對）：茶語淺棕帶紅棕、明灰褐偏灰、晨暖棕、詩亮琥珀金。小特徵會漂，每張有人入鏡的 CG 都要對瞳色",
+    "工作室（她腦中開會的地方）不放手機；冰紅茶照會議進度慢慢變少（2026-11-06 yazelin 選）",
+    "工作室裡明用他自己的太空灰筆電（上蓋背面一枚小金齒輪貼紙，無商標）；她的三台裝置不出現在工作室（2026-11-06 yazelin）"
   ],
   "lineup": {
     "ref": "canon/refs/lineup.jpg",
