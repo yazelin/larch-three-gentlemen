@@ -1,23 +1,24 @@
 /* larch-skill-part: gallery */
-/* @larch-params { "gold": { "type": "color", "label": "主色", "default": "#e9cf9a" } } */
-/* 回憶（CG 收藏）與章節：夜空底，上緣一抹朝霞；還沒看過的格子是一塊沒亮的螢幕。 */
-:scope { background: radial-gradient(ellipse 80% 45% at 50% -10%, rgba(207,90,108,.18), transparent 60%), radial-gradient(ellipse 70% 60% at 50% 0%, #182040, #0b0e1c 60%, #070912) !important; color: #f4eee6; }
-[data-larch-ui="screen-header"] { background: transparent !important; border-bottom-color: rgba(233,207,154,.18) !important; }
-[data-larch-ui="screen-header"] h1 { letter-spacing: .3em; font-weight: 600; }
-[data-larch-ui="screen-header"] small, [data-larch-ui="screen-header"] p { color: rgba(244,238,230,.55); letter-spacing: .2em; }
-[data-larch-ui="screen-back"], [data-larch-ui="screen-close"] { border: 1px solid rgba(233,207,154,.3) !important; border-radius: 2px !important; background: #11152a !important; color: #f4eee6 !important; }
-[data-larch-ui="screen-back"]:hover, [data-larch-ui="screen-close"]:hover, [data-larch-ui="screen-back"]:focus-visible, [data-larch-ui="screen-close"]:focus-visible { border-color: var(--skin-gold, #e9cf9a) !important; color: var(--skin-gold, #e9cf9a) !important; outline: none; }
-[data-larch-ui="gallery-grid"] { gap: 20px !important; }
-[data-larch-ui="cg"] { border: 1px solid rgba(233,207,154,.2) !important; border-radius: 2px !important; background: #0b0e1c !important; overflow: hidden; box-shadow: 0 14px 30px -14px rgba(0,0,0,.8); }
-[data-larch-ui="cg"]:not([data-locked]):hover, [data-larch-ui="cg"]:not([data-locked]):focus-visible { border-color: var(--skin-gold, #e9cf9a) !important; box-shadow: 0 0 26px -6px rgba(233,207,154,.4); outline: none; }
-[data-larch-ui="cg"][data-locked] { background: linear-gradient(160deg, #0d1122, #080a15) !important; opacity: 1 !important; }
-[data-larch-ui="cg"][data-locked] svg { color: rgba(233,207,154,.28); }
-[data-larch-ui="cg"] figcaption { background: linear-gradient(transparent, rgba(7,9,18,.92)) !important; }
-[data-larch-ui="cg"] figcaption span { color: var(--skin-gold, #e9cf9a); font-variant-numeric: tabular-nums; }
-[data-larch-ui="cg"] figcaption b { color: #f4eee6; font-weight: 500; letter-spacing: .08em; }
-[data-larch-ui="cg"][data-locked] figcaption b { color: rgba(244,238,230,.35); }
-[data-larch-ui="chapter"] { border: 1px solid rgba(233,207,154,.22) !important; border-radius: 2px !important; background: #0b0e1c !important; color: #f4eee6 !important; }
-[data-larch-ui="chapter"]:hover, [data-larch-ui="chapter"]:focus-visible { border-color: var(--skin-gold, #e9cf9a) !important; outline: none; }
-[data-larch-ui="chapter"] b { letter-spacing: .14em; }
-[data-larch-ui="chapter"] i { color: var(--skin-gold, #e9cf9a); font-style: normal; }
-@media (prefers-reduced-motion: reduce) { [data-larch-ui="cg"] { transition: none; } }
+/* @larch-params { "gold": { "type": "color", "label": "主色", "default": "#8c6b8f" } } */
+/* 水彩版：回憶是一張大水彩紙，上緣一抹朝霞；看過的 CG 像貼上去的畫，還沒看過的是一塊淡灰暈染。 */
+:scope { background: radial-gradient(80vw 40vh at 50% -10%, rgba(207,90,108,.22), transparent 60%), url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='240' height='240'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.8' numOctaves='3'/%3E%3CfeColorMatrix values='0 0 0 0 .55 0 0 0 0 .47 0 0 0 0 .38 0 0 0 .5 0'/%3E%3C/filter%3E%3Crect width='240' height='240' filter='url(%23n)'/%3E%3C/svg%3E"), radial-gradient(120vw 90vh at 50% 50%, #ece3d2, #d2c4ad 75%, #a99a85) !important;
+  background-blend-mode: normal, multiply, normal !important; color: #3b2f2c; font-family: var(--larch-project-font, "Iansui", serif); }
+[data-larch-ui="screen-header"] { background: transparent !important; border-bottom-color: rgba(110,90,82,.25) !important; }
+[data-larch-ui="screen-header"] h1 { letter-spacing: .3em; font-weight: 700; color: #3b2f2c; }
+[data-larch-ui="screen-header"] small, [data-larch-ui="screen-header"] p { color: #6e5a52; letter-spacing: .2em; }
+[data-larch-ui="screen-back"], [data-larch-ui="screen-close"] { border: 1px solid rgba(110,90,82,.35) !important; border-radius: 40% !important; background: rgba(255,250,240,.6) !important; color: #3b2f2c !important; }
+[data-larch-ui="screen-back"]:hover, [data-larch-ui="screen-close"]:hover, [data-larch-ui="screen-back"]:focus-visible, [data-larch-ui="screen-close"]:focus-visible { border-color: var(--skin-gold, #8c6b8f) !important; outline: none; }
+[data-larch-ui="gallery-grid"] { gap: 22px !important; }
+[data-larch-ui="cg"] { border: 0 !important; border-radius: 8px 4px 10px 5px !important; background: rgba(110,90,82,.18) !important; overflow: hidden;
+  box-shadow: 0 10px 22px -12px rgba(40,30,30,.55); rotate: -.6deg; }
+[data-larch-ui="cg"]:nth-child(2n) { rotate: .7deg; }
+[data-larch-ui="cg"]:not([data-locked]):hover, [data-larch-ui="cg"]:not([data-locked]):focus-visible { box-shadow: 0 0 0 2px rgba(140,107,143,.6), 0 14px 28px -12px rgba(40,30,30,.6); outline: none; }
+[data-larch-ui="cg"][data-locked] { background: radial-gradient(70% 70% at 50% 50%, rgba(110,90,82,.32), rgba(110,90,82,.16)) !important; opacity: 1 !important; box-shadow: none; }
+[data-larch-ui="cg"][data-locked] svg { color: rgba(110,90,82,.45); }
+[data-larch-ui="cg"] figcaption { background: linear-gradient(transparent, rgba(40,30,30,.6)) !important; }
+[data-larch-ui="cg"] figcaption b { color: #fff; font-weight: 500; letter-spacing: .08em; }
+[data-larch-ui="cg"][data-locked] figcaption { background: none !important; }
+[data-larch-ui="cg"][data-locked] figcaption b { color: #6e5a52; }
+[data-larch-ui="chapter"] { border: 1px solid rgba(110,90,82,.3) !important; border-radius: 10px 4px 12px 6px !important; background: rgba(255,250,240,.6) !important; color: #3b2f2c !important; }
+[data-larch-ui="chapter"]:hover, [data-larch-ui="chapter"]:focus-visible { border-color: var(--skin-gold, #8c6b8f) !important; outline: none; }
+[data-larch-ui="chapter"] i { color: #6e4f74; font-style: normal; }

@@ -1,35 +1,31 @@
 /* larch-skill-part: choices */
-/* @larch-params { "gold": { "type": "color", "label": "選到時的金色", "default": "#e9cf9a" } } */
-/* 《夜後明月．晨前朝霞．慕詩客》選項：直排一列浮在對話框上方，夜色薄片＋左緣一道金光。
-   選項不是順序，拿掉 01／02 編號；滑過時金光變亮、字變白。 */
+/* @larch-params { "gold": { "type": "color", "label": "選到時的顏色", "default": "#b8862f" } } */
+/* 水彩版（yazelin 2026-11-06）：三張米白水彩紙條，左側一抹說話者的顏色暈染；滑過時紙變亮、色點暈開。部位 CSS 不能 @import，字型用專案的芫荽。 */
 :scope.vn2-choices-floating {
-  left: 50% !important; right: auto !important; top: auto !important; bottom: 27% !important;
-  translate: -50% 0 !important; transform: none !important;
-  width: min(640px, 86vw) !important; max-width: none !important;
-  display: flex !important; flex-direction: column; align-items: stretch; gap: 10px;
-  padding: 0 !important; border: 0 !important; background: none !important; box-shadow: none !important; backdrop-filter: none !important;
-}
+  left: 50% !important; right: auto !important; top: auto !important; bottom: 27% !important; translate: -50% 0 !important; transform: none !important;
+  width: min(640px, 86vw) !important; max-width: none !important; display: flex !important; flex-direction: column; align-items: stretch; gap: 12px;
+  padding: 0 !important; border: 0 !important; background: none !important; box-shadow: none !important; backdrop-filter: none !important; }
 [data-larch-ui="choice"] {
-  position: relative; display: flex !important; align-items: center; width: 100% !important; min-height: 54px;
-  padding: 13px 26px 13px 30px !important; border: 0 !important; border-radius: 2px !important;
-  background: linear-gradient(90deg, rgba(10,13,28,.92), rgba(10,13,28,.78) 70%, rgba(10,13,28,.55)) !important;
-  box-shadow: inset 0 0 0 1px rgba(233,207,154,.18), 0 10px 28px -12px rgba(0,0,0,.8) !important;
-  color: #f4eee6 !important; font-size: clamp(16px, 1.25vw, 20px) !important; line-height: 1.55 !important; letter-spacing: .08em;
-  transition: box-shadow .25s, background .25s, color .25s;
-}
-[data-larch-ui="choice"]::before {
-  content: ""; position: absolute; left: 12px; top: 22%; bottom: 22%; width: 2px; border-radius: 2px;
-  background: var(--skin-gold, #e9cf9a); opacity: .55; box-shadow: 0 0 10px var(--skin-gold, #e9cf9a); transition: opacity .25s, top .25s, bottom .25s;
-}
-[data-larch-ui="choice"]:hover, [data-larch-ui="choice"]:focus-visible {
-  background: linear-gradient(90deg, rgba(24,28,52,.96), rgba(18,22,44,.86) 70%, rgba(18,22,44,.6)) !important;
-  box-shadow: inset 0 0 0 1px rgba(233,207,154,.55), 0 0 28px -6px rgba(233,207,154,.35) !important; color: #fff !important; outline: none;
-}
-[data-larch-ui="choice"]:hover::before, [data-larch-ui="choice"]:focus-visible::before { opacity: 1; top: 14%; bottom: 14%; }
+  position: relative; display: flex !important; align-items: center; width: 100% !important; min-height: 54px; padding: 13px 26px 13px 44px !important;
+  border: 0 !important; border-radius: 10px 4px 12px 6px / 6px 12px 5px 10px !important;
+  background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='240' height='240'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.8' numOctaves='3'/%3E%3CfeColorMatrix values='0 0 0 0 .55 0 0 0 0 .47 0 0 0 0 .38 0 0 0 .5 0'/%3E%3C/filter%3E%3Crect width='240' height='240' filter='url(%23n)'/%3E%3C/svg%3E"), linear-gradient(170deg, #f6f0e4, #ede3d1) !important; background-blend-mode: multiply !important;
+  box-shadow: inset 0 0 18px rgba(150,118,92,.42), inset 0 0 3px rgba(120,92,70,.5), 0 10px 24px -14px rgba(40,30,30,.6) !important;
+  color: #3b2f2c !important; font-family: var(--larch-project-font, "Iansui", serif) !important; font-size: clamp(16px, 1.3vw, 21px) !important; line-height: 1.5 !important; letter-spacing: .06em;
+  transition: box-shadow .25s, background .25s, translate .2s; rotate: -.4deg; }
+[data-larch-ui="choice"]:nth-child(2n) { rotate: .5deg; }
+[data-larch-ui="choice"]::before { content: ""; position: absolute; left: 14px; top: 20%; bottom: 20%; width: 16px; border-radius: 50% 40% 55% 45%;
+  background: var(--skin-gold, #b8862f); opacity: .55; filter: blur(2px); transition: opacity .25s, width .3s; }
+/* 劇本裡三選一一律照 晨、明、詩 的順序排，第四個（第七章「你們三個」）用金色 */
+[data-larch-ui="choice"]:nth-child(1)::before { background: #a9b844; }
+[data-larch-ui="choice"]:nth-child(2)::before { background: #7f97df; }
+[data-larch-ui="choice"]:nth-child(3)::before { background: #c35366; }
+[data-larch-ui="choice"]:hover, [data-larch-ui="choice"]:focus-visible { background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='240' height='240'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.8' numOctaves='3'/%3E%3CfeColorMatrix values='0 0 0 0 .55 0 0 0 0 .47 0 0 0 0 .38 0 0 0 .5 0'/%3E%3C/filter%3E%3Crect width='240' height='240' filter='url(%23n)'/%3E%3C/svg%3E"), linear-gradient(170deg, #fbf7ef, #f3ebdc) !important; outline: none;
+  box-shadow: inset 0 0 18px rgba(150,118,92,.38), 0 0 0 2px rgba(184,134,47,.35), 0 14px 28px -14px rgba(40,30,30,.6) !important; translate: 0 -1px; }
+[data-larch-ui="choice"]:hover::before, [data-larch-ui="choice"]:focus-visible::before { opacity: .9; width: 22px; }
 [data-larch-ui="choice"]:active { translate: 0 1px; }
-[data-larch-ui="choice"]:disabled { opacity: .5; cursor: default; }
+[data-larch-ui="choice"]:disabled { opacity: .55; cursor: default; }
 [data-larch-ui="choice-index"], [data-larch-ui="choice-arrow"] { display: none !important; }
 [data-larch-ui="choice-text"] { text-align: left; }
-:scope:not(.vn2-choices-floating) { display: flex !important; flex-direction: column; gap: 10px; background: none !important; border: 0 !important; box-shadow: none !important; }
-@media (max-width: 640px) { :scope.vn2-choices-floating { bottom: 30% !important; width: 92vw !important; } [data-larch-ui="choice"] { min-height: 48px; padding: 11px 18px 11px 26px !important; } }
+:scope:not(.vn2-choices-floating) { display: flex !important; flex-direction: column; gap: 12px; background: none !important; border: 0 !important; box-shadow: none !important; }
+@media (max-width: 640px) { :scope.vn2-choices-floating { bottom: 30% !important; width: 92vw !important; } [data-larch-ui="choice"] { min-height: 48px; padding: 11px 18px 11px 40px !important; } }
 @media (prefers-reduced-motion: reduce) { [data-larch-ui="choice"], [data-larch-ui="choice"]::before { transition: none; } }

@@ -5,12 +5,12 @@
   - 框只占畫面下緣一條，不擋 CG。
 -->
 <style>
-@import url("https://fonts.googleapis.com/css2?family=Noto+Serif+TC:wght@400;600&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Iansui&display=swap");
 :root { color-scheme: normal; --ink:#f4eee6; --dim:rgba(244,238,230,.68); --m:#8aa2ea; --c:#c8d45a; --s:#cf5a6c; --t:#c7b2ea; --gold:#e9cf9a; }
 * { box-sizing: border-box; }
 html, body { margin: 0; background: transparent; overflow: hidden; }
 .box { position: relative; isolation: isolate; padding: 110px 9vw 24px; color: var(--ink);
-  font-family: "Noto Serif TC", "Songti TC", serif; }
+  font-family: "Iansui", "LXGW WenKai TC", "Kaiti TC", "BiauKai", serif; }
 /* 淡墨暈染（yazelin 2026-11-06 選 D）：一抹偏紫的靛藍從下緣往上淡到全透明，接進 CG 看不到邊；
    紙紋已經疊在每張 CG 上（tools/paper.py），這裡不另外加紋。左側帶一點說話者的顏色。 */
 .box::after { content: ""; position: absolute; z-index: -1; left: 0; right: 0; top: 0; bottom: 0; pointer-events: none;

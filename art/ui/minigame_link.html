@@ -1,77 +1,70 @@
 <!doctype html><html lang="zh-Hant"><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-<!-- 第一章第三節小遊戲：親手拉出第一條線。
+<!-- 第一章第三節小遊戲：親手拉出第一條線（水彩版）。
      時間點在第三節結尾，題目還沒讀，只放當下真的有的：她剛開的「開場」、M 剛寫好的對話框、
      C 空著等她說要畫誰的人物欄、S 做過的〈tea leaves〉。白板上只差她拉的那一條。
      接上的那一刻，一顆光從她的線跑進 M 的對話框，再分成兩顆跑向 C 與 S。做完送 larch:complete。 -->
 <style>
-@import url("https://fonts.googleapis.com/css2?family=Noto+Serif+TC:wght@400;600&display=swap");
-:root { color-scheme: dark;
-  --night:#080b18; --board:#0f1428; --ink:#f4eee6; --dim:rgba(244,238,230,.62); --gold:#e9cf9a; --brass:#b89558;
-  --t:#c7b2ea; --m:#8aa2ea; --c:#c8d45a; --s:#cf5a6c; }
+@import url("https://fonts.googleapis.com/css2?family=Iansui&display=swap");
+/* 水彩版（yazelin 2026-11-06：三處介面統一成水彩）：白板是一張夜裡被檯燈照著的水彩紙，卡片是撕下來的紙片，
+   接點是一滴顏料，線是顏料畫的；接上後顏料沿線滲過去。不規則邊與暈染用下面 SVG 裡的濾鏡。 */
+:root { color-scheme: light;
+  --night:#2a2230; --ink:#3b2f2c; --dim:#6e5a52; --gold:#b8862f; --brass:#3b2f2c; --paper:#f3ecdf;
+  --t:#b59ad8; --m:#7f97df; --c:#a9b844; --s:#c35366; }
 * { box-sizing: border-box; }
 html, body { margin: 0; height: 100%; overflow: hidden; touch-action: none; user-select: none; -webkit-user-select: none; }
-body { background: var(--night); color: var(--ink); font-family: "Noto Serif TC", "Songti TC", "Source Han Serif TC", serif; }
+body { background: #9c8f80; color: var(--ink); font-family: "Iansui", "LXGW WenKai TC", "Kaiti TC", "BiauKai", serif; }
 
-/* 白板：夜藍紙面、細點格、左上方檯燈的暖光、四角壓暗 */
 .board { position: fixed; inset: 0;
-  background:
-    radial-gradient(60vmax 45vmax at 14% 6%, rgba(233,196,140,.16), transparent 62%),
-    radial-gradient(120vmax 90vmax at 50% 50%, var(--board), var(--night) 78%); }
-.board::before { content: ""; position: absolute; inset: 0; opacity: .55;
-  background-image: radial-gradient(rgba(244,238,230,.09) 1px, transparent 1.3px); background-size: 26px 26px; }
-.board::after { content: ""; position: absolute; inset: 0; pointer-events: none; mix-blend-mode: overlay; opacity: .35;
-  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='240' height='240'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 .5 0 0 0 0 .5 0 0 0 0 .5 0 0 0 .9 0'/%3E%3C/filter%3E%3Crect width='240' height='240' filter='url(%23n)'/%3E%3C/svg%3E"); }
-.vignette { position: fixed; inset: 0; pointer-events: none; background: radial-gradient(120vmax 80vmax at 50% 45%, transparent 55%, rgba(0,0,0,.55)); }
-.bloom { position: fixed; inset: 0; pointer-events: none; opacity: 0; transition: opacity 1.6s ease;
-  background: radial-gradient(50vmax 40vmax at var(--bx,50%) var(--by,50%), rgba(233,207,154,.16), transparent 70%); }
+  background: radial-gradient(70vmax 45vmax at 18% 6%, rgba(255,214,150,.55), transparent 60%),
+              radial-gradient(120vmax 80vmax at 50% 55%, #e9dfcc, #cbbda6 70%, #9c8f80); }
+.board::after { content: ""; position: absolute; inset: 0; mix-blend-mode: multiply; opacity: .55; background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='320' height='320'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='3'/%3E%3CfeColorMatrix values='0 0 0 0 .5 0 0 0 0 .44 0 0 0 0 .36 0 0 0 .5 0'/%3E%3C/filter%3E%3Crect width='320' height='320' filter='url(%23n)'/%3E%3C/svg%3E"); }
+.vignette { position: fixed; inset: 0; pointer-events: none; background: radial-gradient(120vmax 80vmax at 50% 45%, transparent 55%, rgba(40,30,40,.45)); }
+.bloom { position: fixed; inset: 0; pointer-events: none; opacity: 0; transition: opacity 1.6s ease; mix-blend-mode: multiply;
+  background: radial-gradient(45vmax 35vmax at var(--bx,50%) var(--by,50%), rgba(127,151,223,.28), transparent 70%); }
 .bloom.on { opacity: 1; }
 
 svg.wires { position: fixed; inset: 0; width: 100%; height: 100%; overflow: visible; pointer-events: none; }
-.wire { fill: none; stroke-linecap: round; }
-.wire.glow { stroke-width: 7; opacity: .18; filter: blur(3px); }
-.wire.core { stroke-width: 1.6; opacity: .75; }
-.wire.flow { stroke-width: 2; stroke-dasharray: 2 26; opacity: .9; animation: flow 2.8s linear infinite; }
-@keyframes flow { to { stroke-dashoffset: -28; } }
-.guide { fill: none; stroke: var(--gold); stroke-width: 1.2; stroke-dasharray: 1 9; stroke-linecap: round; opacity: 0; transition: opacity .8s; }
-.guide.on { opacity: .45; }
-#drag { fill: none; stroke: url(#silk); stroke-width: 2.4; stroke-linecap: round; filter: drop-shadow(0 0 6px rgba(233,207,154,.8)); opacity: 0; }
-#head { fill: #fff6df; filter: drop-shadow(0 0 8px var(--gold)); opacity: 0; }
-.bead { filter: drop-shadow(0 0 10px currentColor) drop-shadow(0 0 3px #fff); }
+.wire { fill: none; stroke-linecap: round; filter: url(#ink); }
+.wire.glow { stroke-width: 9; opacity: .16; filter: url(#bleed); }
+.wire.core { stroke-width: 4; opacity: .72; }
+.wire.flow { stroke-width: 4; stroke-dasharray: 1 30; opacity: .55; animation: flow 3.4s linear infinite; }
+@keyframes flow { to { stroke-dashoffset: -31; } }
+.guide { fill: none; stroke: var(--ink); stroke-width: 2.4; stroke-dasharray: 2 12; stroke-linecap: round; opacity: 0; transition: opacity .8s; }
+.guide.on { opacity: .4; }
+#drag { fill: none; stroke: var(--gold); stroke-width: 5; stroke-linecap: round; filter: url(#ink); opacity: 0; }
+#head { fill: var(--gold); filter: url(#bleed); opacity: 0; }
+.bead { filter: url(#bleed); }
+.brush.halo { opacity: .16; filter: url(#bleed); }
+.brush.body { opacity: .62; filter: url(#ink); }
+.brush.edge { stroke-width: 1.6; opacity: .45; filter: url(#bleed); }
 
-/* 卡：深色漆面、內縮一圈金細線、左緣是做的人的那道光 */
 .card { --k: var(--gold); position: fixed; left: var(--x); top: var(--y); width: clamp(168px, 19vw, 260px);
-  padding: 16px 20px 17px 22px; border-radius: 3px;
-  background: linear-gradient(160deg, rgba(34,41,72,.96), rgba(20,25,46,.97));
-  box-shadow: 0 1px 0 rgba(255,255,255,.06) inset, 0 18px 40px -12px rgba(0,0,0,.7), 0 2px 6px rgba(0,0,0,.4);
-  opacity: 0; transform: translateY(6px); transition: opacity .9s ease, transform .9s ease, box-shadow 1s ease; }
-.card.in { opacity: 1; transform: none; }
-.card::before { content: ""; position: absolute; inset: 5px; border: 1px solid rgba(233,207,154,.22); border-radius: 1px; pointer-events: none; }
-.card::after { content: ""; position: absolute; left: 0; top: 10%; bottom: 10%; width: 2px; border-radius: 2px;
-  background: var(--k); box-shadow: 0 0 12px var(--k), 0 0 28px color-mix(in srgb, var(--k) 50%, transparent); opacity: .75; transition: opacity .8s; }
-.card b { display: block; font-weight: 600; font-size: clamp(15px, 1.25vw, 19px); letter-spacing: .24em; line-height: 1.3; }
-.card span { display: block; margin-top: 6px; font-size: clamp(12px, .92vw, 14px); letter-spacing: .12em; color: color-mix(in srgb, var(--k) 55%, var(--ink)); }
-.card.lit { box-shadow: 0 1px 0 rgba(255,255,255,.08) inset, 0 0 0 1px color-mix(in srgb, var(--k) 55%, transparent), 0 0 46px -6px var(--k), 0 18px 40px -12px rgba(0,0,0,.7); }
-.card.lit::after { opacity: 1; }
-#a { --k: var(--t); } #b { --k: var(--m); } #c { --k: var(--c); } #d { --k: var(--s); }
+  padding: 16px 20px 17px 30px; isolation: isolate;
+  opacity: 0; transform: translateY(6px) rotate(var(--r, 0deg)); transition: opacity .9s ease, transform .9s ease; }
+.card.in { opacity: 1; transform: rotate(var(--r, 0deg)); }
+.card::before { content: ""; position: absolute; inset: 0; z-index: -2; border-radius: 6px; filter: url(#ragged);
+  background: var(--paper); box-shadow: inset 0 0 16px rgba(150,118,92,.45), inset 0 0 3px rgba(120,92,70,.55), 0 10px 22px -12px rgba(60,40,30,.5); }
+.card::after { content: ""; position: absolute; left: 9px; top: 14%; bottom: 14%; width: 13px; z-index: -1; border-radius: 50%;
+  background: var(--k); filter: url(#bleed); opacity: .62; transition: opacity 1s, left 1s, width 1s; }
+.card b { display: block; font-weight: 700; font-size: clamp(15px, 1.25vw, 19px); letter-spacing: .24em; line-height: 1.3; }
+.card span { display: block; margin-top: 6px; font-size: clamp(12px, .92vw, 14px); letter-spacing: .12em; color: var(--dim); }
+.card.lit::after { opacity: .85; left: 4px; width: 22px; }
+#a { --k: var(--t); --r: -1.2deg; } #b { --k: var(--m); --r: .8deg; } #c { --k: var(--c); --r: 1.4deg; } #d { --k: var(--s); --r: -.9deg; }
 
-/* 接點：黃銅圈、暗芯；可以拉的那兩個會亮 */
 .port { position: absolute; top: 50%; width: 44px; height: 44px; margin-top: -22px; display: grid; place-items: center;
   background: none; border: 0; padding: 0; cursor: default; touch-action: none; }
-.port::before { content: ""; width: 14px; height: 14px; border-radius: 50%;
-  background: radial-gradient(circle at 40% 35%, #2b3256, #0c1024 70%);
-  box-shadow: 0 0 0 2px var(--brass), 0 0 0 3px rgba(0,0,0,.5), 0 1px 0 3px rgba(255,255,255,.08); transition: box-shadow .3s, background .3s; }
+.port::before { content: ""; width: 15px; height: 15px; border-radius: 50%; background: var(--ink); opacity: .8; filter: url(#dab); transition: transform .3s, background .3s; }
 .port.out { right: -22px; } .port.in { left: -22px; }
-.port.hot::before { box-shadow: 0 0 0 2px var(--gold), 0 0 14px 2px rgba(233,207,154,.55); animation: hot 2.2s ease-in-out infinite; }
+.port.hot::before { background: var(--gold); opacity: 1; animation: hot 2.2s ease-in-out infinite; }
 .port.hot.out { cursor: grab; }
-.port.snap::before, .port.done::before { background: radial-gradient(circle, #fff6df 0 30%, var(--gold) 60%); box-shadow: 0 0 0 2px var(--gold), 0 0 22px 4px rgba(233,207,154,.75); animation: none; }
+.port.snap::before, .port.done::before { background: var(--gold); opacity: 1; transform: scale(1.5); animation: none; }
 .port:focus-visible { outline: none; }
-.port:focus-visible::before { box-shadow: 0 0 0 2px var(--gold), 0 0 0 6px rgba(233,207,154,.35); }
-@keyframes hot { 50% { box-shadow: 0 0 0 2px var(--gold), 0 0 26px 7px rgba(233,207,154,.32); } }
+.port:focus-visible::before { outline: 2px solid var(--ink); outline-offset: 4px; }
+@keyframes hot { 50% { transform: scale(1.35); } }
 
-.label { position: fixed; top: 5vh; left: 0; right: 0; margin: 0; text-align: center; font-size: clamp(12px, .95vw, 14px); letter-spacing: .5em; color: var(--dim); }
+.label { position: fixed; top: 5vh; left: 0; right: 0; margin: 0; text-align: center; font-size: clamp(12px, .95vw, 14px); letter-spacing: .5em; color: var(--dim); font-weight: 600; }
 .hint { text-wrap: balance; position: fixed; left: 50%; bottom: 7vh; transform: translateX(-50%); width: min(88vw, 36em); margin: 0; text-align: center;
-  font-size: clamp(15px, 1.35vw, 20px); letter-spacing: .16em; line-height: 1.8; text-shadow: 0 2px 14px #000; transition: opacity .5s; }
-.hint::before { content: ""; display: block; width: 64px; height: 1px; margin: 0 auto 14px; background: linear-gradient(90deg, transparent, var(--gold), transparent); }
+  font-size: clamp(15px, 1.35vw, 20px); letter-spacing: .16em; line-height: 1.8; color: var(--ink); transition: opacity .5s; }
 .hint.fade { opacity: 0; }
 
 /* 橫式（電腦、平板橫放）與直式（手機）各一套位置 */
@@ -91,11 +84,16 @@ svg.wires { position: fixed; inset: 0; width: 100%; height: 100%; overflow: visi
 </style>
 <div class="board"></div><div class="bloom" id="bloom"></div>
 <svg class="wires" id="svg" aria-hidden="true">
-  <defs><linearGradient id="silk" gradientUnits="userSpaceOnUse" x1="0" y1="0" x2="1" y2="0">
+  <defs>
+    <filter id="ragged" x="-5%" y="-10%" width="110%" height="120%"><feTurbulence type="fractalNoise" baseFrequency=".03 .07" numOctaves="3" seed="7"/><feDisplacementMap in="SourceGraphic" scale="9"/></filter>
+    <filter id="bleed" x="-60%" y="-60%" width="220%" height="220%"><feTurbulence type="fractalNoise" baseFrequency=".12" numOctaves="3" seed="2"/><feDisplacementMap in="SourceGraphic" scale="12"/><feGaussianBlur stdDeviation="1.6"/></filter>
+    <filter id="dab" x="-50%" y="-50%" width="200%" height="200%"><feTurbulence type="fractalNoise" baseFrequency=".3" numOctaves="2" seed="11"/><feDisplacementMap in="SourceGraphic" scale="4"/><feGaussianBlur stdDeviation=".5"/></filter>
+    <filter id="ink"><feTurbulence type="fractalNoise" baseFrequency=".08" numOctaves="2" seed="4"/><feDisplacementMap in="SourceGraphic" scale="3"/><feGaussianBlur stdDeviation=".35"/></filter>
+    <linearGradient id="silk" gradientUnits="userSpaceOnUse" x1="0" y1="0" x2="1" y2="0">
     <stop offset="0" stop-color="#c7b2ea"/><stop offset="1" stop-color="#e9cf9a"/></linearGradient></defs>
   <g id="base"></g>
   <path id="guide" class="guide"/>
-  <path id="drag"/><circle id="head" r="4"/>
+  <path id="drag"/><g id="dragG" style="opacity:0"></g><circle id="head" r="4"/>
 </svg>
 <div class="vignette"></div>
 <p class="label">妳的白板．第一條線</p>
@@ -112,7 +110,7 @@ svg.wires { position: fixed; inset: 0; width: 100%; height: 100%; overflow: visi
 <script>
 (function () {
   var NS = 'http://www.w3.org/2000/svg', $ = function (id) { return document.getElementById(id); };
-  var svg = $('svg'), base = $('base'), drag = $('drag'), head = $('head'), guide = $('guide'), hint = $('hint'), silk = $('silk');
+  var svg = $('svg'), dragG = $('dragG'), base = $('base'), drag = $('drag'), head = $('head'), guide = $('guide'), hint = $('hint'), silk = $('silk');
   var pa = $('pa'), pb = $('pb'), pbo = $('pbo'), pc = $('pc'), pd = $('pd');
   var css = getComputedStyle(document.documentElement), col = function (k) { return css.getPropertyValue(k).trim(); };
   var still = matchMedia('(prefers-reduced-motion: reduce)').matches;
@@ -123,21 +121,38 @@ svg.wires { position: fixed; inset: 0; width: 100%; height: 100%; overflow: visi
       return 'M' + p.x + ',' + p.y + ' C' + p.x + ',' + (p.y + dy) + ' ' + q.x + ',' + (q.y - dy) + ' ' + q.x + ',' + q.y; }
     var dx = Math.max(70, Math.abs(q.x - p.x) * .5);
     return 'M' + p.x + ',' + p.y + ' C' + (p.x + dx) + ',' + p.y + ' ' + (q.x - dx) + ',' + q.y + ' ' + q.x + ',' + q.y; }
-  function path(d, cls, color) { var e = document.createElementNS(NS, 'path'); e.setAttribute('d', d); e.setAttribute('class', 'wire ' + cls);
-    e.setAttribute('stroke', color); base.appendChild(e); return e; }
-  function wire(p, q, color, flow) { var d = curve(p, q); path(d, 'glow', color); path(d, 'core', color); if (flow) path(d, 'flow', color); }
-
-  // 已經接好的線：M 的對話框後面接 C 的人物欄、S 的歌（光點一直往他們那邊流）；接上以後多一條她的線
+  // 水彩筆觸：沿曲線取點，兩端收細、中段飽滿、粗細隨筆壓起伏，填成一條帶狀；外圈再一層淡色水痕
+  function ctrl(p, q) { if (tall.matches) { var dy = Math.max(60, Math.abs(q.y - p.y) * .5); return [p, { x: p.x, y: p.y + dy }, { x: q.x, y: q.y - dy }, q]; }
+    var dx = Math.max(70, Math.abs(q.x - p.x) * .5); return [p, { x: p.x + dx, y: p.y }, { x: q.x - dx, y: q.y }, q]; }
+  function bez(P, t) { var u = 1 - t; return { x: u*u*u*P[0].x + 3*u*u*t*P[1].x + 3*u*t*t*P[2].x + t*t*t*P[3].x,
+                                                 y: u*u*u*P[0].y + 3*u*u*t*P[1].y + 3*u*t*t*P[2].y + t*t*t*P[3].y }; }
+  function ribbon(p, q, w, upto, seed) {
+    var P = ctrl(p, q), N = 48, L = [], R = [], end = Math.max(1, Math.round(N * (upto == null ? 1 : upto)));
+    for (var k = 0; k <= end; k++) { var t = k / N, a = bez(P, Math.max(0, t - .01)), b = bez(P, Math.min(1, t + .01)), m = bez(P, t);
+      var dx = b.x - a.x, dy = b.y - a.y, l = Math.hypot(dx, dy) || 1, nx = -dy / l, ny = dx / l;
+      var press = .32 + .68 * Math.pow(Math.sin(Math.PI * Math.min(1, t * 1.08)), .7);
+      var wob = 1 + .22 * Math.sin(t * 17 + seed) + .12 * Math.sin(t * 41 + seed * 2.3);
+      var hw = w * press * wob / 2; L.push((m.x + nx * hw).toFixed(1) + ',' + (m.y + ny * hw).toFixed(1)); R.unshift((m.x - nx * hw).toFixed(1) + ',' + (m.y - ny * hw).toFixed(1)); }
+    return 'M' + L.join(' L') + ' L' + R.join(' L') + ' Z'; }
+  function shape(d, cls, color, parent) { var e = document.createElementNS(NS, 'path'); e.setAttribute('d', d); e.setAttribute('class', 'brush ' + cls);
+    e.setAttribute('fill', cls === 'edge' ? 'none' : color); if (cls === 'edge') e.setAttribute('stroke', color); (parent || base).appendChild(e); return e; }
+  function brush(p, q, color, w, upto, seed, parent) {
+    var g = document.createElementNS(NS, 'g'); (parent || base).appendChild(g);
+    shape(ribbon(p, q, w * 2.6, upto, seed + 1), 'halo', color, g);
+    shape(ribbon(p, q, w, upto, seed), 'body', color, g);
+    shape(ribbon(p, q, w * .92, upto, seed), 'edge', color, g); return g; }
+  function wire(p, q, color, flow, seed) { brush(p, q, color, 9, 1, seed || 1);
+    if (flow) { var e = document.createElementNS(NS, 'path'); e.setAttribute('d', curve(p, q)); e.setAttribute('class', 'wire flow'); e.setAttribute('stroke', color); base.appendChild(e); } }
   var done = false;
   function draw() { base.textContent = '';
-    wire(c(pbo), c(pc), col('--c'), true); wire(c(pbo), c(pd), col('--s'), true);
-    if (done) wire(c(pa), c(pb), col('--gold'), true);
+    wire(c(pbo), c(pc), col('--c'), true, 3); wire(c(pbo), c(pd), col('--s'), true, 7);
+    if (done) wire(c(pa), c(pb), col('--gold'), true, 5);
     guide.setAttribute('d', curve(c(pa), c(pb))); }
 
   // 進場：四張卡依序亮出來，然後畫線（整段只有這一次自己動）
   var cards = ['a', 'b', 'c', 'd'].map($);
   cards.forEach(function (el, i) { setTimeout(function () { el.classList.add('in'); }, still ? 0 : 200 + i * 220); });
-  setTimeout(draw, still ? 0 : 1100);
+  setTimeout(draw, still ? 0 : 1100); setTimeout(draw, still ? 0 : 1900); cards.forEach(function (el) { el.addEventListener('transitionend', draw); });
   addEventListener('resize', draw);
 
   // 停太久沒動作，就把該拉的那條路用虛點描出來
@@ -148,14 +163,14 @@ svg.wires { position: fixed; inset: 0; width: 100%; height: 100%; overflow: visi
   function near(ev) { var q = c(pb), r = $('b').getBoundingClientRect(), x = ev.clientX, y = ev.clientY;
     return Math.hypot(x - q.x, y - q.y) < 72 || (x > r.left - 24 && x < r.right && y > r.top - 16 && y < r.bottom + 16); }
   function move(ev) { if (!dragging) return; var p = c(pa), snap = near(ev), q = snap ? c(pb) : { x: ev.clientX, y: ev.clientY };
-    pb.classList.toggle('snap', snap); drag.setAttribute('d', curve(p, q));
+    pb.classList.toggle('snap', snap); dragG.textContent = ''; brush(p, q, col('--gold'), 8, 1, 5, dragG);
     silk.setAttribute('x1', p.x); silk.setAttribute('y1', p.y); silk.setAttribute('x2', q.x); silk.setAttribute('y2', q.y);
     head.setAttribute('cx', q.x); head.setAttribute('cy', q.y); }
   pa.addEventListener('pointerdown', function (ev) { if (done) return; dragging = true; pa.setPointerCapture(ev.pointerId);
-    pa.style.cursor = 'grabbing'; drag.style.opacity = head.style.opacity = 1; clearTimeout(idle); guide.classList.remove('on'); move(ev); });
+    pa.style.cursor = 'grabbing'; dragG.style.opacity = 1; head.style.opacity = 1; clearTimeout(idle); guide.classList.remove('on'); move(ev); });
   pa.addEventListener('pointermove', move);
   function release(ev) { if (!dragging) return; dragging = false; pa.style.cursor = '';
-    drag.style.opacity = head.style.opacity = 0; pb.classList.remove('snap');
+    dragG.style.opacity = 0; dragG.textContent = ''; head.style.opacity = 0; pb.classList.remove('snap');
     if (near(ev)) connect(); else { hint.textContent = '再試一次：拉到「對話框」那張卡上。'; guide.classList.add('on'); } }
   pa.addEventListener('pointerup', release); pa.addEventListener('pointercancel', release);
   pa.addEventListener('keydown', function (ev) { if (ev.key === 'Enter' || ev.key === ' ') { ev.preventDefault(); connect(); } });
@@ -163,7 +178,7 @@ svg.wires { position: fixed; inset: 0; width: 100%; height: 100%; overflow: visi
   // 一顆光沿著一條線跑過去
   function bead(p, q, color, ms) { return new Promise(function (ok) {
     var g = document.createElementNS(NS, 'path'); g.setAttribute('d', curve(p, q));
-    var dot = document.createElementNS(NS, 'circle'); dot.setAttribute('r', 4.5); dot.setAttribute('fill', '#fff8e8');
+    var dot = document.createElementNS(NS, 'circle'); dot.setAttribute('r', 9); dot.setAttribute('fill', color); dot.setAttribute('opacity', '.85');
     dot.setAttribute('class', 'bead'); dot.style.color = color; svg.appendChild(dot);
     var L = g.getTotalLength(), t0 = performance.now();
     (function step(t) { var k = Math.min(1, Math.max(0, (t - t0) / ms)), e = k < .5 ? 2 * k * k : 1 - Math.pow(-2 * k + 2, 2) / 2, pt = g.getPointAtLength(L * e);
@@ -177,11 +192,10 @@ svg.wires { position: fixed; inset: 0; width: 100%; height: 100%; overflow: visi
     pa.classList.remove('hot'); pb.classList.remove('hot'); pa.classList.add('done'); pb.classList.add('done');
     pa.setAttribute('aria-label', '已接上'); hint.classList.add('fade');
     // 她的線用畫的：金線從開場描到對話框
-    var p = c(pa), q = c(pb), line = document.createElementNS(NS, 'path');
-    line.setAttribute('d', curve(p, q)); line.setAttribute('class', 'wire core'); line.setAttribute('stroke', col('--gold'));
-    line.style.strokeWidth = 2.2; line.style.opacity = 1; svg.insertBefore(line, guide);
-    var L = line.getTotalLength(); line.style.strokeDasharray = L; line.style.strokeDashoffset = L; line.getBoundingClientRect();
-    line.style.transition = 'stroke-dashoffset .7s cubic-bezier(.4,0,.2,1)'; line.style.strokeDashoffset = 0;
+    var p = c(pa), q = c(pb), line = document.createElementNS(NS, 'g'); svg.insertBefore(line, guide);
+    var t0 = performance.now(), D = still ? 1 : 700;
+    (function grow(now) { var k = Math.min(1, (now - t0) / D), e = 1 - Math.pow(1 - k, 3); line.textContent = ''; brush(p, q, col('--gold'), 9, e, 5, line);
+      if (k < 1) requestAnimationFrame(grow); })(t0);
     $('a').classList.add('lit');
     var b = $('bloom'), r = $('b').getBoundingClientRect();
     b.style.setProperty('--bx', (r.left + r.width / 2) / innerWidth * 100 + '%'); b.style.setProperty('--by', (r.top + r.height / 2) / innerHeight * 100 + '%');
