@@ -1,64 +1,201 @@
 <!doctype html><html lang="zh-Hant"><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-<!-- 第一章第三節小遊戲：親手拉出第一條線。白板上的卡片都排好了，只差一條。做完送 larch:complete。 -->
+<!-- 第一章第三節小遊戲：親手拉出第一條線。
+     白板上只差一條：她的「序章」接到 M 寫好的「第一扇門」，門後面早就接著 C 的草圖與 S 的歌。
+     接上的那一刻，一顆光從她的線跑進 M 的門，再分成兩顆跑向 C 與 S。做完送 larch:complete。 -->
 <style>
-:root { --bg:#0d1020; --grid:rgba(255,255,255,.05); --card:#1b2036; --line:#e9cf9a; --ink:#f4eee6; --dim:rgba(244,238,230,.6); --m:#8aa2ea; --c:#c8d45a; --s:#cf5a6c; }
+@import url("https://fonts.googleapis.com/css2?family=Noto+Serif+TC:wght@400;600&display=swap");
+:root { color-scheme: dark;
+  --night:#080b18; --board:#0f1428; --ink:#f4eee6; --dim:rgba(244,238,230,.62); --gold:#e9cf9a; --brass:#b89558;
+  --t:#c7b2ea; --m:#8aa2ea; --c:#c8d45a; --s:#cf5a6c; }
 * { box-sizing: border-box; }
-html, body { margin: 0; height: 100%; background: var(--bg); color: var(--ink); font-family: "Noto Serif TC", "Songti TC", serif; overflow: hidden; touch-action: none; user-select: none; }
-body { background-image: linear-gradient(var(--grid) 1px, transparent 1px), linear-gradient(90deg, var(--grid) 1px, transparent 1px); background-size: 28px 28px; }
-svg { position: absolute; inset: 0; width: 100%; height: 100%; }
-.card { position: absolute; width: 19vw; min-width: 150px; padding: 12px 14px; border-radius: 10px; background: var(--card); border: 1px solid rgba(255,255,255,.12); box-shadow: 0 8px 24px rgba(0,0,0,.35); font-size: clamp(12px, 1.1vw, 15px); }
-.card b { display: block; font-size: 1.05em; margin-bottom: 4px; letter-spacing: .1em; }
-.card span { color: var(--dim); font-size: .85em; }
-.card.done { opacity: .78; }
-.card[data-k] { border-left: 3px solid var(--k); }
-.card[data-k] span { color: color-mix(in srgb, var(--k) 70%, var(--ink)); }
-.port { position: absolute; top: 50%; width: 18px; height: 18px; margin-top: -9px; border-radius: 50%; background: #2a3150; border: 2px solid var(--line); }
-.port.out { right: -10px; cursor: grab; }
-.port.in { left: -10px; }
-.port.hot { box-shadow: 0 0 0 6px rgba(233,207,154,.25), 0 0 18px var(--line); animation: pulse 1.4s ease-in-out infinite; }
-@keyframes pulse { 50% { box-shadow: 0 0 0 12px rgba(233,207,154,.08), 0 0 26px var(--line); } }
-.hint { position: absolute; left: 0; right: 0; bottom: 7vh; text-align: center; font-size: clamp(15px, 1.5vw, 21px); letter-spacing: .18em; color: var(--ink); text-shadow: 0 2px 12px #000; transition: opacity .6s; }
-.who { position: absolute; top: 4vh; left: 50%; transform: translateX(-50%); font-size: clamp(12px, 1vw, 14px); letter-spacing: .3em; color: var(--dim); }
-.flash { position: absolute; inset: 0; background: radial-gradient(circle at var(--x) var(--y), rgba(233,207,154,.45), transparent 40%); opacity: 0; pointer-events: none; transition: opacity .8s; }
-.flash.on { opacity: 1; }
-@media (prefers-reduced-motion: reduce) { .port.hot { animation: none; } }
+html, body { margin: 0; height: 100%; overflow: hidden; touch-action: none; user-select: none; -webkit-user-select: none; }
+body { background: var(--night); color: var(--ink); font-family: "Noto Serif TC", "Songti TC", "Source Han Serif TC", serif; }
+
+/* 白板：夜藍紙面、細點格、左上方檯燈的暖光、四角壓暗 */
+.board { position: fixed; inset: 0;
+  background:
+    radial-gradient(60vmax 45vmax at 14% 6%, rgba(233,196,140,.16), transparent 62%),
+    radial-gradient(120vmax 90vmax at 50% 50%, var(--board), var(--night) 78%); }
+.board::before { content: ""; position: absolute; inset: 0; opacity: .55;
+  background-image: radial-gradient(rgba(244,238,230,.09) 1px, transparent 1.3px); background-size: 26px 26px; }
+.board::after { content: ""; position: absolute; inset: 0; pointer-events: none; mix-blend-mode: overlay; opacity: .35;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='240' height='240'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 .5 0 0 0 0 .5 0 0 0 0 .5 0 0 0 .9 0'/%3E%3C/filter%3E%3Crect width='240' height='240' filter='url(%23n)'/%3E%3C/svg%3E"); }
+.vignette { position: fixed; inset: 0; pointer-events: none; background: radial-gradient(120vmax 80vmax at 50% 45%, transparent 55%, rgba(0,0,0,.55)); }
+.bloom { position: fixed; inset: 0; pointer-events: none; opacity: 0; transition: opacity 1.6s ease;
+  background: radial-gradient(50vmax 40vmax at var(--bx,50%) var(--by,50%), rgba(233,207,154,.16), transparent 70%); }
+.bloom.on { opacity: 1; }
+
+svg.wires { position: fixed; inset: 0; width: 100%; height: 100%; overflow: visible; pointer-events: none; }
+.wire { fill: none; stroke-linecap: round; }
+.wire.glow { stroke-width: 7; opacity: .18; filter: blur(3px); }
+.wire.core { stroke-width: 1.6; opacity: .75; }
+.wire.flow { stroke-width: 2; stroke-dasharray: 2 26; opacity: .9; animation: flow 2.8s linear infinite; }
+@keyframes flow { to { stroke-dashoffset: -28; } }
+.guide { fill: none; stroke: var(--gold); stroke-width: 1.2; stroke-dasharray: 1 9; stroke-linecap: round; opacity: 0; transition: opacity .8s; }
+.guide.on { opacity: .45; }
+#drag { fill: none; stroke: url(#silk); stroke-width: 2.4; stroke-linecap: round; filter: drop-shadow(0 0 6px rgba(233,207,154,.8)); opacity: 0; }
+#head { fill: #fff6df; filter: drop-shadow(0 0 8px var(--gold)); opacity: 0; }
+.bead { filter: drop-shadow(0 0 10px currentColor) drop-shadow(0 0 3px #fff); }
+
+/* 卡：深色漆面、內縮一圈金細線、左緣是做的人的那道光 */
+.card { --k: var(--gold); position: fixed; left: var(--x); top: var(--y); width: clamp(168px, 19vw, 260px);
+  padding: 16px 20px 17px 22px; border-radius: 3px;
+  background: linear-gradient(160deg, rgba(34,41,72,.96), rgba(20,25,46,.97));
+  box-shadow: 0 1px 0 rgba(255,255,255,.06) inset, 0 18px 40px -12px rgba(0,0,0,.7), 0 2px 6px rgba(0,0,0,.4);
+  opacity: 0; transform: translateY(6px); transition: opacity .9s ease, transform .9s ease, box-shadow 1s ease; }
+.card.in { opacity: 1; transform: none; }
+.card::before { content: ""; position: absolute; inset: 5px; border: 1px solid rgba(233,207,154,.22); border-radius: 1px; pointer-events: none; }
+.card::after { content: ""; position: absolute; left: 0; top: 10%; bottom: 10%; width: 2px; border-radius: 2px;
+  background: var(--k); box-shadow: 0 0 12px var(--k), 0 0 28px color-mix(in srgb, var(--k) 50%, transparent); opacity: .75; transition: opacity .8s; }
+.card b { display: block; font-weight: 600; font-size: clamp(15px, 1.25vw, 19px); letter-spacing: .24em; line-height: 1.3; }
+.card span { display: block; margin-top: 6px; font-size: clamp(12px, .92vw, 14px); letter-spacing: .12em; color: color-mix(in srgb, var(--k) 55%, var(--ink)); }
+.card.lit { box-shadow: 0 1px 0 rgba(255,255,255,.08) inset, 0 0 0 1px color-mix(in srgb, var(--k) 55%, transparent), 0 0 46px -6px var(--k), 0 18px 40px -12px rgba(0,0,0,.7); }
+.card.lit::after { opacity: 1; }
+#a { --k: var(--t); } #b { --k: var(--m); } #c { --k: var(--c); } #d { --k: var(--s); }
+
+/* 接點：黃銅圈、暗芯；可以拉的那兩個會亮 */
+.port { position: absolute; top: 50%; width: 44px; height: 44px; margin-top: -22px; display: grid; place-items: center;
+  background: none; border: 0; padding: 0; cursor: default; touch-action: none; }
+.port::before { content: ""; width: 14px; height: 14px; border-radius: 50%;
+  background: radial-gradient(circle at 40% 35%, #2b3256, #0c1024 70%);
+  box-shadow: 0 0 0 2px var(--brass), 0 0 0 3px rgba(0,0,0,.5), 0 1px 0 3px rgba(255,255,255,.08); transition: box-shadow .3s, background .3s; }
+.port.out { right: -22px; } .port.in { left: -22px; }
+.port.hot::before { box-shadow: 0 0 0 2px var(--gold), 0 0 14px 2px rgba(233,207,154,.55); animation: hot 2.2s ease-in-out infinite; }
+.port.hot.out { cursor: grab; }
+.port.snap::before, .port.done::before { background: radial-gradient(circle, #fff6df 0 30%, var(--gold) 60%); box-shadow: 0 0 0 2px var(--gold), 0 0 22px 4px rgba(233,207,154,.75); animation: none; }
+.port:focus-visible { outline: none; }
+.port:focus-visible::before { box-shadow: 0 0 0 2px var(--gold), 0 0 0 6px rgba(233,207,154,.35); }
+@keyframes hot { 50% { box-shadow: 0 0 0 2px var(--gold), 0 0 26px 7px rgba(233,207,154,.32); } }
+
+.label { position: fixed; top: 5vh; left: 0; right: 0; margin: 0; text-align: center; font-size: clamp(12px, .95vw, 14px); letter-spacing: .5em; color: var(--dim); }
+.hint { text-wrap: balance; position: fixed; left: 50%; bottom: 7vh; transform: translateX(-50%); width: min(88vw, 36em); margin: 0; text-align: center;
+  font-size: clamp(15px, 1.35vw, 20px); letter-spacing: .16em; line-height: 1.8; text-shadow: 0 2px 14px #000; transition: opacity .5s; }
+.hint::before { content: ""; display: block; width: 64px; height: 1px; margin: 0 auto 14px; background: linear-gradient(90deg, transparent, var(--gold), transparent); }
+.hint.fade { opacity: 0; }
+
+/* 橫式（電腦、平板橫放）與直式（手機）各一套位置 */
+#a { --x: 9vw;  --y: 30vh; } #b { --x: 40vw; --y: 45vh; } #c { --x: 71vw; --y: 22vh; } #d { --x: 69vw; --y: 64vh; }
+@media (orientation: portrait) {
+  /* 直式改成上下接：出口在卡片下緣、入口在上緣 */
+  .card { width: 44vw; padding: 14px 14px 15px 18px; }
+  #a { --x: 8vw;  --y: 15vh; } #b { --x: 42vw; --y: 39vh; } #c { --x: 5vw; --y: 64vh; } #d { --x: 51vw; --y: 64vh; }
+  .port.out, .port.in { top: auto; left: 50%; right: auto; margin: 0 0 0 -22px; }
+  .port.out { bottom: -22px; } .port.in { top: -22px; }
+  .hint { bottom: 4vh; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .wire.flow, .port.hot::before { animation: none; }
+  .card { transition: opacity .3s; transform: none; }
+}
 </style>
-<div class="who">她的白板．第一張卡</div>
-<svg id="svg"><path id="drag" fill="none" stroke="#e9cf9a" stroke-width="3" stroke-dasharray="6 6" opacity="0"/></svg>
-<div class="card" id="a" style="left:12vw;top:30vh"><b>序章</b><span>雲被鎖在天上</span><i class="port out hot" id="pa"></i></div>
-<div class="card" id="b" data-k style="--k:var(--m);left:44vw;top:44vh"><b>第一扇門</b><span>M 寫好的開門程式</span><i class="port in hot" id="pb"></i><i class="port out"></i></div>
-<div class="card done" id="c" data-k style="--k:var(--c);left:72vw;top:24vh"><b>城門</b><span>C 畫的草圖</span><i class="port in"></i></div>
-<div class="card done" id="d" data-k style="--k:var(--s);left:70vw;top:62vh"><b>管風琴</b><span>S 的第一首歌</span><i class="port in"></i></div>
-<div class="flash" id="flash"></div>
-<div class="hint" id="hint">從「序章」右邊的點，拉一條線到「第一扇門」。</div>
+<div class="board"></div><div class="bloom" id="bloom"></div>
+<svg class="wires" id="svg" aria-hidden="true">
+  <defs><linearGradient id="silk" gradientUnits="userSpaceOnUse" x1="0" y1="0" x2="1" y2="0">
+    <stop offset="0" stop-color="#c7b2ea"/><stop offset="1" stop-color="#e9cf9a"/></linearGradient></defs>
+  <g id="base"></g>
+  <path id="guide" class="guide"/>
+  <path id="drag"/><circle id="head" r="4"/>
+</svg>
+<div class="vignette"></div>
+<p class="label">她的白板．第一張卡</p>
+
+<div class="card" id="a"><b>序章</b><span>雲被鎖在天上</span>
+  <button class="port out hot" id="pa" aria-label="從序章拉一條線到第一扇門（按 Enter 直接接上）"></button></div>
+<div class="card" id="b"><b>第一扇門</b><span>M 寫好的開門程式</span>
+  <i class="port in hot" id="pb"></i><i class="port out" id="pbo"></i></div>
+<div class="card" id="c"><b>城門</b><span>C 畫的草圖</span><i class="port in" id="pc"></i></div>
+<div class="card" id="d"><b>管風琴</b><span>S 的第一首歌</span><i class="port in" id="pd"></i></div>
+
+<p class="hint" id="hint">從「序章」的接點，拉一條線到「第一扇門」。</p>
+
 <script>
 (function () {
-  var svg = document.getElementById('svg'), drag = document.getElementById('drag'), hint = document.getElementById('hint');
-  var pa = document.getElementById('pa'), pb = document.getElementById('pb');
+  var NS = 'http://www.w3.org/2000/svg', $ = function (id) { return document.getElementById(id); };
+  var svg = $('svg'), base = $('base'), drag = $('drag'), head = $('head'), guide = $('guide'), hint = $('hint'), silk = $('silk');
+  var pa = $('pa'), pb = $('pb'), pbo = $('pbo'), pc = $('pc'), pd = $('pd');
+  var css = getComputedStyle(document.documentElement), col = function (k) { return css.getPropertyValue(k).trim(); };
+  var still = matchMedia('(prefers-reduced-motion: reduce)').matches;
   function c(el) { var r = el.getBoundingClientRect(); return { x: r.left + r.width / 2, y: r.top + r.height / 2 }; }
-  function curve(p, q) { var dx = Math.max(60, (q.x - p.x) / 2); return 'M' + p.x + ',' + p.y + ' C' + (p.x + dx) + ',' + p.y + ' ' + (q.x - dx) + ',' + q.y + ' ' + q.x + ',' + q.y; }
-  function line(p, q, color, w) { var e = document.createElementNS('http://www.w3.org/2000/svg', 'path'); e.setAttribute('d', curve(p, q)); e.setAttribute('fill', 'none');
-    e.setAttribute('stroke', color); e.setAttribute('stroke-width', w); svg.insertBefore(e, drag); return e; }
-  // 已經連好的線：M 的程式（第一扇門）後面接 C 的圖、S 的歌，全都在等她拉這一條
-  function base() { [].slice.call(svg.querySelectorAll('path.base')).forEach(function (e) { e.remove(); });
-    var outB = document.querySelector('#b .port.out');
-    [[outB, document.querySelector('#c .port.in'), '#c8d45a'], [outB, document.querySelector('#d .port.in'), '#cf5a6c']].forEach(function (t) {
-      var e = line(c(t[0]), c(t[1]), t[2], 2); e.classList.add('base'); e.setAttribute('opacity', '.55'); }); }
-  base(); window.addEventListener('resize', base);
-  var dragging = false, done = false;
-  pa.addEventListener('pointerdown', function (ev) { if (done) return; dragging = true; pa.setPointerCapture(ev.pointerId); drag.setAttribute('opacity', '1'); });
-  pa.addEventListener('pointermove', function (ev) { if (!dragging) return; drag.setAttribute('d', curve(c(pa), { x: ev.clientX, y: ev.clientY })); });
-  pa.addEventListener('pointerup', function (ev) {
-    if (!dragging) return; dragging = false; drag.setAttribute('opacity', '0');
-    var q = c(pb), d = Math.hypot(ev.clientX - q.x, ev.clientY - q.y);
-    if (d > 60) { hint.textContent = '再試一次：拉到「第一扇門」左邊的點。'; return; }
-    done = true; pa.classList.remove('hot'); pb.classList.remove('hot');
-    var e = line(c(pa), q, '#e9cf9a', 3), L = e.getTotalLength(); e.style.strokeDasharray = L; e.style.strokeDashoffset = L;
-    e.getBoundingClientRect(); e.style.transition = 'stroke-dashoffset .6s ease'; e.style.strokeDashoffset = 0;
-    var f = document.getElementById('flash'); f.style.setProperty('--x', q.x + 'px'); f.style.setProperty('--y', q.y + 'px'); f.classList.add('on');
-    hint.textContent = '連上了。門一開，M 的程式、C 的圖、S 的歌一起動起來。';
-    setTimeout(function () { parent.postMessage({ type: 'larch:complete', result: 'linked', payload: {} }, '*'); }, 2200);
-  });
+  var tall = matchMedia('(orientation: portrait)');
+  function curve(p, q) {
+    if (tall.matches) { var dy = Math.max(60, Math.abs(q.y - p.y) * .5);
+      return 'M' + p.x + ',' + p.y + ' C' + p.x + ',' + (p.y + dy) + ' ' + q.x + ',' + (q.y - dy) + ' ' + q.x + ',' + q.y; }
+    var dx = Math.max(70, Math.abs(q.x - p.x) * .5);
+    return 'M' + p.x + ',' + p.y + ' C' + (p.x + dx) + ',' + p.y + ' ' + (q.x - dx) + ',' + q.y + ' ' + q.x + ',' + q.y; }
+  function path(d, cls, color) { var e = document.createElementNS(NS, 'path'); e.setAttribute('d', d); e.setAttribute('class', 'wire ' + cls);
+    e.setAttribute('stroke', color); base.appendChild(e); return e; }
+  function wire(p, q, color, flow) { var d = curve(p, q); path(d, 'glow', color); path(d, 'core', color); if (flow) path(d, 'flow', color); }
+
+  // 已經接好的線：M 的門後面接 C 的圖、S 的歌（光點一直往他們那邊流）；接上以後多一條她的線
+  var done = false;
+  function draw() { base.textContent = '';
+    wire(c(pbo), c(pc), col('--c'), true); wire(c(pbo), c(pd), col('--s'), true);
+    if (done) wire(c(pa), c(pb), col('--gold'), true);
+    guide.setAttribute('d', curve(c(pa), c(pb))); }
+
+  // 進場：四張卡依序亮出來，然後畫線（整段只有這一次自己動）
+  var cards = ['a', 'b', 'c', 'd'].map($);
+  cards.forEach(function (el, i) { setTimeout(function () { el.classList.add('in'); }, still ? 0 : 200 + i * 220); });
+  setTimeout(draw, still ? 0 : 1100);
+  addEventListener('resize', draw);
+
+  // 停太久沒動作，就把該拉的那條路用虛點描出來
+  var idle = setTimeout(function () { if (!done) guide.classList.add('on'); }, 6000);
+
+  var dragging = false;
+  // 放在接點附近、或放在「第一扇門」整張卡上都算接上
+  function near(ev) { var q = c(pb), r = $('b').getBoundingClientRect(), x = ev.clientX, y = ev.clientY;
+    return Math.hypot(x - q.x, y - q.y) < 72 || (x > r.left - 24 && x < r.right && y > r.top - 16 && y < r.bottom + 16); }
+  function move(ev) { if (!dragging) return; var p = c(pa), snap = near(ev), q = snap ? c(pb) : { x: ev.clientX, y: ev.clientY };
+    pb.classList.toggle('snap', snap); drag.setAttribute('d', curve(p, q));
+    silk.setAttribute('x1', p.x); silk.setAttribute('y1', p.y); silk.setAttribute('x2', q.x); silk.setAttribute('y2', q.y);
+    head.setAttribute('cx', q.x); head.setAttribute('cy', q.y); }
+  pa.addEventListener('pointerdown', function (ev) { if (done) return; dragging = true; pa.setPointerCapture(ev.pointerId);
+    pa.style.cursor = 'grabbing'; drag.style.opacity = head.style.opacity = 1; clearTimeout(idle); guide.classList.remove('on'); move(ev); });
+  pa.addEventListener('pointermove', move);
+  function release(ev) { if (!dragging) return; dragging = false; pa.style.cursor = '';
+    drag.style.opacity = head.style.opacity = 0; pb.classList.remove('snap');
+    if (near(ev)) connect(); else { hint.textContent = '再試一次：拉到「第一扇門」那張卡上。'; guide.classList.add('on'); } }
+  pa.addEventListener('pointerup', release); pa.addEventListener('pointercancel', release);
+  pa.addEventListener('keydown', function (ev) { if (ev.key === 'Enter' || ev.key === ' ') { ev.preventDefault(); connect(); } });
+
+  // 一顆光沿著一條線跑過去
+  function bead(p, q, color, ms) { return new Promise(function (ok) {
+    var g = document.createElementNS(NS, 'path'); g.setAttribute('d', curve(p, q));
+    var dot = document.createElementNS(NS, 'circle'); dot.setAttribute('r', 4.5); dot.setAttribute('fill', '#fff8e8');
+    dot.setAttribute('class', 'bead'); dot.style.color = color; svg.appendChild(dot);
+    var L = g.getTotalLength(), t0 = performance.now();
+    (function step(t) { var k = Math.min(1, Math.max(0, (t - t0) / ms)), e = k < .5 ? 2 * k * k : 1 - Math.pow(-2 * k + 2, 2) / 2, pt = g.getPointAtLength(L * e);
+      dot.setAttribute('cx', pt.x); dot.setAttribute('cy', pt.y);
+      if (k < 1) requestAnimationFrame(step); else { dot.remove(); ok(); } })(t0);
+  }); }
+  function wait(ms) { return new Promise(function (ok) { setTimeout(ok, ms); }); }
+
+  function connect() {
+    if (done) return; done = true; clearTimeout(idle); guide.classList.remove('on');
+    pa.classList.remove('hot'); pb.classList.remove('hot'); pa.classList.add('done'); pb.classList.add('done');
+    pa.setAttribute('aria-label', '已接上'); hint.classList.add('fade');
+    // 她的線用畫的：金線從序章描到門口
+    var p = c(pa), q = c(pb), line = document.createElementNS(NS, 'path');
+    line.setAttribute('d', curve(p, q)); line.setAttribute('class', 'wire core'); line.setAttribute('stroke', col('--gold'));
+    line.style.strokeWidth = 2.2; line.style.opacity = 1; svg.insertBefore(line, guide);
+    var L = line.getTotalLength(); line.style.strokeDasharray = L; line.style.strokeDashoffset = L; line.getBoundingClientRect();
+    line.style.transition = 'stroke-dashoffset .7s cubic-bezier(.4,0,.2,1)'; line.style.strokeDashoffset = 0;
+    $('a').classList.add('lit');
+    var b = $('bloom'), r = $('b').getBoundingClientRect();
+    b.style.setProperty('--bx', (r.left + r.width / 2) / innerWidth * 100 + '%'); b.style.setProperty('--by', (r.top + r.height / 2) / innerHeight * 100 + '%');
+    var run = still
+      ? Promise.resolve().then(function () { cards.forEach(function (el) { el.classList.add('lit'); }); })
+      : wait(650).then(function () { return bead(p, q, col('--gold'), 700); })
+          .then(function () { $('b').classList.add('lit'); b.classList.add('on'); return wait(380); })
+          .then(function () { var o = c(pbo); return Promise.all([
+            bead(o, c(pc), col('--c'), 900).then(function () { $('c').classList.add('lit'); }),
+            bead(o, c(pd), col('--s'), 1050).then(function () { $('d').classList.add('lit'); }) ]); });
+    run.then(function () { line.remove(); draw();
+      hint.textContent = '連上了。門一開，M 的程式、C 的圖、S 的歌一起動起來。'; hint.classList.remove('fade');
+      return wait(2600); })
+      .then(function () { parent.postMessage({ type: 'larch:complete', result: 'linked', payload: {} }, '*'); });
+  }
   parent.postMessage({ type: 'larch:ready' }, '*');
 })();
 </script>
