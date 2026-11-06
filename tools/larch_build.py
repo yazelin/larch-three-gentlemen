@@ -46,7 +46,7 @@ def video_layer(key):
 # ---------- 第一步：劇本 → 段落 ----------
 def segments(md):
     """[('card', title, lines, cgs) | ('choice', [(text, key)]) | ('branch', key, lines, cgs)]；每句 line 可帶 background。"""
-    body = md.split("## CG 清單")[0]
+    body = md.split("## CG 清單")[0].split("## 取材對照")[0].split("## 歌詞草稿")[0]   # 製作用的表格不進遊戲
     first = re.search(r"【CG ([^｜\s】]+)", body)
     segs, title, lines, cgs, mode, last_desk, pend_bg = [], "", [], [], None, cg_url(first[1] if first and C.CH > 1 else "01-1"), None
     pend, opts = {}, {}   # pend：下一句要帶的 video/bgm/sfx；opts：這張卡的轉場與自動前進
