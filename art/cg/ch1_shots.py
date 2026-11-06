@@ -227,8 +227,8 @@ FIX = {
     "04S-1": "FRAMING: a CLOSE-UP of S alone in profile from the chest up, filling the frame; she is only a soft out-of-focus shape behind him; M and C are out of frame.",
     "04S-2": "LEFT-RIGHT (very important): the camera is on the WINDOW side looking south toward the door. On the far (door) side of the table: S on the GREEN chair at the frame's LEFT, she on the RED chair at the frame's RIGHT. In the near foreground, seen from behind: C on the wooden chair at the LEFT, M on the white chair at the RIGHT with his laptop.",
     "04S-4b": "She sits on HER RED chair. She drinks straight from the rim of the tall glass (no straw); the thin white tea-bag string hangs over the rim with its small cream tag.",
-    "05-2": "MIRRORED because this is a reverse angle from behind the desk: the desk lamp glows at the frame's RIGHT edge, the back of the tablet is at the frame's LEFT edge, the back of the laptop lid at the RIGHT; the phone and its stand are out of frame, only their wine-red light reaches her.",
-    "06C": "She sleeps with her cheek on her folded arms on the OPEN TEXTBOOK lying on the desk, the same textbook as in the other shots of this scene.",
+    "05-2": "The camera stands BEHIND the devices, so it sees only the plain dark BACK of the tablet case and the plain BACK of the laptop lid; no screen and no man is visible to the camera. MIRRORED because this is a reverse angle from behind the desk: the desk lamp glows at the frame's RIGHT edge, the back of the tablet is at the frame's LEFT edge, the back of the laptop lid at the RIGHT; the phone and its stand are out of frame, only their wine-red light reaches her.",
+    "06C": "The room is exactly as the EMPTY SET image: the window behind the devices, and on the desk from LEFT to RIGHT the desk lamp, the laptop, the tea glass, the phone in its stand, the tablet; the lamp stands at the far LEFT. She sleeps with her cheek on her folded arms on the OPEN TEXTBOOK lying on the desk, the same textbook as in the other shots of this scene.",
     "06-1": "The phone stands in its small wooden phone stand to the RIGHT of the tea glass (left to right: laptop, tea glass, phone stand).",
 }
 
@@ -297,7 +297,7 @@ HANDS.update({
  "04A-5": "她閉眼嘆氣，兩手交疊放在桌上；三位先生的手照 04A。",
 })
 
-# 手機在哪：人形介面出現（03S）之前，手機在她手上或平放在桌上；之後詩住在手機裡，手機立著靠在紅茶杯右邊
+# 手機在哪：人形介面出現（03S）之前，手機在她手上或平放在桌上；之後詩的畫面在手機上，手機立著靠在紅茶杯右邊
 PHONE = {
  "01-0": "手機在她手上亮著；筆電與平板的螢幕關著", "01-1": "手機平放在紅茶後面、剛亮起通知；筆電與平板的螢幕關著、全黑", "01-2": "手機在她手上；筆電與平板的螢幕關著、全黑",
  "01A": "手機在她手上；筆電與平板的螢幕關著、全黑", "02A": "手機平放在桌上；筆電與平板的螢幕關著、全黑", "02B": "手機貼在她胸口；筆電與平板的螢幕關著、全黑", "02-1": "手機在桌上、她的指尖按著螢幕；筆電與平板的螢幕關著、全黑",
