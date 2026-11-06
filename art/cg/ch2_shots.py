@@ -55,7 +55,7 @@ GAZE = {
  "2-01": {"she": "the phone she is placing into the stand", "M": H, "C": H, "S": H},
  "2-01A": {"she": "the three devices", "M": "down at something on his own side", "C": "HER at the lower RIGHT of the frame", "S": "HER at the lower RIGHT of the frame"},
  "2-03": {"she": "down at the phone in her hands, below the frame"},
- "2-02": {"S": "down at the photo"},
+ "2-02": {"S": "down at the photo", "M": "down at his own work", "C": "down at his drawing"},
  "2-04": {"S": "down, at his own side"},
  "2-05": {"she": "M and C across the table", "M": H, "C": H, "S": H},
  "2-06C": {"C": "his sketch"},
@@ -77,6 +77,7 @@ SETUP = {"2-01": "D", "2-01A": "A", "2-02": "C", "2-04": "C", "2-03": "B", "2-12
          "2-05": "C", "2-06C": "C", "2-06M": "A", "2-06S": "B", "2-08": "A"}
 TEA_STUDIO = {"_": _T1, "2-05-4": _T2, "2-05-5": _T2, "2-08": _T2}
 FIX = {
+    "2-02": "Behind the phone, softly out of focus: the laptop screen is LIT with M (deep blue interface, chest up, looking down at his work) and the tablet screen is LIT with C (pale yellow-green interface, chest up, his pencil moving). No device screen is dark.",
     "2-03": "The camera stands BEHIND the devices on the desk, so it sees only the plain dark BACK of the laptop lid and the plain dark BACK of the tablet case (and the back of the phone in its stand): NO screen and NO man is visible to the camera. MIRRORED because this is a reverse angle: the desk lamp glows at the frame's RIGHT edge, the back of the tablet is at the frame's LEFT, the back of the laptop lid at the RIGHT.",
     "2-12": "The camera stands BEHIND the devices on the desk, so it sees only the plain dark BACK of the laptop lid and the plain dark BACK of the tablet case (and the back of the phone in its stand): NO screen and NO man is visible to the camera. MIRRORED because this is a reverse angle: the desk lamp glows at the frame's RIGHT edge, the back of the tablet is at the frame's LEFT, the back of the laptop lid at the RIGHT.",
     "2-04": "The photo on the phone screen is EXACTLY the same as in shot 2-02: a deep blue pre-dawn sky over old rooftops with the silhouette of a mosque dome and a thin minaret, a thin line of light at the horizon. NOT a seaside town, NOT white houses, NOT a sunset.",
