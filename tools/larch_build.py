@@ -295,6 +295,7 @@ def push(nodes, edges, cgs):
         got = len(ob.get("board", ob).get("nodes", []))
         print(f"  別章 {oid}：卡 {got} ／ 推之前 {n}")
         assert got == n, f"{oid} 被動到了"
+    st = json.loads(STATE.read_text()); st["pushed"] = sorted(set(st.get("pushed", []) + [BOARD])); STATE.write_text(json.dumps(st, ensure_ascii=False, indent=1))
     pv, _ = call("GET", f"/projects/{pid}/preview?boardId={BOARD}&hours=168")
     print("預覽（私人，7 天）：", pv.get("playUrl") or pv.get("url"))
 
@@ -310,7 +311,8 @@ def gallery_cgs(cgs):
 def jump_to_next(nodes, edges):
     """下一章的白板已經組過（dist 有檔）就在章末接一張跳章卡。"""
     nxt = ROOT / f"dist/board_ch{C.CH + 1}.json"
-    if not nxt.exists(): return
+    pushed = json.loads(STATE.read_text()).get("pushed", []) if STATE.exists() else []
+    if not nxt.exists() or f"board-ch{C.CH + 1}" not in pushed: return   # 下一章還沒推上去就不接，免得跳到不存在的白板
     tgt = json.loads(nxt.read_text())["nodes"][0]["id"]
     last = nodes[-1]
     j = {"id": f"ch{C.CH}-jump", "type": "story", "position": {"x": last["position"]["x"] + 400, "y": 0},
