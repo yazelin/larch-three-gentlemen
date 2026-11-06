@@ -524,5 +524,21 @@
       ],
       "approved": "2026-11-06 yazelin 確認頁 OK"
     }
+  },
+  "chibi": {
+    "ref": "canon/refs/chibi_lineup.jpg",
+    "singles": {
+      "c": "canon/refs/chibi_c.jpg",
+      "m": "canon/refs/chibi_m.jpg",
+      "tea": "canon/refs/chibi_tea.jpg",
+      "s": "canon/refs/chibi_s.jpg"
+    },
+    "name": "四主角兩頭身 Q 版（yazelin 2026-11-06 提供）",
+    "note": "由左到右：晨、明、茶語、詩。群像只當總覽，當參考圖一律用裁好的單人檔。",
+    "diffs_from_canon": [
+      "茶語的工作褲畫成灰藍，定稿是深炭灰",
+      "茶語兩手腕的串珠一邊偏珍珠白、一邊偏深色，定稿是兩手各兩串（深紫與珍珠白）",
+      "茶語與詩是閉眼笑，看不到瞳色"
+    ]
   }
 }
