@@ -1,7 +1,8 @@
 <!doctype html><html lang="zh-Hant"><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
 <!-- 第一章第三節小遊戲：親手拉出第一條線。
-     白板上只差一條：她的「序章」接到 M 寫好的「第一扇門」，門後面早就接著 C 的草圖與 S 的歌。
-     接上的那一刻，一顆光從她的線跑進 M 的門，再分成兩顆跑向 C 與 S。做完送 larch:complete。 -->
+     時間點在第三節結尾，題目還沒讀，只放當下真的有的：她剛開的「開場」、M 剛寫好的對話框、
+     C 空著等她說要畫誰的人物欄、S 做過的〈tea leaves〉。白板上只差她拉的那一條。
+     接上的那一刻，一顆光從她的線跑進 M 的對話框，再分成兩顆跑向 C 與 S。做完送 larch:complete。 -->
 <style>
 @import url("https://fonts.googleapis.com/css2?family=Noto+Serif+TC:wght@400;600&display=swap");
 :root { color-scheme: dark;
@@ -97,16 +98,16 @@ svg.wires { position: fixed; inset: 0; width: 100%; height: 100%; overflow: visi
   <path id="drag"/><circle id="head" r="4"/>
 </svg>
 <div class="vignette"></div>
-<p class="label">她的白板．第一張卡</p>
+<p class="label">她的白板．第一條線</p>
 
-<div class="card" id="a"><b>序章</b><span>雲被鎖在天上</span>
-  <button class="port out hot" id="pa" aria-label="從序章拉一條線到第一扇門（按 Enter 直接接上）"></button></div>
-<div class="card" id="b"><b>第一扇門</b><span>M 寫好的開門程式</span>
+<div class="card" id="a"><b>開場</b><span>還沒取名的遊戲</span>
+  <button class="port out hot" id="pa" aria-label="從開場拉一條線到對話框（按 Enter 直接接上）"></button></div>
+<div class="card" id="b"><b>對話框</b><span>M 剛寫好的</span>
   <i class="port in hot" id="pb"></i><i class="port out" id="pbo"></i></div>
-<div class="card" id="c"><b>城門</b><span>C 畫的草圖</span><i class="port in" id="pc"></i></div>
-<div class="card" id="d"><b>管風琴</b><span>S 的第一首歌</span><i class="port in" id="pd"></i></div>
+<div class="card" id="c"><b>人物</b><span>C 在等妳說要畫誰</span><i class="port in" id="pc"></i></div>
+<div class="card" id="d"><b>〈tea leaves〉</b><span>S 做的歌</span><i class="port in" id="pd"></i></div>
 
-<p class="hint" id="hint">從「序章」的接點，拉一條線到「第一扇門」。</p>
+<p class="hint" id="hint">從「開場」的接點，拉一條線到「對話框」。</p>
 
 <script>
 (function () {
@@ -126,7 +127,7 @@ svg.wires { position: fixed; inset: 0; width: 100%; height: 100%; overflow: visi
     e.setAttribute('stroke', color); base.appendChild(e); return e; }
   function wire(p, q, color, flow) { var d = curve(p, q); path(d, 'glow', color); path(d, 'core', color); if (flow) path(d, 'flow', color); }
 
-  // 已經接好的線：M 的門後面接 C 的圖、S 的歌（光點一直往他們那邊流）；接上以後多一條她的線
+  // 已經接好的線：M 的對話框後面接 C 的人物欄、S 的歌（光點一直往他們那邊流）；接上以後多一條她的線
   var done = false;
   function draw() { base.textContent = '';
     wire(c(pbo), c(pc), col('--c'), true); wire(c(pbo), c(pd), col('--s'), true);
@@ -143,7 +144,7 @@ svg.wires { position: fixed; inset: 0; width: 100%; height: 100%; overflow: visi
   var idle = setTimeout(function () { if (!done) guide.classList.add('on'); }, 6000);
 
   var dragging = false;
-  // 放在接點附近、或放在「第一扇門」整張卡上都算接上
+  // 放在接點附近、或放在「對話框」整張卡上都算接上
   function near(ev) { var q = c(pb), r = $('b').getBoundingClientRect(), x = ev.clientX, y = ev.clientY;
     return Math.hypot(x - q.x, y - q.y) < 72 || (x > r.left - 24 && x < r.right && y > r.top - 16 && y < r.bottom + 16); }
   function move(ev) { if (!dragging) return; var p = c(pa), snap = near(ev), q = snap ? c(pb) : { x: ev.clientX, y: ev.clientY };
@@ -155,7 +156,7 @@ svg.wires { position: fixed; inset: 0; width: 100%; height: 100%; overflow: visi
   pa.addEventListener('pointermove', move);
   function release(ev) { if (!dragging) return; dragging = false; pa.style.cursor = '';
     drag.style.opacity = head.style.opacity = 0; pb.classList.remove('snap');
-    if (near(ev)) connect(); else { hint.textContent = '再試一次：拉到「第一扇門」那張卡上。'; guide.classList.add('on'); } }
+    if (near(ev)) connect(); else { hint.textContent = '再試一次：拉到「對話框」那張卡上。'; guide.classList.add('on'); } }
   pa.addEventListener('pointerup', release); pa.addEventListener('pointercancel', release);
   pa.addEventListener('keydown', function (ev) { if (ev.key === 'Enter' || ev.key === ' ') { ev.preventDefault(); connect(); } });
 
@@ -175,7 +176,7 @@ svg.wires { position: fixed; inset: 0; width: 100%; height: 100%; overflow: visi
     if (done) return; done = true; clearTimeout(idle); guide.classList.remove('on');
     pa.classList.remove('hot'); pb.classList.remove('hot'); pa.classList.add('done'); pb.classList.add('done');
     pa.setAttribute('aria-label', '已接上'); hint.classList.add('fade');
-    // 她的線用畫的：金線從序章描到門口
+    // 她的線用畫的：金線從開場描到對話框
     var p = c(pa), q = c(pb), line = document.createElementNS(NS, 'path');
     line.setAttribute('d', curve(p, q)); line.setAttribute('class', 'wire core'); line.setAttribute('stroke', col('--gold'));
     line.style.strokeWidth = 2.2; line.style.opacity = 1; svg.insertBefore(line, guide);
@@ -192,7 +193,7 @@ svg.wires { position: fixed; inset: 0; width: 100%; height: 100%; overflow: visi
             bead(o, c(pc), col('--c'), 900).then(function () { $('c').classList.add('lit'); }),
             bead(o, c(pd), col('--s'), 1050).then(function () { $('d').classList.add('lit'); }) ]); });
     run.then(function () { line.remove(); draw();
-      hint.textContent = '連上了。門一開，M 的程式、C 的圖、S 的歌一起動起來。'; hint.classList.remove('fade');
+      hint.textContent = '連上了。M 的對話框、C 的人物、S 的歌，都接在妳拉的這條線後面。'; hint.classList.remove('fade');
       return wait(2600); })
       .then(function () { parent.postMessage({ type: 'larch:complete', result: 'linked', payload: {} }, '*'); });
   }
