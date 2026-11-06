@@ -89,6 +89,8 @@ def prompt(i):
             "Reproduce Image 1 EXACTLY: same camera position, framing, lens, lighting, colour grade, room, background, devices and what each screen shows, props, clothing, hair, glasses and accessories, same watercolour rendering and level of detail.",
             "Change ONLY what is described here, nothing else in the picture: " + d["body"],
             *board(i),
+            *([FIX[i]] if i in FIX else []),
+            "Anything that is NOT visible in Image 1 stays out of frame here too: do not add any device, prop or person that Image 1 does not show, even if the props list above names it.",
             "Keep every face identical to Image 1 and to the character sheets. Restrained adult acting; no manga symbols. Hands not mentioned stay as in Image 1 or out of frame. No text."])
     parts = [ref, TEA]
     if d["kind"] in ("desk", "studio", "free") and (d["kind"] != "free" or d["who"] not in ("", "t")): parts.append(CAST)
