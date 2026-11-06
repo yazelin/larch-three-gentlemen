@@ -1,4 +1,6 @@
 REFERENCE IMAGES: Image 1 = the MASTER FRAME of this shot (reproduce it). Image 2 = heroine (茶語) sheet. Image 3 = C sheet. Image 4 = M sheet. Image 5 = S sheet.
 Reproduce Image 1 EXACTLY: same camera position, framing, lens, lighting, colour grade, room, background, devices and what each screen shows, props, clothing, hair, glasses and accessories, same watercolour rendering and level of detail.
 Change ONLY what is described here, nothing else in the picture: Change ONLY this: the laptop screen has gone completely DARK (M is gone); the tablet with C and the phone with S are still lit; the blue light no longer falls on her hair.
+HANDS (storyboard, must be followed exactly; every visible hand has exactly five fingers and is attached to an arm; hands written as out of frame must not appear): 她只露頭髮，手在畫面外；三位先生只到胸口，手在畫面外。
+PROPS STATE (storyboard, must be followed exactly): 書桌（只有一張桌子、一個平的桌面，沒有第二層或架子）：由左到右檯燈、筆電、冰紅茶、平板；手機直立在淺木色小手機架上，放在紅茶杯右邊、螢幕朝她；冰紅茶和手機架都在筆電與平板中間的桌面上；手機架照道具圖：淺木色低座加一片短靠背，沒有任何金屬板或夾子；手機不碰杯子；全畫面只有一支手機；沒入鏡的道具不用畫。冰紅茶快喝完、杯墊上一圈水痕。
 Keep every face identical to Image 1 and to the character sheets. Restrained adult acting; no manga symbols. Hands not mentioned stay as in Image 1 or out of frame. No text.
