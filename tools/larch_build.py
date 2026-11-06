@@ -195,7 +195,7 @@ def push(nodes, edges, cgs):
     # 專案層設定（整份 PUT 會清白板，之後白板再推一次）
     p["name"] = NAME
     s = p.setdefault("settings", {})
-    s.update({"stageFit": "auto", "keepActorsInFrame": False, "textSpeed": 55, "returnToTitleOnEnd": True,
+    s.update({"arrowKeyBack": True, "arrowKeyNext": True, "stageFit": "auto", "keepActorsInFrame": False, "textSpeed": 55, "returnToTitleOnEnd": True,
               "titleScreenEnabled": True, "titleCoverImage": CDN + "art/cg/title_kv.jpg", "projectThumbnail": CDN + "art/cg/title_kv.jpg",
               "cgGalleryEnabled": True, "cgGallerySource": "picked",
               "cgGalleryItems": [{"url": cg_url(c), "title": f"CG {c}", "locked": True} for c in cgs if c not in VARIANTS]})

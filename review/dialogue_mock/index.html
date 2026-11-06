@@ -1,0 +1,139 @@
+<title>慕詩客對話框草圖</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Serif+TC:wght@400;600&display=swap">
+<style>
+:root{--bg:#f3eee6;--card:#fbf8f3;--fg:#2e2733;--mute:#6e6476;--line:#ddd3c6;--accent:#7a5a9a}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#1b1820;--card:#24202b;--fg:#ece6ef;--mute:#a69cb0;--line:#3a3442;--accent:#c7b2ea;color-scheme:dark}}
+:root[data-theme="dark"]{--bg:#1b1820;--card:#24202b;--fg:#ece6ef;--mute:#a69cb0;--line:#3a3442;--accent:#c7b2ea;color-scheme:dark}
+body{background:var(--bg);color:var(--fg);font-family:"Noto Serif TC","Songti TC",serif;line-height:1.75;font-size:15px}
+main{max-width:1100px;margin:0 auto;padding-block:28px 64px;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));display:grid;gap:24px}
+h1,h2{margin:0;text-wrap:balance}h1{font-size:1.8rem}h2{font-size:1.2rem;color:var(--accent)}
+p{margin:0;max-width:65ch}.sub{color:var(--mute)}
+.bar{display:flex;flex-wrap:wrap;gap:8px;align-items:center}
+.bar span{color:var(--mute);font-size:.9rem;min-width:3em}
+.bar button{font:inherit;font-size:.9rem;padding:4px 14px;border:1px solid var(--line);border-radius:999px;background:var(--card);color:var(--fg);cursor:pointer}
+.bar button[aria-pressed="true"]{border-color:var(--accent);background:color-mix(in srgb,var(--accent) 16%,var(--card))}
+.variants{display:grid;gap:10px}
+.vdesc{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:10px}
+.vdesc div{background:var(--card);border:1px solid var(--line);border-radius:8px;padding:10px 14px;font-size:.92rem}
+.vdesc b{color:var(--accent);font-weight:600}
+
+/* ---- 舞台：3:2 的 CG，對話框疊在下緣，字級跟著舞台寬 ---- */
+.stage{position:relative;width:100%;max-width:100%;aspect-ratio:3/2;overflow:hidden;border-radius:6px;container-type:inline-size;background:#000}
+.stage>img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+.dlg{position:absolute;left:0;right:0;bottom:0;padding:5.2cqw 9cqw 3cqw;--ink:#f4eee6}
+.dlg .wash,.dlg .grain{position:absolute;pointer-events:none}
+.dlg .name{position:relative;display:flex;align-items:center;gap:1cqw;margin:0 0 .8cqw;font-size:1.45cqw;letter-spacing:.32em;font-weight:600;min-height:1.4em}
+.dlg .text{position:relative;margin:0;max-width:46em;min-height:3.5em;font-size:2cqw;line-height:1.75;letter-spacing:.06em}
+.dlg.narr .name{visibility:hidden}
+
+/* 現行：深藍黑放射漸層 */
+.v-now .wash{inset:0;background:radial-gradient(closest-side at 50% 55%,rgba(5,7,16,.9) 0%,rgba(5,7,16,.82) 50%,rgba(5,7,16,.5) 78%,rgba(5,7,16,0) 100%)}
+.v-now .name,.v-now .text{color:#f4eee6;text-shadow:0 1px 2px rgba(0,0,0,.9),0 2px 14px rgba(0,0,0,.75)}
+.v-now .name::before{content:"";width:.7cqw;height:.7cqw;border-radius:50%;background:var(--k);box-shadow:0 0 10px var(--k)}
+.v-now.thought .text{color:rgba(244,238,230,.68)}
+
+/* A 水彩紙條：米白紙、邊緣不規則、邊緣顏料積色、深墨字 */
+.v-a .wash{left:3cqw;right:3cqw;top:2.2cqw;bottom:1.2cqw;background:rgba(246,240,229,.9);border-radius:1.2cqw;
+  box-shadow:inset 0 0 1.6cqw rgba(150,118,92,.42),inset 0 0 .3cqw rgba(120,92,70,.5);filter:url(#ragged)}
+.v-a .grain{left:3cqw;right:3cqw;top:2.2cqw;bottom:1.2cqw;filter:url(#ragged);mix-blend-mode:multiply;opacity:.55;background:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='240' height='240'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.75' numOctaves='3'/%3E%3CfeColorMatrix values='0 0 0 0 .55 0 0 0 0 .47 0 0 0 0 .38 0 0 0 .55 0'/%3E%3C/filter%3E%3Crect width='240' height='240' filter='url(%23n)'/%3E%3C/svg%3E")}
+.v-a .name{color:var(--kd)}
+.v-a .name::before{content:"";width:2.6cqw;height:1.1cqw;border-radius:50%;background:var(--k);opacity:.55;filter:url(#dab)}
+.v-a .text{color:#3b2f2c}
+.v-a.thought .text{color:#7a6a66}
+
+/* B 淡墨暈染：沒有框，一抹偏紫的靛藍水彩由下往上淡開，邊緣不規則，帶一點說話者的色 */
+.v-b .wash{left:-4cqw;right:-4cqw;top:1cqw;bottom:-3cqw;filter:url(#ragged2);
+  background:radial-gradient(70% 90% at 50% 100%,rgba(44,40,74,.72) 0%,rgba(52,46,84,.6) 45%,rgba(60,52,92,.32) 72%,rgba(60,52,92,0) 100%),
+             radial-gradient(40% 60% at 22% 85%,color-mix(in srgb,var(--k) 38%,transparent) 0%,transparent 100%)}
+.v-b .grain{left:-4cqw;right:-4cqw;top:1cqw;bottom:-3cqw;filter:url(#ragged2);mix-blend-mode:soft-light;opacity:.7;background:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='240' height='240'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.6' numOctaves='3'/%3E%3C/filter%3E%3Crect width='240' height='240' filter='url(%23n)'/%3E%3C/svg%3E")}
+.v-b .name,.v-b .text{color:#f7f2ea;text-shadow:0 1px 3px rgba(28,24,48,.75),0 0 14px rgba(28,24,48,.45)}
+.v-b .name::before{content:"";width:2.4cqw;height:1cqw;border-radius:50%;background:var(--k);opacity:.8;filter:url(#dab)}
+.v-b.thought .text{color:rgba(247,242,234,.72)}
+
+/* C 紙色淡出：下緣像水彩紙留白，往上淡進畫裡，沒有邊；深墨字 */
+.v-c .wash{left:-4cqw;right:-4cqw;top:-2cqw;bottom:-2cqw;filter:url(#ragged2);
+  background:linear-gradient(to top,rgba(248,243,234,.9) 0%,rgba(248,243,234,.84) 55%,rgba(248,243,234,.45) 80%,rgba(248,243,234,0) 100%)}
+.v-c .grain{left:-4cqw;right:-4cqw;top:-2cqw;bottom:-2cqw;filter:url(#ragged2);mix-blend-mode:multiply;opacity:.45;background:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='240' height='240'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.75' numOctaves='3'/%3E%3CfeColorMatrix values='0 0 0 0 .55 0 0 0 0 .47 0 0 0 0 .38 0 0 0 .5 0'/%3E%3C/filter%3E%3Crect width='240' height='240' filter='url(%23n)'/%3E%3C/svg%3E")}
+.v-c .name{color:var(--kd)}
+.v-c .name::before{content:"";width:2.6cqw;height:1.1cqw;border-radius:50%;background:var(--k);opacity:.55;filter:url(#dab)}
+.v-c .text{color:#3b2f2c}
+.v-c.thought .text{color:#7a6a66}
+
+form{background:var(--card);border:1px solid var(--line);border-radius:8px;padding:18px;display:grid;gap:16px}
+fieldset{border:0;margin:0;padding:0;display:grid;gap:8px}legend{font-weight:600;margin-bottom:4px}
+label.opt{display:flex;gap:10px;align-items:flex-start;padding:8px 10px;border:1px solid var(--line);border-radius:6px;cursor:pointer}
+label.opt:has(input:checked){border-color:var(--accent);background:color-mix(in srgb,var(--accent) 10%,transparent)}
+label.opt small{display:block;color:var(--mute)}
+textarea{width:100%;box-sizing:border-box;min-height:80px;font:inherit;background:var(--bg);color:var(--fg);border:1px solid var(--line);border-radius:6px;padding:8px}
+.send{justify-self:start;font:inherit;background:var(--accent);color:var(--bg);border:0;border-radius:6px;padding:8px 22px;cursor:pointer}
+#st{color:var(--mute);font-size:.9rem}
+</style>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <filter id="ragged" x="-5%" y="-20%" width="110%" height="140%"><feTurbulence type="fractalNoise" baseFrequency=".018 .05" numOctaves="3" seed="7"/><feDisplacementMap in="SourceGraphic" scale="14"/></filter>
+  <filter id="ragged2" x="-5%" y="-30%" width="110%" height="160%"><feTurbulence type="fractalNoise" baseFrequency=".008 .02" numOctaves="4" seed="3"/><feDisplacementMap in="SourceGraphic" scale="46"/></filter>
+  <filter id="dab" x="-40%" y="-80%" width="180%" height="260%"><feTurbulence type="fractalNoise" baseFrequency=".25" numOctaves="2" seed="11"/><feDisplacementMap in="SourceGraphic" scale="6"/><feGaussianBlur stdDeviation=".6"/></filter>
+</svg>
+<main>
+<header style="display:grid;gap:6px">
+<h1>對話框：三種水彩做法</h1>
+<p class="sub">現在的對話框是一大片九成不透明的深藍黑，疊在淡水彩上就是一塊壓黑。下面三種做法都改成水彩的質地：邊緣不規則、有紙紋，顏色從畫裡拿，不用純黑。先切換底圖和說話的人，看每一種疊在不同明暗的 CG 上讀起來怎樣。</p>
+</header>
+
+<section class="variants">
+<div class="bar" id="vbar"><span>做法</span>
+<button data-v="now">現行</button><button data-v="a" aria-pressed="true">A 水彩紙條</button><button data-v="b">B 淡墨暈染</button><button data-v="c">C 紙色淡出</button></div>
+<div class="bar" id="cbar"><span>底圖</span>
+<button data-c="01-0">01-0 深夜</button><button data-c="03M-1" aria-pressed="true">03M-1 中間</button><button data-c="04C-1">04C-1 明亮</button></div>
+<div class="bar" id="lbar"><span>台詞</span>
+<button data-l="0" aria-pressed="true">茶語</button><button data-l="1">心聲</button><button data-l="2">S</button><button data-l="3">M</button><button data-l="4">旁白</button></div>
+<div class="stage" id="stage"><img id="cg" src="03M-1.webp" alt="第一章 CG 底圖">
+<div class="dlg v-a" id="dlg"><div class="wash"></div><div class="grain"></div><p class="name" id="nm"></p><p class="text" id="tx"></p></div></div>
+<div class="vdesc">
+<div><b>A 水彩紙條</b>：一條米白水彩紙，邊緣不規則，邊上有顏料積起來的深一圈，字用深墨色。像在畫上貼一張手寫便條，什麼底圖都讀得清楚。</div>
+<div><b>B 淡墨暈染</b>：沒有框，一抹偏紫的靛藍水彩從下緣往上淡開，邊緣跟著紙紋走，左側帶一點說話者的顏色。字維持淡色。最接近夜景的氣氛，亮圖上也是一抹顏料，不是一塊黑。</div>
+<div><b>C 紙色淡出</b>：下緣像水彩紙留白，往上慢慢淡進畫裡，看不到邊。字用深墨色。最輕、最不擋畫，但會把畫的下緣洗白。</div>
+</div>
+</section>
+
+<form id="f">
+<fieldset><legend>哪一種方向對？</legend>
+<label class="opt"><input type="radio" name="pick" value="a"><span>A 水彩紙條</span></label>
+<label class="opt"><input type="radio" name="pick" value="b"><span>B 淡墨暈染</span></label>
+<label class="opt"><input type="radio" name="pick" value="c"><span>C 紙色淡出</span></label>
+<label class="opt"><input type="radio" name="pick" value="none"><span>都不對<small>寫在備註，我再換方向</small></span></label>
+</fieldset>
+<fieldset><legend>紙紋與不規則邊緣要用哪種做法？</legend>
+<label class="opt"><input type="radio" name="tex" value="css"><span>程式畫（現在這版）<small>網頁直接算出紙紋和邊緣，不用產圖，改顏色、改高度都快。</small></span></label>
+<label class="opt"><input type="radio" name="tex" value="paint"><span>產一張真的水彩底<small>走產圖排隊，畫一條透明底的水彩筆刷底當對話框背景，質感最像 CG，但改一次要重畫。</small></span></label>
+</fieldset>
+<label style="display:grid;gap:6px">備註<textarea name="note" placeholder="顏色、深淺、高度、字色，哪裡要改"></textarea></label>
+<button class="send" type="submit">送出</button>
+<p id="st"></p>
+</form>
+</main>
+<script>
+const L=[
+ {sp:'茶語',t:'這屆的主題是……「自由與限制」。',k:'#c7b2ea',kd:'#6a4f93'},
+ {sp:'茶語',t:'（自由跟限制……這要怎麼做成遊戲啊？）',k:'#c7b2ea',kd:'#6a4f93',th:1},
+ {sp:'S',t:'欸等一下！為什麼我住手機？他們一個筆電一個平板是怎樣啦！',k:'#cf5a6c',kd:'#9a2f42'},
+ {sp:'M',t:'螢幕照身高分的。……不是我分的。',k:'#8aa2ea',kd:'#34509e'},
+ {sp:'',t:'她用指尖敲了三下。鎖「喀」地彈開，鐵鍊散成光點，一朵雲飄走了。',k:'#e9cf9a',kd:'#8a6a2a'}];
+const dlg=document.getElementById('dlg'),nm=document.getElementById('nm'),tx=document.getElementById('tx'),cg=document.getElementById('cg');
+let v='a',l=0;
+function draw(){const d=L[l];dlg.className='dlg v-'+v+(d.th?' thought':'')+(d.sp?'':' narr');
+ dlg.style.setProperty('--k',d.k);dlg.style.setProperty('--kd',d.kd);nm.textContent=d.sp||'　';tx.textContent=d.t}
+function group(id,attr,fn){const g=document.getElementById(id);g.addEventListener('click',e=>{const b=e.target.closest('button');if(!b)return;
+ g.querySelectorAll('button').forEach(x=>x.setAttribute('aria-pressed',x===b));fn(b.dataset[attr]);draw()})}
+group('vbar','v',x=>v=x);group('cbar','c',x=>cg.src=x+'.webp');group('lbar','l',x=>l=+x);draw();
+
+const f=document.getElementById('f'),st=document.getElementById('st'),DOC='replies/dlg1',KEYS=['pick','tex'];let db=null;
+(async()=>{try{db=await claude.use('db')}catch(e){}
+ if(!db){st.textContent='這個檢視無法存回覆，請直接在對話裡回。';return}
+ try{const s=await db.doc(DOC).get();if(s.exists){const d=structuredClone(s.data());
+  for(const k of KEYS){const r=f.querySelector(`[name=${k}][value="${d[k]}"]`);if(r)r.checked=true}
+  f.elements.note.value=d.note||'';st.textContent='已讀回上次的回覆。'}}catch(e){}})();
+f.onsubmit=async e=>{e.preventDefault();if(!db){st.textContent='這個檢視無法存回覆，請直接在對話裡回。';return}
+ const d={note:f.elements.note.value.trim(),at:new Date().toISOString()};for(const k of KEYS)d[k]=(f.elements[k]&&f.elements[k].value)||'';
+ st.textContent='儲存中…';try{await db.doc(DOC).set(d);st.textContent='已送出，我照這個做正式版。'}catch(err){st.textContent='沒存成功：'+(err.code||err.message)}};
+</script>

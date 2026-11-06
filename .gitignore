@@ -13,3 +13,4 @@ dist/
 larch_project.json
 art/music_raw/
 art/video/*.mp4
+project.local.json
