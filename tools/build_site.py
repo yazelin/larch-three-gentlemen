@@ -71,15 +71,17 @@ for f in [ROOT / "劇本" / n for n in ORDER if (ROOT / "劇本" / n).exists()]:
 
 # ---------- 共用版面 ----------
 CSS = """
-:root{--paper:#f7f2ea;--paper-2:#efe7da;--ink:#3b3440;--ink-2:#6d6372;--line:#ddd2c2;
---plum:#7a5a86;--wine:#9b4a5e;--sage:#6f8a6a;--navy:#3f4a6e;
---f-display:"LXGW WenKai TC","Kaiti TC",serif;--f-body:"Noto Serif TC","Songti TC",serif;--f-ui:"Noto Sans TC","PingFang TC",sans-serif}
+:root{--paper:#f1e9da;--paper-2:#e6dac5;--ink:#3b2f2c;--ink-2:#6e5a52;--line:#d2c3ab;
+/* 跟遊戲同一套角色色（淡紫茶語、藍明、黃綠晨、酒紅詩），網站上用深一階才讀得清楚 */
+--plum:#6e4f74;--wine:#9a2f42;--sage:#6b7a1e;--navy:#4a5fa3;--gold:#b8862f;
+--f-display:"Iansui","LXGW WenKai TC","Kaiti TC",serif;--f-body:"Iansui","LXGW WenKai TC","Noto Serif TC",serif;--f-ui:"Noto Sans TC","PingFang TC",sans-serif}
 *{box-sizing:border-box}
 html{background:var(--paper)}
 body{margin:0;color:var(--ink);font-family:var(--f-body);font-size:17px;line-height:1.9;
 background:radial-gradient(ellipse 60% 40% at 12% 8%,rgb(122 90 134/.10),transparent 70%),
 radial-gradient(ellipse 50% 35% at 92% 30%,rgb(155 74 94/.08),transparent 70%),
 radial-gradient(ellipse 55% 40% at 30% 92%,rgb(111 138 106/.10),transparent 70%),var(--paper);min-height:100vh}
+body::after{content:"";position:fixed;inset:0;pointer-events:none;mix-blend-mode:multiply;opacity:.45;background:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='320' height='320'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='3'/%3E%3CfeColorMatrix values='0 0 0 0 .5 0 0 0 0 .44 0 0 0 0 .36 0 0 0 .45 0'/%3E%3C/filter%3E%3Crect width='320' height='320' filter='url(%23n)'/%3E%3C/svg%3E");z-index:-1}
 a{color:var(--wine)}
 .wrap{max-width:980px;margin:0 auto;padding-block:0 64px;padding-left:max(18px,env(safe-area-inset-left,0px));padding-right:max(18px,env(safe-area-inset-right,0px))}
 .top{display:flex;gap:18px;flex-wrap:wrap;align-items:center;padding:18px 0;font-family:var(--f-ui);font-size:14px}
@@ -92,10 +94,10 @@ h2{font-size:28px;margin:56px 0 14px}
 .hero-copy{text-align:center;margin:-8px auto 0;max-width:640px}
 .hero-copy h1{font-size:clamp(34px,6vw,56px);margin:10px 0 4px;letter-spacing:.06em}
 .hero-copy .q{font-family:var(--f-display);font-size:20px;color:var(--plum)}
-.note{font-family:var(--f-ui);font-size:14.5px;line-height:1.8;color:var(--ink-2);background:rgb(255 255 255/.55);border:1px solid var(--line);border-radius:6px;padding:14px 18px;margin:22px 0}
+.note{font-family:var(--f-ui);font-size:14.5px;line-height:1.8;color:var(--ink-2);background:rgb(255 252 244/.6);border:0;box-shadow:inset 0 0 18px rgb(150 118 92/.35);border-radius:10px 4px 12px 6px/6px 12px 5px 10px;padding:14px 18px;margin:22px 0}
 .lede{max-width:40em}
 .cast{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,420px),1fr));gap:22px}
-.person{background:rgb(255 255 255/.5);border:1px solid var(--line);border-radius:6px;overflow:hidden}
+.person{background:rgb(255 252 244/.6);border:0;box-shadow:inset 0 0 22px rgb(150 118 92/.35),0 12px 26px -18px rgb(40 30 30/.5);border-radius:12px 5px 14px 7px/7px 14px 5px 12px;overflow:hidden}
 .person img{display:block;width:100%;height:auto}
 .person div{padding:12px 16px 16px}
 .person h3{margin:0;font-size:22px}
@@ -118,7 +120,7 @@ h2{font-size:28px;margin:56px 0 14px}
 .line.C b{color:var(--sage)}.line.M b{color:var(--navy)}.line.S b{color:var(--wine)}.line.T b{color:var(--plum)}
 .inner{color:var(--plum);font-style:italic}
 .cg{margin:22px -6px}
-.cg img{display:block;width:100%;height:auto;border-radius:4px}
+.cg img{display:block;width:100%;height:auto;border-radius:8px 4px 10px 5px/5px 10px 4px 8px;box-shadow:0 12px 26px -16px rgb(40 30 30/.6)}
 .cg.todo{border:1px dashed var(--line);border-radius:6px;padding:16px;text-align:center;font-family:var(--f-ui);font-size:13.5px;color:var(--ink-2)}
 .choice{border-left:3px solid var(--plum);padding:6px 0 6px 14px;margin:18px 0;font-family:var(--f-ui);font-size:15px}
 .choice div{margin:3px 0}
@@ -135,7 +137,7 @@ th{background:var(--paper-2);font-weight:700}
 footer{border-top:1px solid var(--line);margin-top:56px;padding-top:18px;font-family:var(--f-ui);font-size:13.5px;color:var(--ink-2)}
 @media (max-width:600px){body{font-size:16px}h2{font-size:24px}}
 """
-FONTS = '<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=LXGW+WenKai+TC:wght@400;700&family=Noto+Serif+TC:wght@400;600&family=Noto+Sans+TC:wght@400;700&display=swap">'
+FONTS = '<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Iansui&family=LXGW+WenKai+TC:wght@400;700&family=Noto+Serif+TC:wght@400;600&family=Noto+Sans+TC:wght@400;700&display=swap">'
 
 def page(title, body, desc="", depth=0):
     up = "../" * depth
@@ -174,9 +176,9 @@ def render(body):
         flush()
         if l.startswith("## "): out.append(f"<h2>{e(l[3:])}</h2>")
         elif l.startswith("【CG"):
-            cid = re.match(r"【CG ([^｜\s】]+)", l)[1]; f = ROOT / f"art/cg/{cid}.jpg"
+            cid = re.match(r"【CG ([^｜\s】]+)", l)[1]; f = ROOT / f"art/cg_paper/{cid}.jpg"
             if cid in VARIANTS: continue   # 表情差分只在 Larch 上看
-            if f.exists(): out.append(f'<figure class="cg"><img src="{img(f"art/cg/{cid}.jpg", f"cg-{cid}.jpg", 1600)}" alt="CG {cid}" loading="lazy"></figure>')
+            if f.exists(): out.append(f'<figure class="cg"><img src="{img(f"art/cg_paper/{cid}.jpg", f"cg-{cid}.jpg", 1600)}" alt="CG {cid}" loading="lazy"></figure>')
             else: out.append(f'<div class="cg todo">CG {e(cid)} 製作中</div>')
         elif l.startswith("〔"): out.append(f'<p class="narr">{e(l.strip("〔〕"))}</p>')
         elif re.match(r"（[CMS]）$|（共通）$", l): out.append(f'<div class="branch">{"選 " + l[1] + " 的話" if l[1] in "CMS" else "之後"}</div>')
