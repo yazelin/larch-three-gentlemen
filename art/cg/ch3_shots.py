@@ -95,6 +95,7 @@ FIX = {
     **{k: BG for k in ["3-02C","3-02M","3-02S","3-03","3-06","3-07","3-09","3-11","3-13","3-14C","3-14M","3-14S","3-16","3-08","3-01A","3-10","3-12"]},
     "3-04": _REV, "3-15": _REV,
     "3-13": BG + " The tablet at the frame's right edge shows C: warm chestnut curly hair, thin gold round glasses, camel cardigan; it is NEVER the purple-haired heroine.",
+    "3-16": BG + " IDENTITIES: the phone at the right shows ONLY S (long messy WINE-RED hair with one thin braid, wine-red headphones around his neck, black track jacket), the tablet at the far right shows ONLY C (warm chestnut curly hair, thin gold round glasses, camel cardigan). Never a second M, never a man in a suit and tie on the phone or tablet.",
     "3-08": BG + " The laptop shows M (near-black hair, charcoal suit) and the tablet shows C (chestnut curly hair, glasses, camel cardigan); the purple-haired heroine is NEVER on a screen: she is only the hand in the foreground.",
     "3-05": "The laptop is CLOSED and DARK: no screen, no glow, no M anywhere in the picture. Exactly one phone (in its stand, showing S) and one tablet (showing C).",
     "3-10-1": "Her palm only touches her forehead for a moment in a light gesture; her head is NOT resting or leaning on the hand, her elbow is not on the desk.",
