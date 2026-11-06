@@ -1,0 +1,23 @@
+/* larch-skill-part: menu */
+/* @larch-params { "gold": { "type": "color", "label": "主色", "default": "#e9cf9a" } } */
+/* 工具列、設定、存讀檔、對話紀錄：跟標題畫面同一套夜色，深藍黑底、米白字、金色細線，選中用金色。 */
+:scope[data-larch-ui="toolbar"] button { color: rgba(244,238,230,.55); letter-spacing: .12em; }
+:scope[data-larch-ui="toolbar"] button:hover, :scope[data-larch-ui="toolbar"] button:focus-visible { color: var(--skin-gold, #e9cf9a); outline: none; text-shadow: 0 0 10px rgba(233,207,154,.5); }
+:scope[data-larch-ui="toolbar"] button[aria-pressed="true"] { color: var(--skin-gold, #e9cf9a); }
+:scope[data-larch-ui="toolbar"] .vn2-dialogue-actions-divider { background: rgba(233,207,154,.2); }
+
+:scope:is([data-larch-ui="settings"], [data-larch-ui="save"], [data-larch-ui="history"]) {
+  --vn-settings-surface: #0b0e1c !important; --vn-settings-accent: var(--skin-gold, #e9cf9a) !important; --vn-settings-text: #f4eee6 !important;
+  --vn-settings-button: #151a30 !important; --vn-settings-button-text: #f4eee6 !important; --vn-settings-border: rgba(233,207,154,.22) !important; --vn-settings-radius: 2px !important;
+  --vn-history-surface: #0b0e1c !important; --vn-history-text: #f4eee6 !important; --vn-history-accent: var(--skin-gold, #e9cf9a) !important;
+  box-shadow: inset 0 0 0 1px rgba(233,207,154,.22), inset 0 0 0 6px #0b0e1c, inset 0 0 0 7px rgba(233,207,154,.1), 0 30px 80px -20px rgba(0,0,0,.85);
+}
+:scope > header h2 { letter-spacing: .3em; font-weight: 600; }
+:scope > header small { color: rgba(244,238,230,.5); letter-spacing: .3em; }
+[data-larch-ui="settings-tab"] { border-radius: 2px !important; letter-spacing: .14em; }
+[data-larch-ui="settings-tab"][aria-selected="true"] { background: var(--skin-gold, #e9cf9a) !important; color: #0b0e1c !important; }
+[data-larch-ui="save-slot"] { border: 1px solid rgba(233,207,154,.22); border-radius: 2px; }
+[data-larch-ui="save-slot"]:hover, [data-larch-ui="save-slot"]:focus-visible { border-color: var(--skin-gold, #e9cf9a); }
+[data-larch-ui="history-entry"] b { color: var(--skin-gold, #e9cf9a); letter-spacing: .2em; }
+:scope[data-larch-ui="title-corner"] button { color: rgba(244,238,230,.7); }
+:scope[data-larch-ui="title-corner"] button:hover, :scope[data-larch-ui="title-corner"] button:focus-visible { color: var(--skin-gold, #e9cf9a); }

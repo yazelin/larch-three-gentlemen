@@ -199,7 +199,11 @@ def push(nodes, edges, cgs):
               "titleScreenEnabled": True, "titleCoverImage": CDN + "art/cg/title_kv.jpg", "projectThumbnail": CDN + "art/cg/title_kv.jpg",
               "cgGalleryEnabled": True, "cgGallerySource": "picked",
               "cgGalleryItems": [{"url": cg_url(c), "title": f"CG {c}", "locked": True} for c in cgs if c not in VARIANTS]})
-    s["titleScreen"] = {**(s.get("titleScreen") or {}), "bgm": CDN + "art/bgm/chains_and_choice.mp3", "bgmVolume": 0.4, "bgmLoop": True}
+    # 對話框外框透明滿版：露出 art/ui/dialogue.html 自己的夜色漸層（這個欄位 PATCH 不收，只能隨整包 PUT 寫）
+    s["dialogueUi"] = {"preset": "custom", "fontSize": 22, "textColor": "#f4eee6", "fontFamily": "serif", "panelColor": "#05070f", "panelWidth": 100,
+                       "accentColor": "#e9cf9a", "borderColor": "#05070f", "panelOffset": 0, "backdropBlur": 0, "borderRadius": 0, "nameFontSize": 17,
+                       "panelOpacity": 0, "panelPadding": 0, "presentation": "gradient", "speakerColor": "#e9cf9a", "textOverflow": "grow"}
+    s["titleScreen"] = {**(s.get("titleScreen") or {}), "bgm": CDN + "art/bgm/main_theme.mp3", "bgmVolume": 0.45, "bgmLoop": True}
     p["variables"] = [{"id": f"aff{k}", "name": f"aff{k}", "type": "number", "label": f"{k} 好感", "defaultValue": 0} for k in "CMS"]
     p["languages"] = p.get("languages") or [{"code": "zh-Hant", "label": "繁體中文", "voiceMode": "off"}]
     nodes[0]["data"]["start"] = True

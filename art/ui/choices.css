@@ -1,0 +1,35 @@
+/* larch-skill-part: choices */
+/* @larch-params { "gold": { "type": "color", "label": "選到時的金色", "default": "#e9cf9a" } } */
+/* 《夜後明月．晨前朝霞．慕詩客》選項：直排一列浮在對話框上方，夜色薄片＋左緣一道金光。
+   選項不是順序，拿掉 01／02 編號；滑過時金光變亮、字變白。 */
+:scope.vn2-choices-floating {
+  left: 50% !important; right: auto !important; top: auto !important; bottom: 27% !important;
+  translate: -50% 0 !important; transform: none !important;
+  width: min(640px, 86vw) !important; max-width: none !important;
+  display: flex !important; flex-direction: column; align-items: stretch; gap: 10px;
+  padding: 0 !important; border: 0 !important; background: none !important; box-shadow: none !important; backdrop-filter: none !important;
+}
+[data-larch-ui="choice"] {
+  position: relative; display: flex !important; align-items: center; width: 100% !important; min-height: 54px;
+  padding: 13px 26px 13px 30px !important; border: 0 !important; border-radius: 2px !important;
+  background: linear-gradient(90deg, rgba(10,13,28,.92), rgba(10,13,28,.78) 70%, rgba(10,13,28,.55)) !important;
+  box-shadow: inset 0 0 0 1px rgba(233,207,154,.18), 0 10px 28px -12px rgba(0,0,0,.8) !important;
+  color: #f4eee6 !important; font-size: clamp(16px, 1.25vw, 20px) !important; line-height: 1.55 !important; letter-spacing: .08em;
+  transition: box-shadow .25s, background .25s, color .25s;
+}
+[data-larch-ui="choice"]::before {
+  content: ""; position: absolute; left: 12px; top: 22%; bottom: 22%; width: 2px; border-radius: 2px;
+  background: var(--skin-gold, #e9cf9a); opacity: .55; box-shadow: 0 0 10px var(--skin-gold, #e9cf9a); transition: opacity .25s, top .25s, bottom .25s;
+}
+[data-larch-ui="choice"]:hover, [data-larch-ui="choice"]:focus-visible {
+  background: linear-gradient(90deg, rgba(24,28,52,.96), rgba(18,22,44,.86) 70%, rgba(18,22,44,.6)) !important;
+  box-shadow: inset 0 0 0 1px rgba(233,207,154,.55), 0 0 28px -6px rgba(233,207,154,.35) !important; color: #fff !important; outline: none;
+}
+[data-larch-ui="choice"]:hover::before, [data-larch-ui="choice"]:focus-visible::before { opacity: 1; top: 14%; bottom: 14%; }
+[data-larch-ui="choice"]:active { translate: 0 1px; }
+[data-larch-ui="choice"]:disabled { opacity: .5; cursor: default; }
+[data-larch-ui="choice-index"], [data-larch-ui="choice-arrow"] { display: none !important; }
+[data-larch-ui="choice-text"] { text-align: left; }
+:scope:not(.vn2-choices-floating) { display: flex !important; flex-direction: column; gap: 10px; background: none !important; border: 0 !important; box-shadow: none !important; }
+@media (max-width: 640px) { :scope.vn2-choices-floating { bottom: 30% !important; width: 92vw !important; } [data-larch-ui="choice"] { min-height: 48px; padding: 11px 18px 11px 26px !important; } }
+@media (prefers-reduced-motion: reduce) { [data-larch-ui="choice"], [data-larch-ui="choice"]::before { transition: none; } }

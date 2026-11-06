@@ -3,6 +3,9 @@
 import base64, json, os, re, ssl, subprocess, sys, urllib.request
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 TRACKS = {
+    "main_theme": "Main title theme for a romantic otome visual novel: a tender, heart-fluttering melody on warm felt piano carried by soft strings, a delicate music box and a gentle celesta, "
+                  "the night sky slowly turning to dawn, a young woman and three men who quietly fell for her, sweet and a little bittersweet, hopeful, cinematic but intimate, "
+                  "built on the same tender rising four-note motif, 76 BPM, major key with a wistful minor turn, instrumental, no vocals, no choir, no organ, no drums, seamless loop",
     "night_desk": "A single soft felt piano alone in a quiet room at midnight, sparse gentle notes with long pauses, a tender rising four-note motif, "
                   "a young woman alone at her desk waiting for something to begin, lonely but quietly hopeful, intimate, 66 BPM, instrumental, no vocals, no drums, loopable",
     "studio_day": "Warm felt piano and soft fingerpicked acoustic guitar with light pizzicato strings and a gentle glockenspiel, a bright sunlit studio where four friends brainstorm, "
