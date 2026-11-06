@@ -1,12 +1,13 @@
-# 從 art/cg/ch1_shots.py 組提示詞並產圖（.11 codex-image；送圖排隊在 tools/gen.py，走全機共用的 ~/.cache/cg_jobs）。
+# 從 art/cg/ch<N>_shots.py 組提示詞並產圖（CH=2 做第二章，預設第一章）（.11 codex-image；送圖排隊在 tools/gen.py，走全機共用的 ~/.cache/cg_jobs）。
 #   python3 tools/shots.py prompts            # 只寫 art/cg/ch1/<id>.prompt.txt
 #   python3 tools/shots.py run masters [id…]  # 產非差分格（主鏡頭、單格）
 #   python3 tools/shots.py run vars [id…]     # 產差分（主鏡頭的定稿要先在 art/cg/<base>.jpg）
 # 產出在 art/gen/ch1/<id>.png；驗收過的才轉成 art/cg/<id>.jpg。
 import json, os, subprocess, sys, pathlib, concurrent.futures as cf
 ROOT = pathlib.Path(__file__).resolve().parent.parent
-sys.path.insert(0, str(ROOT / "art/cg")); from ch1_shots import S, GAZE, SETUP, SETUP_DESC, SEATING, TEA_STUDIO, HANDS, RETIRED, FIX, props
-OUT, PR = ROOT / "art/gen/ch1", ROOT / "art/cg/ch1"
+sys.path.insert(0, str(ROOT / "tools")); import chapter as C   # CH=2 python3 tools/shots.py … 做第二章
+_m = C.shots(); S, GAZE, SETUP, SETUP_DESC, SEATING, TEA_STUDIO, HANDS, RETIRED, FIX, props = (getattr(_m, k) for k in "S GAZE SETUP SETUP_DESC SEATING TEA_STUDIO HANDS RETIRED FIX props".split())
+OUT, PR = C.GEN, C.PROMPTS
 REF = "canon/refs/"
 SHEET = {"t": REF + "tea.jpg", "c": REF + "c.jpg", "m": REF + "m.jpg", "s": REF + "s.jpg"}
 NAME = {"t": "heroine (茶語) sheet", "c": "C sheet", "m": "M sheet", "s": "S sheet"}
@@ -45,7 +46,7 @@ def present(i):
 def refs_for(i):
     d = S[i]; k = d["kind"]
     if k == "var":
-        base = ROOT / f"art/cg/{d['base']}.jpg"
+        base = ROOT / C.cg_rel(d["base"])
         who = d["who"] or ("tcms" if S[d["base"]]["kind"] in ("desk",) else "t" + (S[d["base"]]["who"] or "cms"))
         files = [str(base)] + [SHEET[w] for w in dict.fromkeys(who) if w in SHEET]
         names = ["the MASTER FRAME of this shot (reproduce it)"] + [NAME[w] for w in dict.fromkeys(who) if w in SHEET]
@@ -124,7 +125,7 @@ if __name__ == "__main__":
     which = sys.argv[2]; ids = sys.argv[3:] or [i for i in S if (S[i]["kind"] == "var") == (which == "vars")]
     ids = [i for i in ids if i not in RETIRED and not (OUT / f"{i}.png").exists()]
     if which == "vars":
-        miss = [i for i in ids if not (ROOT / f"art/cg/{S[i]['base']}.jpg").exists()]
+        miss = [i for i in ids if not (ROOT / C.cg_rel(S[i]["base"])).exists()]
         if miss: print("主鏡頭還沒定稿，先略過：", miss); ids = [i for i in ids if i not in miss]
     print("要產", len(ids), "張", flush=True)
     with cf.ThreadPoolExecutor(3) as ex:

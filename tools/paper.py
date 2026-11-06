@@ -28,8 +28,8 @@ def apply(src, dst):
 
 if __name__ == "__main__":
     OUT.mkdir(exist_ok=True); n = 0
-    for p in sorted(SRC.glob("*.jpg")):
-        d = OUT / p.name
+    for p in sorted(list(SRC.glob("*.jpg")) + list(SRC.glob("ch[0-9]/*.jpg"))):   # 第二章起在 ch2/ 子資料夾
+        d = OUT / p.relative_to(SRC); d.parent.mkdir(parents=True, exist_ok=True)
         if d.exists() and d.stat().st_mtime >= p.stat().st_mtime: continue
         apply(p, d); n += 1
     print("疊好", n, "張 →", OUT)

@@ -1,6 +1,7 @@
 # 把劇本組成 Larch 白板並推上私人專案（不上架）。
 #   python3 tools/larch_build.py             # 只組卡、印統計、寫 dist/board_ch1.json
 #   python3 tools/larch_build.py --push      # 推上 Larch（第一次建專案，id 存在 larch_project.json）
+#   CH=2 python3 tools/larch_build.py --push # 第二章：只換 board-ch2，其他章的白板原封不動；上一章結尾自動接一張跳章卡
 # 圖走 jsDelivr（repo 公開、檔名 ASCII），不上傳 Larch 媒體庫。立繪、BGM、配音之後再補。
 import json, time, re, sys, pathlib, subprocess, urllib.request, urllib.error, time
 
@@ -9,7 +10,8 @@ API = "https://larch.ink/api/agent"
 STATE = ROOT / "larch_project.json"
 SHA = subprocess.run(["git", "-C", str(ROOT), "rev-parse", "HEAD"], capture_output=True, text=True).stdout.strip()
 CDN = f"https://cdn.jsdelivr.net/gh/yazelin/larch-three-gentlemen@{SHA}/"
-BOARD = "board-ch1"
+sys.path.insert(0, str(ROOT / "tools")); import chapter as C
+BOARD = C.BOARD
 NAME = "夜後明月．晨前朝霞．慕詩客"
 
 import assets as _assets
@@ -17,14 +19,14 @@ _ST = {}
 def A(path):   # 素材網址：走各章的孤兒 tag（tools/assets.py），圖自動換成 WebP。repo 整包超過 jsDelivr 50 MB，不能再用 CDN + 路徑
     if not _ST: _ST.update(_assets.tags())
     return _assets.url(path, _ST)
-def cg_url(cid): return A(f"art/cg_paper/{cid}.jpg")   # 遊戲用疊了全畫面紙紋的版本（tools/paper.py）
+def cg_url(cid): return A(C.paper_rel(cid))   # 遊戲用疊了全畫面紙紋的版本（tools/paper.py）
 sys.path.insert(0, str(ROOT / "art/cg"))
-try:
-    from ch1_shots import S as _SHOTS
-    VARIANTS = {k for k, v in _SHOTS.items() if v["kind"] == "var"}   # 表情差分不進 CG 收藏
-except ImportError:
-    VARIANTS = set()
-BGM = {"枷鎖與選擇": "chains_and_choice", "夜的書桌": "night_desk", "工作室": "studio_day", "耳機裡的歌": "chains_muffled"}   # 劇本裡的曲名 → art/bgm/ 檔名（ASCII）
+VARIANTS = set()   # 表情差分不進 CG 收藏（各章分鏡表裡 kind 是 var 的）
+for _n in range(1, 10):
+    try: VARIANTS |= {k for k, v in C.shots(_n).S.items() if v["kind"] == "var"}
+    except ImportError: pass
+BGM = {"枷鎖與選擇": "chains_and_choice", "夜的書桌": "night_desk", "工作室": "studio_day", "耳機裡的歌": "chains_muffled",
+       "明天一定寫": "ch2/tomorrow_i_write"}   # 第二章起的曲子放 art/bgm/ch2/，自成 bgm-ch2 組   # 劇本裡的曲名 → art/bgm/ 檔名（ASCII）
 VIDEOS = ROOT / "art/video/media.json"     # "cg|運鏡" → {mediaId, url}，tools/motion.py 產生
 _VFU = {}
 def _video_files():
@@ -45,7 +47,8 @@ def video_layer(key):
 def segments(md):
     """[('card', title, lines, cgs) | ('choice', [(text, key)]) | ('branch', key, lines, cgs)]；每句 line 可帶 background。"""
     body = md.split("## CG 清單")[0]
-    segs, title, lines, cgs, mode, last_desk, pend_bg = [], "", [], [], None, cg_url("01-1"), None
+    first = re.search(r"【CG ([^｜\s】]+)", body)
+    segs, title, lines, cgs, mode, last_desk, pend_bg = [], "", [], [], None, cg_url(first[1] if first and C.CH > 1 else "01-1"), None
     pend, opts = {}, {}   # pend：下一句要帶的 video/bgm/sfx；opts：這張卡的轉場與自動前進
     def close():
         nonlocal lines, cgs, opts
@@ -71,14 +74,17 @@ def segments(md):
         if m:
             pend["bgmAction" if m[1] in ("停", "淡出") else "bgm"] = {"停": "stop", "淡出": "fadeOut"}.get(m[1]) or A(f"art/bgm/{BGM[m[1]]}.mp3")
             continue
-        m = re.match(r"【小遊戲 (\S+?)】", l)
-        if m: close(); segs.append(("mini", m[1])); continue
+        m = re.match(r"【小遊戲 ([^】（]+?)(?:（[^】]*）)?】", l)
+        if m:
+            if m[1] not in MINI or not (ROOT / f"art/ui/minigame_{MINI[m[1]][0]}.html").exists():   # ponytail: 小遊戲網頁還沒做好就先略過，劇情照走
+                print("  小遊戲還沒接上，先略過：", m[1]); continue
+            close(); segs.append(("mini", m[1])); continue
         m = re.match(r"【音效 (\w+)】", l)
         if m: pend["sfxUrl"] = f"/sfx/{m[1]}.mp3"; continue
         m = re.match(r"【CG ([^｜\s】]+)(?:｜運鏡 (\S+?))?(?:｜.*)?】", l)
         if m:
             cid = m[1]
-            if not (ROOT / f"art/cg/{cid}.jpg").exists():   # ponytail: 圖還沒好就沿用上一張，補圖後重建即可
+            if not (ROOT / C.cg_rel(cid)).exists():   # ponytail: 圖還沒好就沿用上一張，補圖後重建即可
                 print("  缺圖，暫用上一張：", cid); continue
             cgs.append(cid); pend_bg = cg_url(cid)
             if m[2] and m[2] != "定": pend["video"] = f"{cid}|{m[2]}"
@@ -104,10 +110,19 @@ def segments(md):
     close()
     return segs
 
+MINI = {"拉線": ("link", "親手拉出第一條線。"), "敲鎖": ("challenge", "敲三下中央的鎖報名。")}   # 劇本裡的小遊戲名 → art/ui/minigame_<檔>.html
+
+def segs_first_bg(segs):
+    for s in segs:
+        for ln in (s[2] if s[0] in ("card", "branch") else []):
+            if ln.get("background"): return ln["background"]
+    return cg_url("01-1")
+
 # ---------- 第二步：段落 → 卡片與連線 ----------
-def build(segs, ch="ch1"):
+def build(segs, ch=None):
+    ch = ch or f"ch{C.CH}"
     nodes, edges, cg_order = [], [], []
-    bg = [cg_url("01-1")]
+    bg = [segs_first_bg(segs)]
     def new_id(): return f"{ch}-{len(nodes):03d}"
     def base(title, x, y):
         return {"id": new_id(), "type": "story", "position": {"x": x, "y": y}}
@@ -144,7 +159,7 @@ def build(segs, ch="ch1"):
             if tails: prev = [nid]; tails = []
         elif s[0] == "mini":
             x += 400; n = base("小遊戲", x, 0)
-            fn, txt = {"拉線": ("link", "親手拉出第一條線。"), "敲鎖": ("challenge", "敲三下中央的鎖報名。")}[s[1]]
+            fn, txt = MINI[s[1]]
             html = (ROOT / f"art/ui/minigame_{fn}.html").read_text(encoding="utf-8")
             html = re.sub(r"\{\{ASSET:([^}]+)\}\}", lambda m: A(m[1]), html)
             # showTitle False：不然畫面下緣會有一條「小遊戲：拉線」的標題列，很出戲
@@ -235,7 +250,7 @@ def push(nodes, edges, cgs):
               "keepActorsInFrame": False, "textSpeed": 55, "returnToTitleOnEnd": True,
               "titleScreenEnabled": True, "titleCoverImage": A("art/cg_paper/title_kv.jpg"), "projectThumbnail": A("art/cg_paper/title_kv.jpg"),
               "cgGalleryEnabled": True, "cgGallerySource": "picked",
-              "cgGalleryItems": [{"url": cg_url(c), "title": f"CG {c}", "locked": True} for c in cgs if c not in VARIANTS]})
+              "cgGalleryItems": [{"url": cg_url(c), "title": f"CG {c}", "locked": True} for c in gallery_cgs(cgs) if c not in VARIANTS]})
     # 對話框外框透明滿版：露出 art/ui/dialogue.html 自己的夜色漸層（這個欄位 PATCH 不收，只能隨整包 PUT 寫）
     s["dialogueUi"] = {"preset": "custom", "fontSize": 22, "textColor": "#f4eee6", "fontFamily": "iansui", "panelColor": "#05070f", "panelWidth": 100,
                        "accentColor": "#e9cf9a", "borderColor": "#05070f", "panelOffset": 0, "backdropBlur": 0, "borderRadius": 0, "nameFontSize": 17,
@@ -243,18 +258,46 @@ def push(nodes, edges, cgs):
     s["titleScreen"] = {**(s.get("titleScreen") or {}), "bgm": A("art/bgm/main_theme.mp3"), "bgmVolume": 0.45, "bgmLoop": True}
     p["variables"] = [{"id": f"aff{k}", "name": f"aff{k}", "type": "number", "label": f"{k} 好感", "defaultValue": 0} for k in "CMS"]
     p["languages"] = p.get("languages") or [{"code": "zh-Hant", "label": "繁體中文", "voiceMode": "off"}]
-    nodes[0]["data"]["start"] = True
-    p["boards"] = [{"id": BOARD, "kind": "story", "mode": "story", "name": "第一章　茶", "description": "", "nodes": [], "edges": []}]
+    if C.CH == 1: nodes[0]["data"]["start"] = True
+    # 白板：別章原封不動帶回去（整包 PUT 會用這份陣列取代全部白板），自己那張先放空殼，下面再單獨推
+    before = {b["id"]: len(b.get("nodes", [])) for b in p.get("boards", []) if b["id"] != BOARD}
+    others = [b for b in p.get("boards", []) if b["id"] != BOARD]
+    p["boards"] = sorted(others + [{"id": BOARD, "kind": "story", "mode": "story", "name": C.board_name(), "description": "", "nodes": [], "edges": []}], key=lambda b: b["id"])
     _, etag = call("PUT", f"/projects/{pid}", {"project": p}, etag)
     _, etag = call("GET", f"/projects/{pid}")
-    _, etag = call("PUT", f"/projects/{pid}/boards/{BOARD}", {"name": "第一章　茶", "nodes": nodes, "edges": edges,
-                                                              "summary": "第一章：劇本組卡（CG 走 jsDelivr）"}, etag)
+    _, etag = call("PUT", f"/projects/{pid}/boards/{BOARD}", {"name": C.board_name(), "nodes": nodes, "edges": edges,
+                                                              "summary": f"{C.board_name()}：劇本組卡（CG 走 jsDelivr）"}, etag)
     back, _ = call("GET", f"/projects/{pid}/boards/{BOARD}")
     b = back.get("board", back)
     print("回讀：卡", len(b.get("nodes", [])), "／", len(nodes), "　線", len(b.get("edges", [])), "／", len(edges))
     assert len(b.get("nodes", [])) == len(nodes) and len(b.get("edges", [])) == len(edges), "回讀數字對不上"
+    for oid, n in before.items():
+        ob, _ = call("GET", f"/projects/{pid}/boards/{oid}")
+        got = len(ob.get("board", ob).get("nodes", []))
+        print(f"  別章 {oid}：卡 {got} ／ 推之前 {n}")
+        assert got == n, f"{oid} 被動到了"
     pv, _ = call("GET", f"/projects/{pid}/preview?boardId={BOARD}&hours=168")
     print("預覽（私人，7 天）：", pv.get("playUrl") or pv.get("url"))
+
+def gallery_cgs(cgs):
+    """CG 收藏照章節順序收全部章（各章 build 時寫進 dist/board_chN.json 的 cgs）。"""
+    out = []
+    for n in range(1, 10):
+        f = ROOT / f"dist/board_ch{n}.json"
+        got = cgs if n == C.CH else (json.loads(f.read_text()).get("cgs", []) if f.exists() else [])
+        out += [c for c in got if c not in out]
+    return out
+
+def jump_to_next(nodes, edges):
+    """下一章的白板已經組過（dist 有檔）就在章末接一張跳章卡。"""
+    nxt = ROOT / f"dist/board_ch{C.CH + 1}.json"
+    if not nxt.exists(): return
+    tgt = json.loads(nxt.read_text())["nodes"][0]["id"]
+    last = nodes[-1]
+    j = {"id": f"ch{C.CH}-jump", "type": "story", "position": {"x": last["position"]["x"] + 400, "y": 0},
+         "data": {"type": "boardJump", "title": f"接{C.board_name(C.CH + 1)}", "text": "", "jumpBoardId": f"board-ch{C.CH + 1}", "jumpNodeId": tgt,
+                  "chapterEnd": True, "background": last["data"].get("background"), "stage": {"actors": []}, "characterLayers": []}}
+    nodes.append(j); edges.append({"id": f"e-{last['id']}-{j['id']}", "source": last["id"], "target": j["id"]})
 
 def push_board_only(nodes, edges, name):
     """只推一塊白板，不動專案設定與其他白板（樣片用）。"""
@@ -270,15 +313,16 @@ def push_board_only(nodes, edges, name):
     print("預覽（私人，7 天）：", pv.get("playUrl") or pv.get("url"))
 
 if __name__ == "__main__":
-    segs = segments((ROOT / "劇本/第一章.md").read_text(encoding="utf-8"))
+    segs = segments(C.SCRIPT.read_text(encoding="utf-8"))
     if "--sample" in sys.argv:   # 只組某一節，推到樣片白板：--sample 五
         sec = sys.argv[sys.argv.index("--sample") + 1]
         segs = [x for x in segs if x[0] == "card" and x[1].startswith(sec + "、")]
         BOARD = f"board-sample-{'一二三四五六七'.index(sec) + 1}"   # 白板代號只能 ASCII
     nodes, edges, cgs = build(segs)
+    if "--sample" not in sys.argv: jump_to_next(nodes, edges)
     check(nodes, edges)
     (ROOT / "dist").mkdir(exist_ok=True)
-    (ROOT / "dist/board_ch1.json").write_text(json.dumps({"nodes": nodes, "edges": edges}, ensure_ascii=False, indent=1))
+    (ROOT / f"dist/board_ch{C.CH}.json").write_text(json.dumps({"nodes": nodes, "edges": edges, "cgs": cgs}, ensure_ascii=False, indent=1))
     lines = sum(len(n["data"].get("dialogueLines", [])) or 1 for n in nodes)
     print(f"卡 {len(nodes)}、線 {len(edges)}、句 {lines}、CG {cgs}")
     if "--push" in sys.argv:

@@ -3,11 +3,14 @@
 # 檢查的是試玩抓過的那幾類錯：手沒寫死、工作室出現手機、看錯方向、劇本與分鏡對不上。
 import re, sys, pathlib
 ROOT = pathlib.Path(__file__).resolve().parent.parent
-sys.path.insert(0, str(ROOT / "art/cg")); from ch1_shots import S, GAZE, HANDS, RETIRED, NOFACE, props
+sys.path.insert(0, str(ROOT / "tools")); import chapter as C   # CH=2 python3 tools/board_lint.py
+_m = C.shots(); S, GAZE, HANDS, RETIRED, NOFACE, props = (getattr(_m, k) for k in "S GAZE HANDS RETIRED NOFACE props".split())
+CHIN_OK_EXTRA = getattr(_m, "CHIN_OK", {})
 
 err, warn = [], []
 CHIN_OK = {"01A-5b": "下巴一收的表情", "04B": "寫的是下巴不碰任何東西", "05A-2": "抱膝、下巴靠膝蓋，分鏡本來就是這樣"}   # 人看過、確認不是撐頭
-md = (ROOT / "劇本/第一章.md").read_text(encoding="utf-8")
+CHIN_OK.update(CHIN_OK_EXTRA)
+md = C.SCRIPT.read_text(encoding="utf-8")
 used = set(re.findall(r"【CG ([^｜\s】]+)", "\n".join(l for l in md.splitlines() if not l.startswith(">"))))
 
 for i in sorted(used - set(S)): err.append(f"{i}：劇本用到，分鏡表沒有")
@@ -26,7 +29,8 @@ for i, d in S.items():
     if i not in used and d["kind"] != "var" and not any(x["base"] == i for x in S.values()): warn.append(f"{i}：分鏡表有、劇本沒用到")
     if not props(i) and kind in ("desk", "studio", "room", "insert"): err.append(f"{i}：沒有道具狀態")
 
-issues = (ROOT / "review/第一章_試玩問題.md").read_text(encoding="utf-8")
+_iss = ROOT / f"review/第{C.ZH[C.CH - 1]}章_試玩問題.md"
+issues = _iss.read_text(encoding="utf-8") if _iss.exists() else ""
 todo = [l.split("|")[1].strip() for l in issues.splitlines() if l.startswith("| ") and "已重畫" not in l and "已修好" not in l and "已推上去" not in l and not l.startswith("| 格")]
 for t in todo: warn.append(f"試玩清單還沒處理：{t}")
 

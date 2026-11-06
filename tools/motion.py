@@ -24,14 +24,16 @@ MOVES = {
 }
 
 def keys():
-    md = (ROOT / "劇本/第一章.md").read_text(encoding="utf-8")
+    md = lb.C.SCRIPT.read_text(encoding="utf-8")
     return sorted(k for k in set(re.findall(r"【CG ([^｜\s】]+)｜運鏡 (\S+?)[】｜]", md)) if k[1] != "定")   # 定＝不動，不做影片
 
 def make(cid, move):
-    src = ROOT / f"art/cg_paper/{cid}.jpg"   # 運鏡也用紙紋版，影片播完接回背景才不會跳
+    src = ROOT / lb.C.paper_rel(cid)   # 運鏡也用紙紋版，影片播完接回背景才不會跳
     z, x, y = MOVES[move]
     stem = f"{cid}_{ {'推近':'in','拉遠':'out','左搖':'panl','右搖':'panr','下搖':'tiltd','呼吸':'breath','逼近':'close'}[move] }"
-    mp4, end = OUT / f"{stem}.mp4", OUT / f"{stem}_end.jpg"
+    od = OUT if lb.C.chap_of(cid) == 1 else OUT / f"ch{lb.C.chap_of(cid)}"   # 第二章起分子資料夾，最後一格的 jpg 才會分到 end-ch2 組
+    od.mkdir(parents=True, exist_ok=True)
+    mp4, end = od / f"{stem}.mp4", od / f"{stem}_end.jpg"
     vf = f"scale={W*2}:{H*2}:flags=lanczos,zoompan=z='{z}':x='{x}':y='{y}':d={N}:s={W}x{H}:fps={FPS},format=yuv420p"
     subprocess.run(["ffmpeg", "-y", "-loglevel", "error", "-loop", "1", "-i", str(src), "-vf", vf, "-t", str(SEC),
                     "-c:v", "libx264", "-crf", "18", "-preset", "slow", "-movflags", "+faststart", str(mp4)], check=True)
@@ -43,7 +45,7 @@ if __name__ == "__main__":
     m = json.loads(MAP.read_text()) if MAP.exists() else {}
     pid = json.loads(lb.STATE.read_text())["id"]
     for cid, move in keys():
-        if not (ROOT / f"art/cg/{cid}.jpg").exists(): print("略過（圖還沒好）", cid); continue
+        if not (ROOT / lb.C.cg_rel(cid)).exists(): print("略過（圖還沒好）", cid); continue
         k = f"{cid}|{move}"
         mp4, end, h = make(cid, move)
         print("做好", k, mp4.name, mp4.stat().st_size // 1024, "KB")
@@ -51,8 +53,8 @@ if __name__ == "__main__":
             r, _ = lb.call("POST", f"/projects/{pid}/media", {"name": mp4.name, "mimeType": "video/mp4", "category": "scene",
                                                               "base64": base64.b64encode(mp4.read_bytes()).decode()})
             a = r["asset"]
-            m[k] = {"mediaId": a["id"], "url": a["url"], "src": h, "end": f"art/video/{end.name}"}
+            m[k] = {"mediaId": a["id"], "url": a["url"], "src": h, "end": str(end.relative_to(ROOT))}
             MAP.write_text(json.dumps(m, ensure_ascii=False, indent=1))
             print("  上傳", a["url"])
         elif k in m:
-            m[k]["end"] = f"art/video/{end.name}"; MAP.write_text(json.dumps(m, ensure_ascii=False, indent=1))
+            m[k]["end"] = str(end.relative_to(ROOT)); MAP.write_text(json.dumps(m, ensure_ascii=False, indent=1))
