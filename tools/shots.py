@@ -27,11 +27,20 @@ TIME = {
     "t4": "TIME: past 4 a.m. The desk lamp is the only light; deep blue night; outside almost every window is dark. The tea glass is nearly empty, no ice, a ring of water on the coaster.",
     "day": "TIME: daytime in the studio (the heroine's inner workspace): bright soft white daylight from tall grid windows, plants, warm wood, floating dust in the light shafts. All four are physically together in this room (this is the only place where they can be).",
 }
-STYLE = """STYLE: the rendering of Image 1 (TRANSPARENT WATERCOLOUR anime illustration: clearly visible cold-press paper grain everywhere, soft pigment blooms and granulation, wet-in-wet edges, gentle colour bleeding, delicate thin line art, slightly muted watercolour palette; NOT clean digital cel shading, NOT glossy, NOT airbrushed; the reference set images are for layout only, never for rendering), finished to the level of a cinematic FILM STILL for an ADULT audience: realistic adult proportions, restrained acting, rich light with clear contrast, carefully rendered materials (wood grain, glass, condensation, knit, wool, brushed metal), a detailed believable background where it is in focus, a clear focal point, deliberate colour grade. Watercolour is the medium, never an excuse for vagueness. Do not copy Image 1's composition. No chibi, no manga symbols, no sweat drops, no exaggerated cartoon faces.
+STYLE = """STYLE: the rendering of the first reference image (TRANSPARENT WATERCOLOUR anime illustration: clearly visible cold-press paper grain everywhere, soft pigment blooms and granulation, wet-in-wet edges, gentle colour bleeding, delicate thin line art, slightly muted watercolour palette; NOT clean digital cel shading, NOT glossy, NOT airbrushed), finished to the level of a cinematic FILM STILL for an ADULT audience: realistic adult proportions, restrained acting, rich light with clear contrast, carefully rendered materials (wood grain, glass, condensation, knit, wool, brushed metal), a detailed believable background where it is in focus, a clear focal point, deliberate colour grade. Watercolour is the medium, never an excuse for vagueness. No chibi, no manga symbols, no sweat drops, no exaggerated cartoon faces.
 OBJECTS: there are NO mugs, coffee cups or teacups anywhere; the only drink in any scene is her tall iced tea glass. There is exactly ONE phone (hers) in the scene, never a second phone.
 BODY LANGUAGE: nobody rests a chin or cheek on a hand and nobody props the head on a hand or arm (unless asleep); hands do only what the shot describes, otherwise they rest naturally or stay out of frame. SOLIDITY: every person is a complete, solid body in believable space: sitting ON a chair or standing on the floor, never sunk into, merged with or cut by a table, chair or wall. FRAMING: only the people this shot names are in frame; if it says "the other two", the heroine is NOT in the picture.
 HANDS: any visible hand has five clearly separated fingers with natural joints and nails; hands not described are out of frame or hidden.
 No text, letters, numbers or logos anywhere. Nobody looks into the lens unless the shot says POINT OF VIEW."""
+
+def present(i):
+    """這一格真的入鏡的人（視線表的人＋描述裡寫到的人）。不在畫面裡的人不送設定圖，免得稀釋空景。"""
+    g = GAZE.get(i, {}); d = S[i]; who = []
+    h = HANDS.get(i, "")
+    if "she" in g and "out of frame" not in g.get("she", "") and "not in frame" not in g.get("she", "") or ("她" in h and "她不在畫面" not in h and "她的手不在畫面裡（主觀" not in h): who.append("t")
+    for k, w in (("C", "c"), ("M", "m"), ("S", "s")):
+        if k in g or w in (d["who"] or ""): who.append(w)
+    return who
 
 def refs_for(i):
     d = S[i]; k = d["kind"]
@@ -41,20 +50,21 @@ def refs_for(i):
         files = [str(base)] + [SHEET[w] for w in dict.fromkeys(who) if w in SHEET]
         names = ["the MASTER FRAME of this shot (reproduce it)"] + [NAME[w] for w in dict.fromkeys(who) if w in SHEET]
         return files, names
-    if k in ("desk", "insert", "room"):
-        setref = REF + (f"set_desk_{SETUP[i]}.jpg" if i in SETUP else "set_desk_A.jpg")
-        files = [REF + "style_anchor.jpg", setref, REF + "prop_tea.jpg", REF + "prop_phone.jpg", REF + "prop_laptop_tablet.jpg",
-                 SHEET["t"]] + ([] if k == "room" else [SHEET["c"], SHEET["m"], SHEET["s"]])
-        names = ["STYLE ANCHOR (rendering only)", "EMPTY SET from this shot's exact camera setup: keep this camera position, framing and every piece of furniture and object exactly where it is; its screens are off only because the set is empty", "PROP: her iced black tea", "PROP: her smartphone",
-                 "PROP: her laptop (left) and tablet on its folio stand (right)", NAME["t"]] + ([] if k == "room" else [NAME["c"], NAME["m"], NAME["s"]])
-        return files, names
-    if k == "studio":
-        files = [REF + "style_anchor.jpg", REF + f"set_studio_{SETUP.get(i, 'A')}.jpg", REF + "prop_tea.jpg", SHEET["t"], SHEET["c"], SHEET["m"], SHEET["s"]]
-        names = ["STYLE ANCHOR (rendering only)", "EMPTY STUDIO SET from this shot\'s camera setup (direction, furniture, seats and the watercolour rendering to match; the shot may frame tighter)", "PROP: her iced black tea", NAME["t"], NAME["c"], NAME["m"], NAME["s"]]
+    if k in ("desk", "insert", "room", "studio"):
+        # 2026-11-06 yazelin：背景東西位置都錯。原因是第一張送了畫風參考（封面，本身是一張有書桌和裝置的完整場景），模型照它擺背景。
+        # 空景本身已是透明水彩，兼當畫風參考、排第一張；只送真的入鏡的人。
+        if k == "studio": setref, setname = REF + f"set_studio_{SETUP.get(i, 'A')}.jpg", "EMPTY STUDIO SET from this shot's camera setup (direction, furniture, seats and the watercolour rendering to match; the shot may frame tighter)"
+        else: setref, setname = REF + f"set_desk_{SETUP.get(i, 'A')}.jpg", "EMPTY SET from this shot's exact camera setup and the RENDERING to match (transparent watercolour): keep its camera direction and every piece of furniture and object exactly where it is; its screens are off only because the set is empty"
+        files, names = [setref], [setname]
+        files += [REF + "prop_tea.jpg"]; names += ["PROP: her iced black tea"]
+        if k != "studio":
+            files += [REF + "prop_phone.jpg", REF + "prop_laptop_tablet.jpg"]; names += ["PROP: her smartphone", "PROP: her laptop (left) and tablet on its folio stand (right)"]
+        for w in present(i):
+            files.append(SHEET[w]); names.append(NAME[w])
         return files, names
     who = d["who"] or "t"
     files = [REF + "style_anchor.jpg"] + [SHEET[w] for w in who]
-    names = ["STYLE ANCHOR (rendering only)"] + [NAME[w] for w in who]
+    names = ["STYLE ANCHOR (rendering only; never copy its composition or its room)"] + [NAME[w] for w in who]
     return files, names
 
 NAMES = {"she": "the heroine", "M": "M", "C": "C", "S": "S"}
@@ -86,9 +96,9 @@ def prompt(i):
     if d["kind"] == "room": parts.append("SCREENS OFF (very important): the humanoid interface does not exist yet. The laptop and tablet screens are switched OFF — solid black glass with only a faint reflection of the lamp — and NOBODY appears on any device. The three men are NOT in this picture at all.")
     if d["kind"] == "studio":
         parts.append("NO PHONE anywhere in the studio (this is her imagined workspace; S is physically present). M works on HIS OWN laptop: a thin dark SPACE-GREY laptop with a completely plain lid (no sticker, no logo, no marks of any kind), clearly NOT her pale starlight laptop; her devices never appear in the studio. " + TEA_STUDIO.get(i, TEA_STUDIO["_"]))
-        parts.append(SETUP_DESC["s" + SETUP.get(i, "A")] + ". Image 2 is the empty studio from this setup: keep its camera DIRECTION and every piece of furniture where it is (one long table, four chairs); the FRAMING is this shot's own, move closer along the same direction as the shot describes. " + SEATING)
+        parts.append(SETUP_DESC["s" + SETUP.get(i, "A")] + ". The EMPTY STUDIO SET image is this setup: keep its camera DIRECTION and every piece of furniture where it is (one long table, four chairs); the FRAMING is this shot's own, move closer along the same direction as the shot describes. " + SEATING)
     if d["kind"] in ("desk", "insert", "room"):
-        parts.append((SETUP_DESC[SETUP[i]] if i in SETUP else SETUP_DESC["A"]) + ". Image 2 is the empty set seen from this camera setup. Keep its camera DIRECTION and the room exactly as laid out there: the same ONE desk, every object in the same place (left to right on the desk: lamp and books, laptop, tea glass on its coaster, tablet on its stand; the phone in front of the tea glass or propped against it). Never add a second desk, never move or duplicate an object. The FRAMING is this shot's own (close-up, extreme close-up, low angle, over-the-shoulder): move the camera closer or lower along the same direction as the shot describes; do not widen it back to Image 2's framing.")
+        parts.append((SETUP_DESC[SETUP[i]] if i in SETUP else SETUP_DESC["A"]) + ". The EMPTY SET image is the room seen from this camera setup. Keep its camera DIRECTION and the room exactly as laid out there: the same ONE desk, every object in the same place (left to right on the desk: lamp and books, laptop, tea glass on its coaster, tablet on its stand; the phone in front of the tea glass or propped against it). Never add a second desk, never move or duplicate an object. The FRAMING is this shot's own (close-up, extreme close-up, low angle, over-the-shoulder): move the camera closer or lower along the same direction as the shot describes; do not widen it back to the empty set's framing.")
     parts.append(d["body"])
     if d["kind"] == "desk": parts.append(AI)
     if d["kind"] != "free": parts.append(TIME[d["time"]])
