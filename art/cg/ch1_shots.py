@@ -220,6 +220,8 @@ TEA_STUDIO = {"_": _T2, "04-1": _T1, "04A": _T1, "04B": _T1,
 # 試玩抓到的錯（review/第一章_試玩問題.md）都是「手沒寫死」或「道具沒寫死」：少手指、少一隻手臂、手機出現在工作室。
 # 量產驗收（2026-11-07）抓到的錯，重畫時附在該格描述後面。
 FIX = {
+    "04B-1": "The only laptop in the studio is M's, at his own seat on the window side and out of this frame; there is NO laptop near S or near her.",
+    "05A-3": "The laptop and the tablet are OUT OF FRAME exactly as in the base image; only the tea glass and the phone in its stand are on the desk in front of her.",
     "03-0": "INSIDE THE SCREENS: M and C sit upright with both hands below the screen edge, out of frame; their faces are free, nothing touches their chins or cheeks.",
     "03C": "In the background laptop M sits upright, both hands below the screen edge and out of frame; nothing touches his chin or cheek.",
     "04-0": "FRAMING IS AN EXTREME CLOSE-UP: only her face in profile, her lowered eyelashes, the phone in its stand and the edge of the tea glass fill the frame; the laptop and the tablet are out of frame, so no man is visible except the small S on the phone screen.",
