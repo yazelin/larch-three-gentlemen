@@ -55,7 +55,9 @@
       ],
       "canon_version": "v3 中性色加專屬色點綴（2026-11-06 代 yazelin 決定，作者明早覆核）",
       "approved": "2026-11-06 代決（yazelin 授權：明早看初版）",
-      "prompt": "art/gen/pure/m.prompt.txt"
+      "prompt": "art/gen/pure/m.prompt.txt",
+      "face_ref": "canon/refs/m_face.jpg",
+      "face_ref_note": "高清臉部參考（三分之四側臉、視線朝右下、眼睛睜開），畫臉時跟設定圖一起送；2026-11-06 yazelin：這 3 張高清很好，畫臉可以參考"
     },
     "c": {
       "name": "晨（C，美術設計・校稿）",
@@ -81,7 +83,9 @@
       ],
       "canon_version": "v3 中性色加專屬色點綴（2026-11-06 代 yazelin 決定，作者明早覆核）",
       "approved": "2026-11-06 代決（yazelin 授權：明早看初版）",
-      "prompt": "art/gen/pure/c.prompt.txt"
+      "prompt": "art/gen/pure/c.prompt.txt",
+      "face_ref": "canon/refs/c_face.jpg",
+      "face_ref_note": "高清臉部參考（三分之四側臉、視線朝右下、眼睛睜開），畫臉時跟設定圖一起送；2026-11-06 yazelin：這 3 張高清很好，畫臉可以參考"
     },
     "s": {
       "name": "詩（S，音樂創作）",
@@ -109,7 +113,9 @@
       ],
       "canon_version": "v3 中性色加專屬色點綴（2026-11-06 代 yazelin 決定，作者明早覆核）",
       "approved": "2026-11-06 代決（yazelin 授權：明早看初版）",
-      "prompt": "art/gen/pure/s.prompt.txt"
+      "prompt": "art/gen/pure/s.prompt.txt",
+      "face_ref": "canon/refs/s_face.jpg",
+      "face_ref_note": "高清臉部參考（三分之四側臉、視線朝右下、眼睛睜開），畫臉時跟設定圖一起送；2026-11-06 yazelin：這 3 張高清很好，畫臉可以參考"
     }
   },
   "world": {
