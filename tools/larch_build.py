@@ -180,14 +180,17 @@ def check(nodes, edges):
 def warm(nodes):
     """推之前把用到的 jsDelivr 網址全部打一次：新版本第一次被抓時偶爾回 403，之後就一直失敗（2026-11-06 敲鎖小遊戲的鎖圖就是這樣不見的）。"""
     import re, urllib.request, concurrent.futures as cf
-    urls = sorted(set(re.findall(r"https://cdn\.jsdelivr\.net/gh/[^\"'\s)]+", json.dumps(nodes, ensure_ascii=False))))
+    urls = sorted(set(re.findall(r"https://cdn\.jsdelivr\.net/gh/[A-Za-z0-9@._/~%-]+\.[A-Za-z0-9]+", json.dumps(nodes, ensure_ascii=False))))
     def get(u):
-        for _ in range(4):
+        for k in range(6):
             try:
                 with urllib.request.urlopen(urllib.request.Request(u, headers={"User-Agent": "Mozilla/5.0"}), timeout=60) as r:
                     if r.status == 200: r.read(1); return None
             except Exception: pass
-            time.sleep(5)
+            if k == 1:   # 失敗會被 jsDelivr 快取住，清掉再抓
+                try: urllib.request.urlopen(u.replace("://cdn.jsdelivr.net/", "://purge.jsdelivr.net/"), timeout=60).read()
+                except Exception: pass
+            time.sleep(8)
         return u
     with cf.ThreadPoolExecutor(8) as ex: bad = [u for u in ex.map(get, urls) if u]
     if bad: raise SystemExit("CDN 讀不到，先不推：\n" + "\n".join(bad))
