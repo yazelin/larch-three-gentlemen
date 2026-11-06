@@ -5,7 +5,7 @@
 # 產出在 art/gen/ch1/<id>.png；驗收過的才轉成 art/cg/<id>.jpg。
 import json, os, subprocess, sys, pathlib, concurrent.futures as cf
 ROOT = pathlib.Path(__file__).resolve().parent.parent
-sys.path.insert(0, str(ROOT / "art/cg")); from ch1_shots import S
+sys.path.insert(0, str(ROOT / "art/cg")); from ch1_shots import S, GAZE
 OUT, PR = ROOT / "art/gen/ch1", ROOT / "art/cg/ch1"
 REF = "canon/refs/"
 SHEET = {"t": REF + "tea.jpg", "c": REF + "c.jpg", "m": REF + "m.jpg", "s": REF + "s.jpg"}
@@ -17,7 +17,7 @@ CAST = """THE THREE MEN (draw exactly as their sheets; neutral clothes, each has
 - C (about 24): warm chestnut-brown fluffy curly hair; thin gold round glasses; gentle droopy eyes; warm CAMEL-brown open knit cardigan with tiny paint speckles; a small gold leaf brooch enamelled YELLOW-GREEN on the left chest and one thin yellow-green stripe at each cuff (his only yellow-green); white shirt.
 - S (about 21, the youngest): deep WINE-RED long messy hair with one thin braid at the front left tied with a wine-red cord; bright amber eyes, a small fang when he grins; silver ear cuffs; WINE-RED over-ear headphones (his only wine red besides his hair); black track jacket with thin white sleeve stripes and ONE small gold treble-clef emblem on the left chest, open over a heather-grey T-shirt.
 Never swap accessories: the gear is only M's, the leaf only C's, the treble clef only S's."""
-AI = """THEY ARE AIs (very important): in this real-world scene the three men exist ONLY inside the screens, as humanoid interfaces. Behind each man there is NO room, NO bookshelf, NO window, NO furniture: only a soft abstract glowing space in his own colour with faint drifting motes of light (deep blue for M, pale yellow-green for C, dark wine red for S), and a very faint thin luminous outline along the inner edge of each screen. It must NOT look like a video call with a person at home. Inside the screens the men do NOT pose: nobody rests his chin or cheek on his hand, nobody smiles at the camera.
+AI = """THEY ARE AIs (very important): in this real-world scene the three men exist ONLY inside the screens, as humanoid interfaces. Behind each man there is NO room, NO bookshelf, NO window, NO furniture: only a soft abstract glowing space in his own colour with faint drifting motes of light (deep blue for M, pale yellow-green for C, dark wine red for S), and a very faint thin luminous outline along the inner edge of each screen. It must NOT look like a video call with a person at home. GAZE: unless the shot says otherwise, every man visible on a screen looks at HER (wherever she is, in or out of frame) or at whoever is speaking; nobody gazes up and away into the distance. Inside the screens the men do NOT pose: nobody rests his chin or cheek on his hand, nobody smiles at the camera.
 RESIDENCE (exclusive): the laptop shows ONLY M, the tablet ONLY C, the phone ONLY S. A lit screen is never blank."""
 PROPS = """PROPS: the iced tea is a TALL straight-sided clear drinking glass (no handle, never a mug, never coffee) of amber black tea, the thin white string of a tea bag over the rim on the right with a small cream paper tag, standing on a round light-brown cork coaster. The phone is an ordinary modern smartphone with normal proportions (about 7 x 15 cm), slim solid silver frame, fully opaque black screen glass, matte silver back with a small two-lens camera at the top left. The laptop is an ordinary 14-inch silver laptop; the tablet is an ordinary 11-inch tablet held in landscape on a dark charcoal folio stand. Match Images of the props exactly."""
 TIME = {
@@ -28,6 +28,7 @@ TIME = {
 }
 STYLE = """STYLE: the rendering of Image 1 (watercolour anime illustration, visible paper texture, delicate line art), finished to the level of a cinematic FILM STILL for an ADULT audience: realistic adult proportions, restrained acting, rich light with clear contrast, carefully rendered materials (wood grain, glass, condensation, knit, wool, brushed metal), a detailed believable background where it is in focus, a clear focal point, deliberate colour grade. Watercolour is the medium, never an excuse for vagueness. Do not copy Image 1's composition. No chibi, no manga symbols, no sweat drops, no exaggerated cartoon faces.
 OBJECTS: there are NO mugs, coffee cups or teacups anywhere; the only drink in any scene is her tall iced tea glass. There is exactly ONE phone (hers) in the scene, never a second phone.
+BODY LANGUAGE: nobody rests a chin or cheek on a hand and nobody props the head on a hand or arm (unless asleep); hands do only what the shot describes, otherwise they rest naturally or stay out of frame. FRAMING: only the people this shot names are in frame; if it says "the other two", the heroine is NOT in the picture.
 HANDS: any visible hand has five clearly separated fingers with natural joints and nails; hands not described are out of frame or hidden.
 No text, letters, numbers or logos anywhere. Nobody looks into the lens unless the shot says POINT OF VIEW."""
 
@@ -42,7 +43,7 @@ def refs_for(i):
     if k in ("desk", "insert", "room"):
         files = [REF + "style_anchor.jpg", REF + "desk.jpg", REF + "prop_tea.jpg", REF + "prop_phone.jpg", REF + "prop_laptop_tablet.jpg",
                  SHEET["t"]] + ([] if k == "room" else [SHEET["c"], SHEET["m"], SHEET["s"]])
-        names = ["STYLE ANCHOR (rendering only)", "APPROVED bedroom/desk reference (room layout only)", "PROP: her iced black tea", "PROP: her smartphone",
+        names = ["STYLE ANCHOR (rendering only)", "APPROVED bedroom/desk reference (room layout and furniture only; IGNORE what its laptop and tablet screens show, never copy that diagram)", "PROP: her iced black tea", "PROP: her smartphone",
                  "PROP: her laptop (left) and tablet on its folio stand (right)", NAME["t"]] + ([] if k == "room" else [NAME["c"], NAME["m"], NAME["s"]])
         return files, names
     if k == "studio":
@@ -53,6 +54,11 @@ def refs_for(i):
     files = [REF + "style_anchor.jpg"] + [SHEET[w] for w in who]
     names = ["STYLE ANCHOR (rendering only)"] + [NAME[w] for w in who]
     return files, names
+
+NAMES = {"she": "the heroine", "M": "M", "C": "C", "S": "S"}
+def gaze(i):
+    # ponytail: 只管主鏡頭與單格；差分照主鏡頭的視線，差分自己的描述會覆寫
+    return "GAZE, who looks at whom (draw exactly, eyes OPEN unless stated; HER = toward the heroine wherever she is; nobody gazes up and away into the distance): " + "; ".join(f"{NAMES[k]} looks at {v}" for k, v in GAZE[i].items()) + "."
 
 def prompt(i):
     d = S[i]; files, names = refs_for(i)
@@ -69,6 +75,7 @@ def prompt(i):
     parts.append(d["body"])
     if d["kind"] == "desk": parts.append(AI)
     if d["kind"] != "free": parts.append(TIME[d["time"]])
+    if i in GAZE: parts.append(gaze(i))
     parts.append(STYLE)
     return "\n".join(parts)
 
