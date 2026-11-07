@@ -40,6 +40,11 @@ def make(cid, move):
     subprocess.run(["ffmpeg", "-y", "-loglevel", "error", "-sseof", "-0.1", "-i", str(mp4), "-frames:v", "1", "-q:v", "2", str(end)], check=True)
     return mp4, end, hashlib.sha1(src.read_bytes()).hexdigest()[:12]
 
+def save(k, v):
+    # 兩章同時跑時不互相蓋掉：每次寫回前重讀，只換自己這一筆（ponytail: 沒加檔案鎖，同一毫秒同時寫仍可能撞）
+    cur = json.loads(MAP.read_text()) if MAP.exists() else {}
+    cur[k] = v; MAP.write_text(json.dumps(cur, ensure_ascii=False, indent=1))
+
 if __name__ == "__main__":
     OUT.mkdir(parents=True, exist_ok=True)
     m = json.loads(MAP.read_text()) if MAP.exists() else {}
@@ -54,7 +59,7 @@ if __name__ == "__main__":
                                                               "base64": base64.b64encode(mp4.read_bytes()).decode()})
             a = r["asset"]
             m[k] = {"mediaId": a["id"], "url": a["url"], "src": h, "end": str(end.relative_to(ROOT))}
-            MAP.write_text(json.dumps(m, ensure_ascii=False, indent=1))
+            save(k, m[k])
             print("  上傳", a["url"])
         elif k in m:
-            m[k]["end"] = str(end.relative_to(ROOT)); MAP.write_text(json.dumps(m, ensure_ascii=False, indent=1))
+            m[k]["end"] = str(end.relative_to(ROOT)); save(k, m[k])
