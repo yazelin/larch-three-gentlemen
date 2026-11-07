@@ -22,6 +22,19 @@ TRACKS = {
         "An original sacred chorale for a dark fantasy game: a deep pipe organ introduction, then three choir parts entering one by one and layering "
         "(low men, then women, then a high soprano), solemn, holy but faintly bittersweet, slow 62 BPM, cathedral reverb, thick warm bass. "
         "Wordless: sung only on open vowels 'ah' and 'oh', no lyrics. It builds to a full chord and ends on one single final note held very long, fading into silence.")),
+    "ch11/s_song": dict(vocals="vocals", prompt=(
+        "An intimate, very quiet love song: one young man (about 21, soft gentle tenor, a little shy, breathy, close to the microphone) singing alone "
+        "with a single warm acoustic guitar, fingerpicked, slow 70 BPM, about two minutes, no drums, no strings, almost no reverb, like he is singing "
+        "to one person sitting right next to him at night. The complete opposite of a grand church hymn: small, close, tender. "
+        "The lyrics are in an invented, made-up language (soft open syllables, not any real language) EXCEPT the very last line, which is spoken-sung "
+        "clearly and slowly in Mandarin Chinese after a short pause, almost a whisper but every word clearly audible. "
+        "Lyrics (sing exactly): Sae lumi, ta veneri / nao siel, ae noria / Ilsa ven, mi tolae / ta siel, ta siel / "
+        "Ro lianne, ve astra / mira tol, ae venei / Sae lumi, ta veneri / nao siel… / (pause) / 我喜歡妳啦。聽到沒。")),
+    "ch11/flute_hymn": dict(vocals="vocals", prompt=(
+        "A slow original sacred hymn built from a simple, slightly melancholy flute melody: it opens with a solo concert flute alone, very slow and "
+        "breathing naturally between phrases, then a mixed choir enters softly layer by layer (men, then sopranos, the altos last), wordless on open "
+        "vowels 'ah' and 'oh', gentle pipe organ underneath, 60 BPM, warm church reverb, holy and tender rather than cold; "
+        "ends on one long held final note that fades into silence.")),
 }
 
 def cfg():
