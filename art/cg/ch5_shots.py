@@ -14,7 +14,7 @@ TIME = {
 _CONCERT = ("canon/refs/set_concert_A.jpg", "EMPTY CONCERT HALL SET from this shot's camera position (rows of dark red seats rising toward the back, the wooden stage with three curved choir risers, the slatted wooden back wall and the organ pipes above it, warm stage light) and the watercolour rendering to match; keep the hall exactly as laid out there, the shot may frame tighter")
 _CHIBI = ("canon/refs/chibi_s.jpg", "S's CHIBI form (two heads tall, round and tiny): ONLY for the little figure inside the phone screen; copy his chibi look exactly (wine-red hair with the thin braid, wine-red headphones, black track jacket)")
 SETREF = {"5-04": _CONCERT, "5-05": _CONCERT, "5-07": ("canon/refs/set_desk_D.jpg", "EMPTY SET of her room (the bed with the blue plaid duvet, the desk by the window far across the room): only for the dark, soft background room behind the phone and the rendering to match"), "5-13": [("canon/refs/set_desk_C.jpg", "EMPTY SET from this shot's exact camera setup and the RENDERING to match (transparent watercolour): keep its camera direction and every piece of furniture and object exactly where it is; its screens are off only because the set is empty"),
-                                                      ("canon/refs/prop_phone_stand.jpg", "PROP: her smartphone, and the small light-wood phone stand it stands in on the desk"), _CHIBI]}
+                                                      ("canon/refs/prop_phone_stand.jpg", "PROP: her smartphone, and the small light-wood phone stand it stands in on the desk"), _CHIBI, ("canon/refs/m.jpg", "M sheet (for the man on the laptop screen only)"), ("canon/refs/c.jpg", "C sheet (for the man on the tablet screen only)")]}
 
 IDENT = 'SCREEN IDENTITIES (very important, check every screen): the LAPTOP shows ONLY M: near-black short swept-back hair with a cool blue sheen, NO glasses, charcoal suit jacket over a white shirt, gold gear brooch. The TABLET shows ONLY C: warm chestnut-brown fluffy curly hair, thin gold round glasses, camel knit cardigan, small yellow-green leaf brooch, NO necklace. The PHONE shows ONLY S: long messy WINE-RED hair with one thin braid, wine-red headphones, black track jacket. The heroine (dark purple wolf-cut hair, pink-tinted glasses, moon pendant) is NEVER on any screen. Nobody on a screen rests a chin or cheek on a hand.'
 _ALLON = "All three device screens are LIT and each shows its own man only: the laptop at the LEFT shows ONLY M, the tablet at the RIGHT shows ONLY C, the phone in its stand in the MIDDLE (to the RIGHT of the tea glass) shows ONLY S. The heroine never appears on any screen. Inside the screens the men sit upright with both hands below the screen edge (out of frame) unless described; nothing touches their chins or cheeks."
@@ -51,7 +51,7 @@ shot("5-11S", "insert", "t3", """SHOT (frame within a frame, close): the phone s
 shot("5-12", "desk", "t4", f"""SHOT (MASTER for the 4 a.m. scene; medium shot from behind her LEFT shoulder, three-quarter back view of her at the lower RIGHT of the frame, chest up): she has white wireless earbuds in both ears and sits very still, listening; her right index finger rests on the laptop trackpad, about to press replay. Beyond her the three devices on the desk: the laptop at the LEFT with M, in the MIDDLE the nearly empty tea glass and the phone in its stand with S (eyes closed, listening to his own chorus, a small proud smile), the tablet at the RIGHT with C. A thin glowing wine-red waveform drifts across S's screen. {_ALLON}""")
 shot("5-13", "insert", "t4", """SHOT (close insert at desk height: the phone standing in its small light-wood phone stand fills the centre of the frame, the nearly empty tea glass softly out of focus to its LEFT): the phone screen is dim; at the top right of the screen a small battery icon glows RED and almost empty (an icon only, NO numbers, NO text). Inside the screen, in the dark wine-red interface space, S has shrunk into a tiny round CHIBI figure exactly like the chibi reference (two heads tall): he sits in the middle of the big empty screen, blinking up, sheepish, much too small for his own screen. The phone keeps its real lavender iPhone design and real proportions.""")
 shot("5-14", "desk", "t4", """SHOT (close-up, REVERSE ANGLE from the desk side, eye level): her face and shoulders; she has narrowed her eyes in deep suspicion and glances sideways toward the frame's RIGHT (where the laptop is), one eyebrow raised ('are you fighting again?'), a white earbud still in one ear. Warm lamp light from the frame's RIGHT, a faint wine-red glow from below. Behind her, dark and soft: the wardrobe, the door, the bed with the plaid duvet, as in the EMPTY SET image.""")
-shot("5-15", "insert", "t4", """SHOT (close insert at desk height: the phone standing in its small light-wood phone stand, the nearly empty tea glass softly out of focus to its LEFT): a white charging cable is now plugged into the bottom of the phone and runs off across the desk; a small battery icon at the top right glows soft green with a tiny charging bolt (icon only, no numbers, no text). Inside the screen, in his dark wine-red interface space, S is back to his normal self, chest up, sitting up very straight, clearing his throat with a fist held near his mouth (not touching his face), eyes sliding away, pretending nothing happened. Softly out of focus behind: the laptop with M on the left, the tablet with C on the right.""")
+shot("5-15", "insert", "t4", """SHOT (close insert at desk height: the phone standing in its small light-wood phone stand, the nearly empty tea glass softly out of focus to its LEFT): a white charging cable is now plugged into the bottom of the phone and runs off across the desk; a small battery icon at the top right glows soft green with a tiny charging bolt (icon only, no numbers, no text). Inside the screen, in his dark wine-red interface space, S is back to his normal self, chest up, sitting up very straight, lips pressed together as if clearing his throat, eyes sliding away, pretending nothing happened. Softly out of focus behind: the laptop with M on the left, the tablet with C on the right.""")
 shot("5-16", "desk", "t4", f"""SHOT (MASTER for the 'tools' talk; medium shot from behind her LEFT shoulder, three-quarter back view of her at the lower RIGHT of the frame, chest up): the phone now has a white charging cable plugged in; she has taken her earbuds out and holds them loosely in her left hand on the desk. Beyond her: the laptop at the LEFT with M, in the MIDDLE the nearly empty tea glass and the phone in its stand with S leaning close to his screen glass, half joking, one eyebrow up ('aren't we like tool guys?'), the tablet at the RIGHT with C. {_ALLON}""")
 shot("5-16-1", "var", "t4", "Inside the laptop M says something quiet and plain, looking at her; inside the tablet C's pencil has stopped dead in the air; inside the phone S's mouth hangs open, speechless; she stares at the laptop.", base="5-16")
 shot("5-16-2", "var", "t4", "All four are laughing: she has leaned back in her chair laughing, eyes squeezed shut; S laughs hardest with his fang showing; C laughs softly; M smiles with his eyes closed for a moment.", base="5-16")
@@ -85,6 +85,7 @@ SETUP = {"5-01": "C", "5-02": "D", "5-03C": "C", "5-03M": "A", "5-03S": "B",
          "5-06": "D", "5-07": "D", "5-08": "A", "5-09": "F", "5-10": "B", "5-11C": "F", "5-11M": "E", "5-11S": "C",
          "5-12": "A", "5-13": "C", "5-14": "B", "5-15": "C", "5-16": "A"}
 TEA_STUDIO = {"_": _T1, "5-01": _T1}
+_SEAT = "She SITS ON her desk chair (the same chair as in the EMPTY SET image, with the olive-green jacket draped over its back): the chair is under her and behind her, NOT an empty chair beside her; there is only ONE chair at the desk. "
 FIX = {
     "5-03C": "The camera is at HER seat (the red chair, door side), looking across the table toward the WINDOW side: behind C are the tall grid windows and plants. C sits on his wooden chair on the window side. The sketch shows a WOMAN mage only, not the heroine (no purple hair, no glasses). Only C is in frame.",
     "5-03S": "The camera is on the WINDOW (north) side of the table looking SOUTH: behind S is the wall with the wooden door. Only S is in frame; his hand is in the air, nowhere near his face. No phone anywhere.",
@@ -98,10 +99,11 @@ FIX = {
     "5-11M": _BG,
     "5-11S": "The phone stands in its stand to the RIGHT of the tea glass (left to right on the desk: laptop, tea glass, phone in its stand, tablet). " + IDENT,
     "5-12": IDENT,
-    "5-13": "The tiny figure in the phone is S in CHIBI form ONLY (wine-red hair, wine-red headphones, black track jacket), not a normal-proportioned man and not anyone else. Exactly ONE phone. No numbers or letters anywhere. The phone stands in its small light-wood stand to the RIGHT of the tea glass.",
+    "5-08": _SEAT + IDENT,
+    "5-16": _SEAT + IDENT,
+    "5-13": "The laptop at the LEFT is LIT and shows M chest up in his deep blue interface space, and the tablet at the RIGHT is LIT and shows C chest up in his yellow-green interface space; both are softly out of focus and look at the phone, amused; their hands are out of frame. Only the PHONE is low on battery. " + IDENT + " The tiny figure in the phone is S in CHIBI form ONLY (wine-red hair, wine-red headphones, black track jacket), not a normal-proportioned man and not anyone else. Exactly ONE phone. No numbers or letters anywhere. The phone stands in its small light-wood stand to the RIGHT of the tea glass.",
     "5-14": _REV + " Nothing touches her chin; her hands are below the frame.",
-    "5-15": _BG + " " + IDENT,
-    "5-16": IDENT,
+    "5-15": "S sits up very straight with BOTH hands below the screen edge, out of frame; NOTHING touches his mouth, chin or face; he clears his throat with his lips pressed together and his eyes sliding away. " + _BG + " " + IDENT,
 }
 RETIRED = set()
 HANDS = {
@@ -126,9 +128,9 @@ HANDS = {
  "5-11M": "明只到胸口，手在畫面外；她的手不在畫面裡。",
  "5-11S": "詩只到胸口，手在畫面外。",
  "5-12": "她右手食指放在觸控板上（五根手指清楚），左手放在桌上；三位先生只到胸口，手在畫面外。",
- "5-13": "沒有人的手；Q 版詩的小手小小的放在身前。",
+ "5-13": "沒有人的手；Q 版詩的小手小小的放在身前；明、晨只到胸口、手在畫面外。",
  "5-14": "她的兩手都在畫面下緣之外。",
- "5-15": "詩右手握拳舉在胸前清喉嚨（拳頭不碰臉），左手在畫面外；沒有她的手。",
+ "5-15": "詩兩手都在畫面外；沒有她的手。",
  "5-16": "她左手鬆鬆握著兩顆耳機放在桌上，右手在畫面外；三位先生只到胸口，手在畫面外。",
  "5-16-1": "晨右手拿鉛筆停在半空（五根手指清楚）；其他人的手在畫面外；她的手同主鏡頭。",
  "5-16-2": "她的手在畫面外；三位先生的手在畫面外。",
