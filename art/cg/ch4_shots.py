@@ -19,6 +19,7 @@ _CLASS = ("canon/refs/set_class_A.jpg", "EMPTY CLASSROOM SET: the university lec
 SETREF = {"4-10": _CLASS, "4-11": _CLASS, "4-12": _CLASS}
 
 _MAP = "a top-down pixel-art RPG map tile of a lazy medieval town: grey stone stairs at the lower right, one long horizontal stone wall across the upper middle, a small round blue pond at the upper right, cobbled paths and grass; flat game-map colours, NO text"
+IDENT = 'SCREEN IDENTITIES (very important, check every screen): the LAPTOP shows ONLY M: near-black short swept-back hair with a cool blue sheen, NO glasses, charcoal suit jacket over a white shirt, gold gear brooch. The TABLET shows ONLY C: warm chestnut-brown fluffy curly hair, thin gold round glasses, camel knit cardigan, small yellow-green leaf brooch, NO necklace. The PHONE shows ONLY S: long messy WINE-RED hair with one thin braid, wine-red headphones, black track jacket. The heroine (dark purple wolf-cut hair, pink-tinted glasses, moon pendant) is NEVER on any screen. Nobody on a screen rests a chin or cheek on a hand.'
 _ALLON = "All three device screens are LIT and each shows its own man only: the laptop at the LEFT shows ONLY M, the tablet at the RIGHT shows ONLY C, the phone in its stand in the MIDDLE shows ONLY S. The heroine never appears on any screen. Inside the screens the men sit upright with both hands below the screen edge (out of frame) unless described; nothing touches their chins or cheeks."
 
 # ── 一、什麼都不要做（第一週目第一晚，書桌）──
@@ -59,7 +60,7 @@ shot("4-16-1", "var", "w830", "All three men smile at her: S grins wide with his
 GAZE = {
  "4-01": {"she": "the three devices", "M": "HER at the lower RIGHT of the frame", "C": "HER at the lower RIGHT of the frame", "S": "HER at the lower RIGHT of the frame"},
  "4-02C": {"C": H, "M": "down at his own work", "S": "down at his own side"},
- "4-02M": {"M": H},
+ "4-02M": {"M": H, "C": "down at his drawing", "S": "down at his own side"},
  "4-02S": {"S": "eyes closed, listening", "M": "the phone", "C": "the phone"},
  "4-04": {"she": "the two maps on the laptop screen", "M": "the maps", "S": H, "C": H},
  "4-06C": {"C": "down, ashamed", "M": "down at his own work", "S": "down, quiet"},
@@ -81,14 +82,15 @@ SETUP = {"4-01": "A", "4-04": "A", "4-07": "E", "4-06M": "E", "4-02M": "E", "4-0
          "4-02S": "C", "4-06S": "B", "4-13": "A", "4-14": "E", "4-16": "A"}
 TEA_STUDIO = {"_": _T1}
 FIX = {
-    "4-02C": 'Softly out of focus around it, the other devices are LIT too, each with its own man (laptop = M, tablet = C, phone in its wooden stand = S), small, chest up, hands out of frame; the heroine never appears on any screen. The phone stands in its stand to the RIGHT of the tea glass.',
+    "4-02M": IDENT,
+    "4-02C": 'Softly out of focus around it, the other devices are LIT too, each with its own man (laptop = M, tablet = C, phone in its wooden stand = S), small, chest up, hands out of frame; the heroine never appears on any screen. The phone stands in its stand to the RIGHT of the tea glass.' + " " + IDENT,
     "4-06C": 'Inside the tablet is ONLY C exactly as his sheet: a young MAN with warm chestnut-brown fluffy curly hair, thin gold round glasses, camel knit cardigan with a small yellow-green leaf brooch. The heroine (purple hair) is NEVER on this screen. Softly out of focus around it, the other devices are LIT too, each with its own man (laptop = M, tablet = C, phone in its wooden stand = S), small, chest up, hands out of frame; the heroine never appears on any screen. The phone stands in its stand to the RIGHT of the tea glass.',
     "4-06M": 'Softly out of focus around it, the other devices are LIT too, each with its own man (laptop = M, tablet = C, phone in its wooden stand = S), small, chest up, hands out of frame; the heroine never appears on any screen. The phone stands in its stand to the RIGHT of the tea glass.',
     "4-07": 'Softly out of focus around it, the other devices are LIT too, each with its own man (laptop = M, tablet = C, phone in its wooden stand = S), small, chest up, hands out of frame; the heroine never appears on any screen. The phone stands in its stand to the RIGHT of the tea glass.',
-    "4-08": 'The laptop screen is not blank: it shows M small, chest up, in his deep blue interface space. Softly out of focus around it, the other devices are LIT too, each with its own man (laptop = M, tablet = C, phone in its wooden stand = S), small, chest up, hands out of frame; the heroine never appears on any screen. The phone stands in its stand to the RIGHT of the tea glass.',
-    "4-14": 'Softly out of focus around it, the other devices are LIT too, each with its own man (laptop = M, tablet = C, phone in its wooden stand = S), small, chest up, hands out of frame; the heroine never appears on any screen. The phone stands in its stand to the RIGHT of the tea glass.',
+    "4-08": 'The laptop screen is not blank: it shows M small, chest up, in his deep blue interface space. Softly out of focus around it, the other devices are LIT too, each with its own man (laptop = M, tablet = C, phone in its wooden stand = S), small, chest up, hands out of frame; the heroine never appears on any screen. The phone stands in its stand to the RIGHT of the tea glass.' + " " + IDENT,
+    "4-14": 'Softly out of focus around it, the other devices are LIT too, each with its own man (laptop = M, tablet = C, phone in its wooden stand = S), small, chest up, hands out of frame; the heroine never appears on any screen. The phone stands in its stand to the RIGHT of the tea glass.' + " " + IDENT,
     "4-15": 'Softly out of focus around it, the other devices are LIT too, each with its own man (laptop = M, tablet = C, phone in its wooden stand = S), small, chest up, hands out of frame; the heroine never appears on any screen. The phone stands in its stand to the RIGHT of the tea glass.',
-    "4-02S": 'The phone in its wooden stand stands to the RIGHT of the tea glass (left to right on the desk: laptop, tea glass, phone in its stand, tablet).',
+    "4-02S": 'The phone in its wooden stand stands to the RIGHT of the tea glass (left to right on the desk: laptop, tea glass, phone in its stand, tablet).' + " " + IDENT,
     "4-06S": "The camera stands BEHIND the devices on the desk, so it sees only the plain dark BACK of the laptop lid and the plain dark BACK of the tablet case (and the back of the phone in its stand): NO screen and NO man is visible to the camera. MIRRORED because this is a reverse angle: the desk lamp glows at the frame's RIGHT edge, the back of the tablet is at the frame's LEFT, the back of the laptop lid at the RIGHT.",
     "4-10": "Every student is an ordinary background extra seen from behind or in far profile, small and soft; NONE of them has purple hair, gold glasses or her clothes: the heroine appears exactly ONCE in the picture. No laptop, tablet or phone of hers on the desk; only her notebook and pen.",
     "4-11": "Only the heroine is in focus; no device of hers in frame. No readable text anywhere.",
