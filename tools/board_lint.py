@@ -13,7 +13,9 @@ CHIN_OK.update(CHIN_OK_EXTRA)
 md = C.SCRIPT.read_text(encoding="utf-8")
 used = set(re.findall(r"【CG ([^｜\s】]+)", "\n".join(l for l in md.splitlines() if not l.startswith(">"))))
 
-for i in sorted(used - set(S)): err.append(f"{i}：劇本用到，分鏡表沒有")
+# 回收前幾章已定稿的 CG（例：第六章快切回收前幾章的痕跡）：別章的 id、定稿檔已在，就不算缺
+xref = {i for i in used - set(S) if C.chap_of(i) != C.CH and (C.ROOT / C.cg_rel(i)).exists()}
+for i in sorted(used - set(S) - xref): err.append(f"{i}：劇本用到，分鏡表沒有")
 for i in sorted(used & RETIRED): err.append(f"{i}：已標不再使用，劇本還在用")
 for i, d in S.items():
     if i in RETIRED: continue
