@@ -9,6 +9,15 @@ TRACKS = {
         "sung completely seriously in Mandarin Chinese — but the lyrics are a student's confession of procrastination, so it is comically over-dramatic. "
         "Organ introduction, then the choir enters in full harmony; the last line repeats 'míngtiān' three times with a long held final chord. "
         "Lyrics (Mandarin, sing exactly): 白紙攤在桌上，題目寫得清清楚楚／主啊，我知道我該寫／可是今晚，請讓我再拉一條線／明天，明天，明天我一定寫。")),
+    "ch5/concert_hymn": dict(vocals="vocals", prompt=(
+        "A live performance of a sacred choral hymn by a large mixed SATB amateur choir in a warm concert hall, three rows of singers, "
+        "very rich deep bass section, staggered breathing so the sound never breaks, a clear pure soprano line soaring up to a high note, "
+        "soft pipe organ underneath, slow and reverent, 60 BPM, natural hall reverb. Sung on open vowels and Latin-like syllables (no clear words). "
+        "It ends with one final chord held for a very long time, slowly dying away into the hall's silence.")),
+    "ch5/last_note": dict(vocals="vocals", prompt=(
+        "An original sacred chorale for a dark fantasy game: a deep pipe organ introduction, then three choir parts entering one by one and layering "
+        "(low men, then women, then a high soprano), solemn, holy but faintly bittersweet, slow 62 BPM, cathedral reverb, thick warm bass. "
+        "Wordless: sung only on open vowels 'ah' and 'oh', no lyrics. It builds to a full chord and ends on one single final note held very long, fading into silence.")),
 }
 
 def cfg():
