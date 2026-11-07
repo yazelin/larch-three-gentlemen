@@ -4,6 +4,10 @@
 import base64, json, os, re, ssl, subprocess, sys, urllib.request, pathlib
 ROOT = pathlib.Path(__file__).resolve().parent.parent
 TRACKS = {
+    "ch6/tea_leaves_soft": dict(vocals="instrumental", prompt=(
+        "A very soft, slow, wordless instrumental lullaby played on a single warm nylon-string acoustic guitar with a little felt piano, "
+        "intimate and close like it is playing quietly from a phone speaker at 3 a.m. to comfort someone who just cried; 64 BPM, gentle, "
+        "a simple tender melody that repeats, no drums, no vocals, a little room reverb, ends softly.")),
     "ch2/tomorrow_i_write": dict(vocals="vocals", prompt=(
         "A solemn sacred hymn for a mixed SATB church choir with a grand pipe organ, cathedral reverb, slow and majestic, 66 BPM, "
         "sung completely seriously in Mandarin Chinese — but the lyrics are a student's confession of procrastination, so it is comically over-dramatic. "

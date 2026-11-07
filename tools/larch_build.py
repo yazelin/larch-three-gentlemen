@@ -26,7 +26,7 @@ for _n in range(1, 10):
     try: VARIANTS |= {k for k, v in C.shots(_n).S.items() if v["kind"] == "var"}
     except ImportError: pass
 BGM = {"枷鎖與選擇": "chains_and_choice", "夜的書桌": "night_desk", "工作室": "studio_day", "耳機裡的歌": "chains_muffled",
-       "明天一定寫": "ch2/tomorrow_i_write", "合唱團": "ch5/concert_hymn", "詩的合唱": "ch5/last_note"}   # 第二章起的曲子放 art/bgm/ch2/，自成 bgm-ch2 組   # 劇本裡的曲名 → art/bgm/ 檔名（ASCII）
+       "明天一定寫": "ch2/tomorrow_i_write", "合唱團": "ch5/concert_hymn", "詩的合唱": "ch5/last_note", "茶葉": "ch6/tea_leaves_soft"}   # 第二章起的曲子放 art/bgm/ch2/，自成 bgm-ch2 組   # 劇本裡的曲名 → art/bgm/ 檔名（ASCII）
 VIDEOS = ROOT / "art/video/media.json"     # "cg|運鏡" → {mediaId, url}，tools/motion.py 產生
 _VFU = {}
 def _video_files():
