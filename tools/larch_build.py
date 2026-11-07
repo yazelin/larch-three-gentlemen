@@ -50,6 +50,7 @@ def segments(md):
     body = md.split("## CG 清單")[0].split("## 取材對照")[0].split("## 歌詞草稿")[0]   # 製作用的表格不進遊戲
     first = re.search(r"【CG ([^｜\s】]+)", body)
     segs, title, lines, cgs, mode, last_desk, pend_bg = [], "", [], [], None, cg_url(first[1] if first and C.CH > 1 else "01-1"), None
+    ask = [None]   # 【選項 提示字】：下一組選項上方的提示
     pend, opts = {}, {}   # pend：下一句要帶的 video/bgm/sfx；opts：這張卡的轉場與自動前進
     def close():
         nonlocal lines, cgs, opts
@@ -81,6 +82,8 @@ def segments(md):
             if name not in MINI or not (ROOT / f"art/ui/minigame_{MINI[name][0]}.html").exists():   # ponytail: 小遊戲網頁還沒做好就先略過，劇情照走
                 print("  小遊戲還沒接上，先略過：", name); continue
             close(); segs.append(("mini", name, {"第一次": "bug", "第二次": "fixed", "第七章": "erase"}.get(m[2] or "", "fixed"), [])); mode = None; continue
+        m = re.match(r"【選項 (.+)】", l)
+        if m: ask[0] = m[1]; continue
         m = re.match(r"【音效 (\w+)】", l)
         if m: pend["sfxUrl"] = f"/sfx/{m[1]}.mp3"; continue
         m = re.match(r"【CG ([^｜\s】]+)(?:｜運鏡 (\S+?))?(?:｜.*)?】", l)
@@ -100,7 +103,7 @@ def segments(md):
             close()
             if segs and segs[-1][0] == "mini" and MINI[segs[-1][1]][4]: segs[-1][3].append(m[2]); continue   # 分歧小遊戲後面的 ₩ 只是說明
             if segs and segs[-1][0] == "choice": segs[-1][1].append((m[1].strip(), m[2] or None))
-            else: segs.append(("choice", [(m[1].strip(), m[2] or None)]))
+            else: segs.append(("choice", [(m[1].strip(), m[2] or None)], ask[0])); ask[0] = None
             continue
         if re.fullmatch(r"（[CMS]）", l): close(); mode = l[1]; continue
         if re.fullmatch(r"（[^）完]{1,10}）", l) and l != "（共通）": close(); mode = l[1:-1]; continue   # 純選擇的分支標籤
@@ -187,7 +190,7 @@ def build(segs, ch=None):
         elif s[0] == "choice":
             x += 400; plain = all(k is None for _, k in s[1]); ttl = "怎麼回" if plain else "先問誰"
             n = base(ttl, x, 0)
-            n["data"] = {"type": "choice", "title": ttl, "text": "怎麼回？" if plain else "先問誰的意見？", "choices": [t for t, _ in s[1]],
+            n["data"] = {"type": "choice", "title": ttl, "text": (s[2] if len(s) > 2 and s[2] else ("怎麼回？" if plain else "先問誰的意見？")), "choices": [t for t, _ in s[1]],
                          "choiceMode": "branch", "choicePlacement": "center", "choiceConditions": [None] * len(s[1]),
                          "choiceLinks": [None] * len(s[1]), "background": bg[0], "stage": {"actors": []}, "characterLayers": []}
             nodes.append(n)
