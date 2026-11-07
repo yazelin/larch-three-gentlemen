@@ -82,6 +82,7 @@ SETUP = {"4-01": "A", "4-04": "A", "4-07": "E", "4-06M": "E", "4-02M": "E", "4-0
          "4-02S": "C", "4-06S": "B", "4-13": "A", "4-14": "E", "4-16": "A"}
 TEA_STUDIO = {"_": _T1}
 FIX = {
+    "4-15-1": "C has LIFTED his head: his face is raised and turned out toward the viewer (her), eyes looking straight out of the screen at her, NOT down at the page; his pencil rests still on the paper.",
     "4-02M": IDENT,
     "4-02C": 'Softly out of focus around it, the other devices are LIT too, each with its own man (laptop = M, tablet = C, phone in its wooden stand = S), small, chest up, hands out of frame; the heroine never appears on any screen. The phone stands in its stand to the RIGHT of the tea glass.' + " " + IDENT,
     "4-06C": 'Inside the tablet is ONLY C exactly as his sheet: a young MAN with warm chestnut-brown fluffy curly hair, thin gold round glasses, camel knit cardigan with a small yellow-green leaf brooch. The heroine (purple hair) is NEVER on this screen. Softly out of focus around it, the other devices are LIT too, each with its own man (laptop = M, tablet = C, phone in its wooden stand = S), small, chest up, hands out of frame; the heroine never appears on any screen. The phone stands in its stand to the RIGHT of the tea glass.',
