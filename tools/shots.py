@@ -61,7 +61,8 @@ def refs_for(i):
         names = ["the MASTER FRAME of this shot (reproduce it)"] + [NAME[w] for w in dict.fromkeys(who) if w in SHEET]
         return files, names
     if i in SETREF:   # 新場景（例：第四章通識課教室）：該場景的空景先送，再送入鏡的人
-        files, names = [SETREF[i][0]], [SETREF[i][1]]
+        sr = SETREF[i] if isinstance(SETREF[i], list) else [SETREF[i]]   # 可以給多張：[(空景, 說明), (額外參考, 說明)…]（第五章 Q 版的詩要另送 Q 版圖）
+        files, names = [f for f, _ in sr], [n for _, n in sr]
         for w in present(i): files.append(SHEET[w]); names.append(NAME[w])
         return files, names
     if k == "bed":   # 床上的戲：空景用看得到床的機位，只送她與手機道具
