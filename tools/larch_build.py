@@ -22,7 +22,7 @@ def A(path):   # 素材網址：走各章的孤兒 tag（tools/assets.py），�
 def cg_url(cid): return A(C.paper_rel(cid))   # 遊戲用疊了全畫面紙紋的版本（tools/paper.py）
 sys.path.insert(0, str(ROOT / "art/cg"))
 VARIANTS = set()   # 表情差分不進 CG 收藏（各章分鏡表裡 kind 是 var 的）
-for _n in range(1, 10):
+for _n in C.ORDER:
     try: VARIANTS |= {k for k, v in C.shots(_n).S.items() if v["kind"] == "var"}
     except ImportError: pass
 BGM = {"枷鎖與選擇": "chains_and_choice", "夜的書桌": "night_desk", "工作室": "studio_day", "耳機裡的歌": "chains_muffled",
@@ -216,7 +216,7 @@ def check(nodes, edges):
     bad = [e for e in edges if e["source"] not in ids or e["target"] not in ids]
     has_in = {e["target"] for e in edges}; has_out = {e["source"] for e in edges}
     orphans = [n["id"] for n in nodes if n["id"] not in has_in][1:]
-    dead = [n["id"] for n in nodes if n["id"] not in has_out][:-1]
+    dead = [n["id"] for n in nodes if n["id"] not in has_out and n["data"]["type"] != "boardJump"][:-1]
     empty = [n["id"] for n in nodes if n["data"]["type"] == "dialogue" and not str(n["data"].get("text", "")).strip()]
     nobg = [n["id"] for n in nodes if not n["data"].get("background")]
     assert not (bad or orphans or dead or empty or nobg), dict(bad=bad, orphans=orphans, dead=dead, empty=empty, nobg=nobg)
@@ -306,24 +306,41 @@ def push(nodes, edges, cgs):
 def gallery_cgs(cgs):
     """CG 收藏照章節順序收全部章（各章 build 時寫進 dist/board_chN.json 的 cgs）。"""
     out = []
-    for n in range(1, 10):
+    for n in C.ORDER:
         f = ROOT / f"dist/board_ch{n}.json"
         got = cgs if n == C.CH else (json.loads(f.read_text()).get("cgs", []) if f.exists() else [])
         out += [c for c in got if c not in out]
     return out
 
-def jump_to_next(nodes, edges):
-    """下一章的白板已經組過（dist 有檔）就在章末接一張跳章卡。"""
-    if C.CH in C.ROUTES or C.CH + 1 in C.ROUTES: return   # 個人線與結局不串接：由第七章好感三角分歧進來，結尾回標題
-    nxt = ROOT / f"dist/board_ch{C.CH + 1}.json"
+def _jump_card(jid, after, ch):
+    """接到第 ch 號白板開頭的跳章卡；那張白板還沒推上去就回 None（免得跳到不存在的白板）。"""
+    nxt = ROOT / f"dist/board_ch{ch}.json"
     pushed = json.loads(STATE.read_text()).get("pushed", []) if STATE.exists() else []
-    if not nxt.exists() or f"board-ch{C.CH + 1}" not in pushed: return   # 下一章還沒推上去就不接，免得跳到不存在的白板
+    if not nxt.exists() or f"board-ch{ch}" not in pushed: return None
     tgt = json.loads(nxt.read_text())["nodes"][0]["id"]
+    return {"id": jid, "type": "story", "position": {"x": after["position"]["x"] + 400, "y": after["position"]["y"]},
+            "data": {"type": "boardJump", "title": f"接{C.board_name(ch)}", "text": "", "jumpBoardId": f"board-ch{ch}", "jumpNodeId": tgt,
+                     "chapterEnd": True, "background": after["data"].get("background"), "stage": {"actors": []}, "characterLayers": []}}
+
+def jump_to_next(nodes, edges):
+    """章末接下一張白板，順序照 chapter.NEXT（第四章→間章→第五章）。第七章改由好感三角各分支跳進自己那條線；個人線與結局是終點，回標題。"""
+    if C.CH == 7: return route_jumps(nodes, edges)
+    if C.CH not in C.NEXT: return
     last = nodes[-1]
-    j = {"id": f"ch{C.CH}-jump", "type": "story", "position": {"x": last["position"]["x"] + 400, "y": 0},
-         "data": {"type": "boardJump", "title": f"接{C.board_name(C.CH + 1)}", "text": "", "jumpBoardId": f"board-ch{C.CH + 1}", "jumpNodeId": tgt,
-                  "chapterEnd": True, "background": last["data"].get("background"), "stage": {"actors": []}, "characterLayers": []}}
-    nodes.append(j); edges.append({"id": f"e-{last['id']}-{j['id']}", "source": last["id"], "target": j["id"]})
+    j = _jump_card(f"ch{C.CH}-jump", last, C.NEXT[C.CH])
+    if j: nodes.append(j); edges.append({"id": f"e-{last['id']}-{j['id']}", "source": last["id"], "target": j["id"]})
+
+def route_jumps(nodes, edges):
+    """第七章：好感三角的「選 C／M／S／ALL」分支，那條線的白板推上去了就直接跳過去，不再匯回「第七章　完」。"""
+    for k, ch in C.ROUTE_BOARD.items():
+        br = next((n for n in nodes if n["data"].get("title") == f"選 {k}"), None)
+        j = br and _jump_card(f"ch7-to-ch{ch}", br, ch)
+        if not j: continue
+        edges[:] = [e for e in edges if e["source"] != br["id"]]
+        nodes.append(j); edges.append({"id": f"e-{br['id']}-{j['id']}", "source": br["id"], "target": j["id"]})
+    has_in = {e["target"] for e in edges}
+    for n in [n for n in nodes[1:] if n["id"] not in has_in and n["data"]["type"] != "boardJump"]:   # 四條都跳走了：「第七章　完」沒人接，拿掉
+        nodes.remove(n); edges[:] = [e for e in edges if e["source"] != n["id"]]
 
 def push_board_only(nodes, edges, name):
     """只推一塊白板，不動專案設定與其他白板（樣片用）。"""

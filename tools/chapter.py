@@ -7,6 +7,9 @@ ZH = "一二三四五六七八九"
 # 第八章以後不是正篇：8＝間章、9＝晨線、10＝明線、11＝詩線、12＝夥伴結局（CG id 一樣用「章號-」開頭：9-01、10-01）
 EXTRA = {8: "間章", 9: "個人線_C", 10: "個人線_M", 11: "個人線_S", 12: "夥伴結局"}
 ROUTES = {9, 10, 11, 12}   # 個人線與結局：結尾不自動跳到下一個章號，也不讓前一章跳進來（由第七章好感三角分歧）
+ORDER = [1, 2, 3, 4, 8, 5, 6, 7, 9, 10, 11, 12]     # 遊玩順序：間章插在第四、五章之間（CG 收藏也照這個排）
+NEXT = {1: 2, 2: 3, 3: 4, 4: 8, 8: 5, 5: 6, 6: 7}   # 章末自動接的下一張白板；第七章由好感三角分歧，9～12 是終點
+ROUTE_BOARD = {"C": 9, "M": 10, "S": 11, "ALL": 12}  # 第七章好感三角 ch7Route 的值 → 那條線的白板
 def script_of(ch): return ROOT / (f"劇本/{EXTRA[ch]}.md" if ch in EXTRA else f"劇本/第{ZH[ch - 1]}章.md")
 CH = int(os.environ.get("CH", "1"))
 SCRIPT = script_of(CH)
@@ -44,5 +47,6 @@ if __name__ == "__main__":
     assert cg_rel("01-0") == "art/cg/01-0.jpg" and cg_rel("2-03") == "art/cg/ch2/2-03.jpg"
     assert paper_rel("2-03") == "art/cg_paper/ch2/2-03.jpg"
     assert chap_of("10-03") == 10 and chap_of("9-01") == 9 and cg_rel("10-03") == "art/cg/ch10/10-03.jpg"
-    assert script_of(9).name == "個人線_C.md" and script_of(7).name == "第七章.md"
+    assert script_of(9).name == "個人線_C.md" and script_of(7).name == "第七章.md" and script_of(8).name == "間章.md"
+    assert sorted(ORDER) == list(range(1, 13)) and NEXT[4] == 8 and NEXT[8] == 5 and 7 not in NEXT
     print("ok")
