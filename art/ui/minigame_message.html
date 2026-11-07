@@ -74,6 +74,14 @@ header small { display: block; font-size: 11.5px; color: var(--dim); letter-spac
 .draft.gone { opacity: .35; }
 .caret { display: inline-block; width: 1.5px; height: 1.1em; background: var(--gold); vertical-align: -3px; margin-left: 2px; animation: blink 1s steps(1) infinite; }
 @keyframes blink { 50% { opacity: 0; } }
+.bar { display: flex; gap: 8px; }
+.bar button { flex: 1; min-height: 46px; border-radius: 23px; font: 15px/1 "Iansui", serif; letter-spacing: .14em; border: 1px solid rgba(255,255,255,.14); }
+.bar .send { background: rgba(255,255,255,.05); color: rgba(244,236,242,.28); cursor: not-allowed; }
+.bar .del { background: rgba(242,207,138,.12); color: var(--gold); border-color: rgba(242,207,138,.45); cursor: pointer; touch-action: none; user-select: none; -webkit-user-select: none; }
+.bar .del:active, .bar .del.on { background: rgba(242,207,138,.28); }
+.bar .del:focus-visible { outline: 2px solid var(--gold); outline-offset: 2px; }
+.typing { align-self: flex-start; font: 13px/1.6 "Iansui", serif; letter-spacing: .14em; color: var(--dim); animation: pop .35s ease both; }
+.typing.out { opacity: 0; transition: opacity .9s; }
 </style>
 <div class="phone"><div class="screen"><div class="island"></div>
   <header><div class="avs" aria-hidden="true"><i>C</i><i>M</i><i>S</i></div><b>三個人<small>都還醒著</small></b></header>
@@ -107,7 +115,9 @@ async function type(el, s) { var tx = el.querySelector('.tx'); tx.innerHTML = '<
 async function erase(el) { var tx = el.querySelector('.tx'), s = tx.textContent; el.classList.add('gone');
   for (var i = s.length - 1; i >= 0; i--) { tx.textContent = s.slice(0, i); await wait(55); } el.remove(); }
 function bubble(cls, html) { var b = document.createElement('div'); b.className = 'bub ' + cls; b.innerHTML = html; $('log').appendChild(b); return b; }
-async function start() {
+var MODE = LARCH.param('mode', '{{MODE}}'); if (MODE.indexOf('{{') === 0) MODE = 'pick';
+var ERASE_TEXT = LARCH.param('text', '半夜睡不著和 AI 聊天的我，也能夠獲得幸福嗎');
+async function start() { if (MODE === 'erase') return startErase();
   $('hint').textContent = '打了一行，看了很久。';
   var rows = [];
   for (var i = 0; i < LINES.length; i++) { var r = row(LINES[i]); rows.push(r); await type(r, LINES[i].t); }
@@ -126,6 +136,33 @@ async function start() {
     for (var k = 0; k < L.reply.length; k++) { await wait(1100); bubble('them', '<span class="who" style="color:' + L.col + '">' + L.who + '</span>' + L.reply[k]); }
     var key = 'aff' + L.k; LARCH.set(key, LARCH.num(key, 0) + 1); LARCH.set('ch2Msg', L.k);
     await wait(1800); LARCH.done(L.k, { ch2Msg: L.k }); }
+}
+
+// 第七章：只能刪、不能送（mode=erase）。字自己打出來，送出鈕是灰的；按住刪除一字一字退光，之後「正在輸入…」亮很久又消失。不寫變數。
+async function startErase() {
+  var t = document.querySelector('.time'); if (t) t.textContent = '凌晨 1:12';
+  $('hint').textContent = '　';
+  var L = { col: 'var(--gold)' }, r = row(L);
+  await type(r, ERASE_TEXT);
+  var tx = r.querySelector('.tx'), left = ERASE_TEXT;
+  var bar = document.createElement('div'); bar.className = 'bar';
+  bar.innerHTML = '<button type="button" class="send" disabled aria-disabled="true">送出</button><button type="button" class="del" aria-label="按住刪除">按住刪除</button>';
+  $('drafts').parentNode.appendChild(bar);
+  var del = bar.querySelector('.del'), timer = null, over = false;
+  $('hint').textContent = '送不出去。';
+  function step() { if (over) return; left = left.slice(0, -1); tx.innerHTML = left + '<span class="caret"></span>';
+    if (!left.length) finish(); }
+  function hold(e) { if (over) return; if (e) e.preventDefault(); del.classList.add('on'); step(); clearInterval(timer); timer = setInterval(step, still ? 40 : 130); }
+  function release() { del.classList.remove('on'); clearInterval(timer); timer = null; }
+  del.addEventListener('pointerdown', hold); ['pointerup', 'pointerleave', 'pointercancel'].forEach(function (k) { del.addEventListener(k, release); });
+  del.addEventListener('keydown', function (e) { if ((e.key === 'Enter' || e.key === ' ' || e.key === 'Backspace') && !e.repeat) hold(e); else if (e.key === 'Enter' || e.key === ' ' || e.key === 'Backspace') { e.preventDefault(); step(); } });
+  del.addEventListener('keyup', release);
+  del.focus({ preventScroll: true });
+  async function finish() { over = true; release(); del.disabled = true; r.remove(); $('hint').textContent = '　';
+    await wait(900);
+    var ty = document.createElement('div'); ty.className = 'typing'; ty.textContent = '正在輸入…'; $('log').appendChild(ty);
+    await wait(4200); ty.classList.add('out'); await wait(1200); ty.remove();
+    await wait(1400); LARCH.done('erased', {}); }
 }
 
 })();

@@ -76,9 +76,10 @@ def segments(md):
             continue
         m = re.match(r"【小遊戲 ([^】（]+?)(?:（([^】）]*)）[^】]*)?】", l)
         if m:
-            if m[1] not in MINI or not (ROOT / f"art/ui/minigame_{MINI[m[1]][0]}.html").exists():   # ponytail: 小遊戲網頁還沒做好就先略過，劇情照走
-                print("  小遊戲還沒接上，先略過：", m[1]); continue
-            close(); segs.append(("mini", m[1], {"第一次": "bug", "第二次": "fixed"}.get(m[2] or "", "fixed"), [])); mode = None; continue
+            name = f"{m[1]}（{m[2]}）" if f"{m[1]}（{m[2]}）" in MINI else m[1]   # 同一個網頁的另一種玩法（第七章打了又刪＝只能刪）
+            if name not in MINI or not (ROOT / f"art/ui/minigame_{MINI[name][0]}.html").exists():   # ponytail: 小遊戲網頁還沒做好就先略過，劇情照走
+                print("  小遊戲還沒接上，先略過：", name); continue
+            close(); segs.append(("mini", name, {"第一次": "bug", "第二次": "fixed", "第七章": "erase"}.get(m[2] or "", "fixed"), [])); mode = None; continue
         m = re.match(r"【音效 (\w+)】", l)
         if m: pend["sfxUrl"] = f"/sfx/{m[1]}.mp3"; continue
         m = re.match(r"【CG ([^｜\s】]+)(?:｜運鏡 (\S+?))?(?:｜.*)?】", l)
@@ -92,8 +93,9 @@ def segments(md):
             continue
         m = re.match(r"【背景 (\w+)", l)
         if m: pend_bg = cg_url("01-5") if m[1] == "studio" else last_desk; continue
-        m = re.match(r"₩(.+?)（([CMS])＋1）", l) or re.match(r"₩(.+)()", l)   # 沒寫（X＋1）的是純選擇：分支照出現順序對應，不加好感
+        m = re.match(r"₩(.+?)（([CMS])＋1）", l) or re.match(r"₩(.+?)（進入〈(.+?)〉）", l) or re.match(r"₩(.+)()", l)   # 沒寫（X＋1）的是純選擇：分支照出現順序對應，不加好感
         if m:
+            m = [m[0], m[1], ROUTE.get(m[2], m[2])]   # 第七章好感三角：（進入〈線名〉）→ ch7Route 的值
             close()
             if segs and segs[-1][0] == "mini" and MINI[segs[-1][1]][4]: segs[-1][3].append(m[2]); continue   # 分歧小遊戲後面的 ₩ 只是說明
             if segs and segs[-1][0] == "choice": segs[-1][1].append((m[1].strip(), m[2] or None))
@@ -119,7 +121,9 @@ MINI = {"拉線": ("link", "親手拉出第一條線。", [], [], None), "敲鎖
         "打了又刪": ("message", "打了又刪，留下一句送出去。", AFF, AFF + ["ch2Msg"], "ch2Msg"),
         "猜硬幣": ("coin", "猜正面還是反面。", [], [], None), "塗地圖": ("paint", "把最後幾格塗完。", [], [], None),
         "找不同": ("diff", "找出地圖跑掉的地方。", [], ["ch4DiffSec"], None), "最後一個音": ("note", "替曲子選最後一個音。", ["affS"], ["affS", "ch5Note"], None),
-        "擦紅茶": ("wipe", "把打翻的紅茶擦乾。", [], [], None), "好感三角": ("triangle", "這個夢，想先跟誰講。", AFF, ["ch7Route"], "ch7Route")}
+        "擦紅茶": ("wipe", "把打翻的紅茶擦乾。", [], [], None), "好感三角": ("triangle", "這個夢，想先跟誰講。", AFF, ["ch7Route"], "ch7Route"),
+        "打了又刪（第七章）": ("message", "打了一句，又一個字一個字刪掉。", [], [], None)}
+ROUTE = {"兩個月": "C", "替代方案": "M", "聖歌": "S", "我全都要": "ALL"}   # 個人線與夥伴結局 → 好感三角寫回的 ch7Route
 
 def segs_first_bg(segs):
     for s in segs:
