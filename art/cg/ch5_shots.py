@@ -87,6 +87,7 @@ SETUP = {"5-01": "C", "5-02": "D", "5-03C": "C", "5-03M": "A", "5-03S": "B",
 TEA_STUDIO = {"_": _T1, "5-01": _T1}
 _SEAT = "She SITS ON her desk chair (the same chair as in the EMPTY SET image, with the olive-green jacket draped over its back): the chair is under her and behind her, NOT an empty chair beside her; there is only ONE chair at the desk. "
 FIX = {
+    "5-16-1": "Her hands hold NOTHING except the two earbuds lying on the desk under her left hand, exactly as in Image 1; the pencil is only C's, inside the tablet screen, frozen in the air in his hand.",
     "5-03C": "The camera is at HER seat (the red chair, door side), looking across the table toward the WINDOW side: behind C are the tall grid windows and plants. C sits on his wooden chair on the window side. The sketch shows a WOMAN mage only, not the heroine (no purple hair, no glasses). Only C is in frame.",
     "5-03S": "The camera is on the WINDOW (north) side of the table looking SOUTH: behind S is the wall with the wooden door. Only S is in frame; his hand is in the air, nowhere near his face. No phone anywhere.",
     "5-04": "Every audience member and every singer is an anonymous extra: NONE has purple hair, gold glasses or her clothes, and none looks like M, C or S (no wine-red hair, no chestnut curls, no suits with gold brooch): the heroine appears exactly ONCE in the picture. No phone, laptop or tablet anywhere.",
