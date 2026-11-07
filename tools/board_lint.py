@@ -31,7 +31,7 @@ for i, d in S.items():
     if i not in used and d["kind"] != "var" and not any(x["base"] == i for x in S.values()): warn.append(f"{i}：分鏡表有、劇本沒用到")
     if not props(i) and kind in ("desk", "studio", "room", "insert"): err.append(f"{i}：沒有道具狀態")
 
-_iss = ROOT / f"review/第{C.ZH[C.CH - 1]}章_試玩問題.md"
+_iss = ROOT / f"review/{C.label()}_試玩問題.md"
 issues = _iss.read_text(encoding="utf-8") if _iss.exists() else ""
 todo = [l.split("|")[1].strip() for l in issues.splitlines() if l.startswith("| ") and "已重畫" not in l and "已修好" not in l and "已推上去" not in l and not l.startswith("| 格")]
 for t in todo: warn.append(f"試玩清單還沒處理：{t}")
