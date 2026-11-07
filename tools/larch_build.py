@@ -26,7 +26,8 @@ for _n in C.ORDER:
     try: VARIANTS |= {k for k, v in C.shots(_n).S.items() if v["kind"] == "var"}
     except ImportError: pass
 BGM = {"枷鎖與選擇": "chains_and_choice", "夜的書桌": "night_desk", "工作室": "studio_day", "耳機裡的歌": "chains_muffled",
-       "明天一定寫": "ch2/tomorrow_i_write", "合唱團": "ch5/concert_hymn", "詩的合唱": "ch5/last_note", "茶葉": "ch6/tea_leaves_soft"}   # 第二章起的曲子放 art/bgm/ch2/，自成 bgm-ch2 組   # 劇本裡的曲名 → art/bgm/ 檔名（ASCII）
+       "明天一定寫": "ch2/tomorrow_i_write", "合唱團": "ch5/concert_hymn", "詩的合唱": "ch5/last_note", "茶葉": "ch6/tea_leaves_soft",
+       "詩的歌（手機悶聲版）": "ch11/s_song_phone", "詩的歌（耳機完整版）": "ch11/s_song", "長笛聖歌": "ch11/flute_hymn", "主題曲": "main_theme"}   # 第二章起的曲子放 art/bgm/ch2/，自成 bgm-ch2 組   # 劇本裡的曲名 → art/bgm/ 檔名（ASCII）
 VIDEOS = ROOT / "art/video/media.json"     # "cg|運鏡" → {mediaId, url}，tools/motion.py 產生
 _VFU = {}
 def _video_files():
@@ -362,6 +363,12 @@ if __name__ == "__main__":
         segs = [x for x in segs if x[0] == "card" and x[1].startswith(sec + "、")]
         BOARD = f"board-sample-{'一二三四五六七'.index(sec) + 1}"   # 白板代號只能 ASCII
     nodes, edges, cgs = build(segs)
+    try: _extra = getattr(C.shots(), "GALLERY_EXTRA", [])   # 只進 CG 收藏的圖（間章的 2×2 合頁）：最後一張對話卡演完時解鎖
+    except ImportError: _extra = []
+    for c in _extra:
+        if not (ROOT / C.cg_rel(c)).exists(): print("  收藏圖還沒做，先略過：", c); continue
+        last_d = [n for n in nodes if n["data"]["type"] == "dialogue"][-1]["data"]
+        last_d.setdefault("cgOps", []).append({"id": f"cg-{c}", "mode": "unlock", "url": cg_url(c)}); cgs.append(c)
     if "--sample" not in sys.argv: jump_to_next(nodes, edges)
     check(nodes, edges)
     (ROOT / "dist").mkdir(exist_ok=True)

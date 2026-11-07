@@ -104,6 +104,8 @@ def board(i):
 def prompt(i):
     d = S[i]; files, names = refs_for(i)
     ref = "REFERENCE IMAGES: " + " ".join(f"Image {n+1} = {x}." for n, x in enumerate(names))
+    if d["kind"] == "comic":   # 間章的四格漫畫格：只吃 SETREF 給的參考圖與本格描述，畫風照該章的 COMIC_STYLE（允許 Q 版）
+        return "\n".join([ref, d["body"], *([FIX[i]] if i in FIX else []), *board(i), getattr(_m, "COMIC_STYLE", "")])
     if d["kind"] == "var":
         return "\n".join([ref,
             "Reproduce Image 1 EXACTLY: same camera position, framing, lens, lighting, colour grade, room, background, devices and what each screen shows, props, clothing, hair, glasses and accessories, same watercolour rendering and level of detail.",
