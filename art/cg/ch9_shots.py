@@ -81,7 +81,7 @@ GAZE = {
 NOFACE = {"9-07", "9-17", "9-18"}
 CHIN_OK = {"9-13-1": "下巴抵在平板上緣，劇本就是這樣，不是撐頭"}
 
-SETUP = {"9-01": "A", "9-03": "A", "9-08": "F", "9-09": "F", "9-10": "B", "9-11": "F", "9-12": "F", "9-13": "B",
+SETUP = {"9-01": "A", "9-03": "A", "9-02": "F", "9-08": "F", "9-09": "F", "9-10": "B", "9-11": "F", "9-12": "F", "9-13": "B",
          "9-14": "C", "9-20": "E", "9-21": "F", "9-22": "A",
          "9-16": "A", "9-17": "A", "9-18": "D", "9-19": "A"}
 TEA_STUDIO = {"_": _T1}
@@ -89,12 +89,12 @@ _REV = ("The camera stands BEHIND the devices on the desk, so it sees only the p
 _SIDE = ("SEATING IN THIS SCENE (overrides the usual seats): she has pulled her red chair around and sits right beside C on the WINDOW side of the table, on his LEFT; M stays on his white chair at the far WEST end of the window side; S stays on his green chair on the DOOR side at the east end. The seat across from M on the door side is empty.")
 FIX = {
     "9-01": "The tablet is in her lap against her knees (NOT on its stand on the desk); the desk holds, from left to right, the lamp, the laptop, the tea glass and the phone in its wooden stand. " + IDENT,
-    "9-02": "Only the heroine inside C's drawing is in colour; everything else in the drawing is grey. The drawing is C's picture on the screen, not a real place.",
+    "9-02": "FRAMING (very important): the TABLET SCREEN FILLS THE WHOLE FRAME edge to edge, like a screenshot with only a thin slice of the tablet's bezel and charcoal folio cover at the borders; the desk, the laptop, the phone, the tea glass and the window are NOT visible. Inside C's drawing the girl on the stage is painted in FULL warm colour (dark purple hair, off-white T-shirt, charcoal cargo pants, pink-tinted glasses) while the hall, the audience and the lights are grey; the three small front-row screens glow deep blue, pale yellow-green and wine red. C is small in the lower corner, chest up.",
     "9-03": IDENT,
     "9-06": "There is only ONE device in this picture: the tablet beside her pillow with C. No laptop, no phone screen, no second person. C is inside the tablet only, chest up, hands out of frame. " + IDENT,
     "9-08": _AROUND + " " + IDENT,
     "9-09": "The five old illustrations are hers (a girl character drawn two years ago), NOT pictures of the heroine herself. " + IDENT,
-    "9-10": _REV + " She sits at the desk on her chair.",
+    "9-10": _REV + " The DESK LAMP must be at the frame's far RIGHT edge (never at the left). She sits at the desk on her chair.",
     "9-11": "C appears only small in the corner, chest up; the many sketches are of the heroine. " + IDENT,
     "9-12": IDENT,
     "9-13": _REV + " Her face is calm and composed (no blush on the cheeks); ONLY her ear tips are flushed red.",
@@ -104,7 +104,7 @@ FIX = {
     "9-18": "Exactly ONE hand in the picture (hers). The page is blank except the one crooked line.",
     "9-19": _SIDE + " Only she and C are in frame; M and S are out of frame. Her face is calm and composed (no blush on the cheeks); ONLY her ear tips are flushed red.",
     "9-20": _AROUND + " " + IDENT,
-    "9-21": _AROUND + " " + IDENT,
+    "9-21": "There is exactly ONE phone in the picture: it stands in its wooden stand to the RIGHT of the tea glass showing S. NO phone lies flat on the desk. " + _AROUND + " " + IDENT,
     "9-22": IDENT,
 }
 RETIRED = set()

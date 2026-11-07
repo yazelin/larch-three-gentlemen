@@ -334,7 +334,7 @@ def jump_to_next(nodes, edges):
 def route_jumps(nodes, edges):
     """第七章：好感三角的「選 C／M／S／ALL」分支，那條線的白板推上去了就直接跳過去，不再匯回「第七章　完」。"""
     for k, ch in C.ROUTE_BOARD.items():
-        br = next((n for n in nodes if n["data"].get("title") == f"選 {k}"), None)
+        br = next((n for n in reversed(nodes) if n["data"].get("title") == f"選 {k}"), None)   # 取最後一個：第七章前面的選項分支也叫「選 C」，只有章末好感三角那組要跳線
         j = br and _jump_card(f"ch7-to-ch{ch}", br, ch)
         if not j: continue
         edges[:] = [e for e in edges if e["source"] != br["id"]]
