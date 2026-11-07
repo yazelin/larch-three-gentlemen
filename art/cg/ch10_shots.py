@@ -48,7 +48,7 @@ shot("10-12", "insert", "live", """SHOT (close insert of the laptop screen from 
 shot("10-13", "studio", "day", """SHOT (MASTER for the line; medium-wide shot of the table, camera on the door side looking north toward the tall grid windows): bright daytime in the studio; on the long wooden table lies her WHITEBOARD flat, a large pale board with two plain paper cards pinned on it a hand's width apart (no readable text): the left one freshly written, the right one blank, nothing connecting them yet. She stands at the table on the door side, at the LEFT, bending over the board; M stands right beside her, on her RIGHT, close, looking down at the board. At the RIGHT side of the frame, by the tall window, C stands with his sketchbook drawing the trees outside; in the music corner further right S leans against the wall beside the guitar on its stand, pretending to tune it. Her iced tea stands on the table.""")
 shot("10-13-1", "var", "day", "By the window C's pencil has stopped above his sketchbook and his eyes have flicked toward the two of them; in the music corner S's fingers have slipped on the guitar strings, and he does not fix it; she and M at the board, his hand now lifted away from hers.", base="10-13")
 shot("10-14", "studio", "day", """SHOT (EXTREME CLOSE-UP of two hands on the whiteboard, soft daylight, shallow depth of field): HER right hand (a small woman's hand, on its wrist two beaded bracelets, deep purple and pearl-white beads) presses one fingertip on the edge of the left paper card and draws a single thin glowing GOLD line across the pale board toward the second card; HIS right hand (a man's larger hand, a CHARCOAL suit-jacket sleeve rolled up to the forearm over a white shirt cuff) rests lightly on the BACK of her hand, covering it, not pushing, not guiding, just there. Both hands are complete and clearly separate: each has exactly five fingers with natural joints and nails; her fingers lead, his follow. The two plain cards (no text) and the pale board fill the background. Tender, quiet, the only touch in the whole route.""", who="tm")
-shot("10-15", "studio", "day", """SHOT (two-shot, medium close-up across the table from the window side, looking south toward the wooden door): she and M at the whiteboard, close together; she is at the frame's RIGHT, bending a little over the board, the finished gold line under her hand; her face is held perfectly calm, while the tips of her ears are flushed clearly pink-red; M at the frame's LEFT, beside her, looks down at the gold line she drew, a quiet open look, his hands resting on the table edge, empty. The wooden door and the wall of the studio behind them, warm daylight.""")
+shot("10-15", "studio", "day", """SHOT (two-shot, medium close-up from the door side across the table, looking north toward the tall grid windows): she and M stand at the whiteboard on the window side of the table, close together, the bright grid windows and hanging ivy behind them; she is at the frame's LEFT, bending a little over the board, the finished gold line under her hand; her face is held perfectly calm, while the tips of her ears are flushed clearly pink-red; M at the frame's RIGHT, beside her, looks down at the gold line she drew, a quiet open look, his hands resting on the table edge, empty. Warm daylight.""")
 
 # ── 八、下個月（續訂日前一晚）──
 shot("10-16", "insert", "n9", """SHOT (close insert of the laptop screen from her seat): inside M's deep blue interface space, M sits chest up beside a simple table of soft pale cells (NO readable text or numbers) and a monthly calendar grid with NO numbers in which a single deep-blue circle has moved one cell forward into the NEXT month; M looks out at her, calm, thinking.""")
@@ -78,12 +78,12 @@ CHIN_OK = {}
 
 SETUP = {"10-01": "A", "10-02": "E", "10-03": "A", "10-04": "E", "10-05": "B", "10-06": "A", "10-07": "E", "10-08": "B",
          "10-09": "E", "10-10": "C", "10-11": "A", "10-12": "E", "10-16": "E", "10-17": "A",
-         "10-13": "A", "10-14": "D", "10-15": "B"}
+         "10-13": "A", "10-14": "D", "10-15": "A"}
 TEA_STUDIO = {"_": _T1}
 _REV = ("The camera stands BEHIND the devices on the desk, so it sees only the plain dark BACK of the laptop lid and the BACK of the tablet case at the bottom edge of the frame, if at all: NO screen and NO man is visible to the camera. MIRRORED because this is a reverse angle: the desk lamp is at the frame's RIGHT edge, the back of the tablet at the frame's LEFT, the back of the laptop lid at the RIGHT.")
-_BOARD = ("STAGING IN THIS SCENE (overrides the usual seats): nobody sits at the table; her whiteboard lies flat on the long table; she and M STAND at the table on its door side, side by side, she on the LEFT and M on her RIGHT (from the door side looking north); C stands by the tall window at the east end; S stands in the music corner by the guitar. M has NO laptop open in this scene.")
+_BOARD = ("STAGING IN THIS SCENE (overrides the usual seats): nobody sits at the table; her whiteboard lies flat on the long table; she and M STAND side by side on the WINDOW side of the table (the tall grid windows behind them), facing south across the table toward the door side; seen from the door side she is on the LEFT and M on her RIGHT; C stands by the tall window at the east end; S stands in the music corner by the guitar. M has NO laptop open in this scene.")
 FIX = {
-    "10-01": IDENT, "10-02": _AROUND + " " + IDENT, "10-03": IDENT, "10-04": _AROUND + " " + IDENT,
+    "10-01": IDENT, "10-02": _AROUND + " " + IDENT, "10-03": "There is exactly ONE phone: it stands in its wooden stand to the RIGHT of the tea glass showing S; NO phone lies on the desk. " + IDENT, "10-04": _AROUND + " " + IDENT,
     "10-05": _REV + " She sits at the desk on her chair.",
     "10-06": IDENT, "10-07": _AROUND + " " + IDENT,
     "10-08": _REV + " Her face is calm and composed (no blush on the cheeks); ONLY her ear tips are flushed red.",
@@ -93,7 +93,7 @@ FIX = {
     "10-12": _AROUND + " " + IDENT,
     "10-13": _BOARD,
     "10-14": "Exactly TWO hands in the picture: her right hand underneath and his right hand resting on top of it. No other hand, no third hand. The line is drawn by her fingertip.",
-    "10-15": _BOARD + " In this shot the camera is on the WINDOW side looking south, so she is at the frame's RIGHT and M at the frame's LEFT. Only she and M are in frame. Her face is calm and composed (no blush on the cheeks); ONLY her ear tips are flushed red.",
+    "10-15": _BOARD + " Only she and M are in frame; C and S are out of frame. Her face is calm and composed (no blush on the cheeks); ONLY her ear tips are flushed red.",
     "10-16": _AROUND + " " + IDENT, "10-17": IDENT,
 }
 RETIRED = set()
@@ -114,7 +114,7 @@ HANDS = {
  "10-11": "她右手在說話時比著手勢（看得到、五根手指），左手放在桌上；三位先生只到胸口，手在畫面外。",
  "10-11-1": "她右手握拳掩在嘴前咳嗽（看得到、五根手指），左手在畫面外。",
  "10-12": "明只到胸口，手在畫面外。",
- "10-13": "她右手指尖按在左邊那張卡片邊上（五根手指），左手撐在桌上；明右手放在她的手背上（深灰西裝袖捲到前臂）；晨兩手拿著素描本與鉛筆；詩兩手在吉他弦上。",
+ "10-13": "她兩手放在白板邊上（五根手指）；明兩手平放在白板旁的桌面上（深灰西裝袖捲到前臂、左腕棕色錶帶）；晨兩手拿著素描本與鉛筆；詩兩手在吉他上。",
  "10-13-1": "明的右手已經從她手背上拿開，放在桌緣；晨的鉛筆停在素描本上方；詩的手指停在弦上。",
  "10-14": "她的右手（手腕紫白珠串）在下、指尖拉線；明的右手（深灰西裝袖捲到前臂、白襯衫袖口）輕輕覆在她的手背上；只有這兩隻手，各五根手指。",
  "10-15": "她右手放在白板上、金線的終點（五根手指）；明兩手空著放在桌緣（各五根手指）。",
