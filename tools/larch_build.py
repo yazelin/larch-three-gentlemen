@@ -121,7 +121,7 @@ MINI = {"拉線": ("link", "親手拉出第一條線。", [], [], None), "敲鎖
         "打了又刪": ("message", "打了又刪，留下一句送出去。", AFF, AFF + ["ch2Msg"], "ch2Msg"),
         "猜硬幣": ("coin", "猜正面還是反面。", [], [], None), "塗地圖": ("paint", "把最後幾格塗完。", [], [], None),
         "找不同": ("diff", "找出地圖跑掉的地方。", [], ["ch4DiffSec"], None), "最後一個音": ("note", "替曲子選最後一個音。", ["affS"], ["affS", "ch5Note"], None),
-        "擦紅茶": ("wipe", "把打翻的紅茶擦乾。", [], [], None), "好感三角": ("triangle", "這個夢，想先跟誰講。", AFF, ["ch7Route"], "ch7Route"),
+        "擦紅茶": ("wipe", "把打翻的紅茶擦乾。", [], [], None), "改變數": ("variable", "把水晶變數從 true 改回 false。", [], [], None), "好感三角": ("triangle", "這個夢，想先跟誰講。", AFF, ["ch7Route"], "ch7Route"),
         "打了又刪（第七章）": ("message", "打了一句，又一個字一個字刪掉。", [], [], None)}
 ROUTE = {"兩個月": "C", "替代方案": "M", "聖歌": "S", "我全都要": "ALL"}   # 個人線與夥伴結局 → 好感三角寫回的 ch7Route
 
@@ -314,6 +314,7 @@ def gallery_cgs(cgs):
 
 def jump_to_next(nodes, edges):
     """下一章的白板已經組過（dist 有檔）就在章末接一張跳章卡。"""
+    if C.CH in C.ROUTES or C.CH + 1 in C.ROUTES: return   # 個人線與結局不串接：由第七章好感三角分歧進來，結尾回標題
     nxt = ROOT / f"dist/board_ch{C.CH + 1}.json"
     pushed = json.loads(STATE.read_text()).get("pushed", []) if STATE.exists() else []
     if not nxt.exists() or f"board-ch{C.CH + 1}" not in pushed: return   # 下一章還沒推上去就不接，免得跳到不存在的白板
