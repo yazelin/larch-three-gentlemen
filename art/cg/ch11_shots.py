@@ -101,8 +101,10 @@ FIX = {
     "11-15": "The heroine and S are NOT in this frame. No phone anywhere.",
     "11-16": "The tablet at the RIGHT is LIT and shows ONLY C; the laptop at the LEFT is LIT and shows ONLY M. " + IDENT,
     "11-17": IDENT,
-    "11-18": "The phone is pressed to her ear, its screen against her cheek (not visible). Behind her: the dark room, the bed far back (frame right as in the reverse-angle EMPTY SET).",
-    "11-07": "MIRRORED because the camera is on the desk side looking at her: the back of the phone in its stand and the tea glass at the bottom edge; no screen faces the camera.",
+    "11-11": "Her ears are clearly visible: her purple hair is tucked behind her RIGHT ear, and that ear (and the tip of the other one) is flushed bright pink-red, the only colour of feeling in her otherwise composed face; her cheeks are NOT blushing.",
+    "11-15": "There is exactly ONE long wooden table running across the frame in one piece (never split into two tables, no gap in it); C and M sit on the FAR (window) side of that same table, M on the white chair at the LEFT, C on the wooden chair at the RIGHT. C holds the sketchbook up with his LEFT hand; his RIGHT hand, just below it, has just let go of the pencil.",
+    "11-18": "FRAMING: a CLOSE-UP of her face and shoulders only; the desk, the laptop, the tablet and the phone stand are OUT OF FRAME (nothing on the desk is visible). The phone is pressed to her ear, its screen against her cheek (not visible). Behind her: the dark room, the bed far back (frame right as in the reverse-angle EMPTY SET).",
+    "11-07": "The camera stands BEHIND the devices on the desk, so it sees only the plain dark BACK of the laptop lid and the BACK of the tablet case at the very bottom edge, if at all: NO screen and NO man is visible to the camera (the screens face HER). MIRRORED because this is a reverse angle: the desk lamp at the frame's RIGHT, the back of the tablet at the LEFT, the back of the laptop lid at the RIGHT. Only she is in the picture.",
 }
 RETIRED = set()
 HANDS = {
