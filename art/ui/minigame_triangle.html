@@ -92,7 +92,7 @@ function start() {
   var hi = Math.max(a.C, a.M, a.S), lo = Math.min(a.C, a.M, a.S), all = hi - lo <= 1;
   ['C', 'M', 'S'].forEach(function (k) { setup($('d' + k), a[k] === hi); });
   setup($('dA'), all);
-  $('hint').textContent = all ? '三個人都亮著。' : '先跟誰講？';
+  $('hint').textContent = all ? '先跟誰講？也可以三個人一起講。' : '先跟誰講？';
 }
 function setup(el, on) { el.classList.toggle('on', on); el.classList.toggle('off', !on);
   if (!on) { el.setAttribute('aria-disabled', 'true'); return; }

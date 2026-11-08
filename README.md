@@ -8,8 +8,22 @@ Larch 創作者挑戰「自由與限制」那三個禮拜，大學生茶語在�
 
 公開站：https://yazelin.github.io/larch-three-gentlemen/ （角色、名字的由來、線上閱讀、取材對照）
 
-製作中，還沒有可以玩的版本。Larch 專案目前是私人專案，等整部驗過品質才會上架。
+劇本、CG、配樂與小遊戲都做完了，在 Larch 私人專案上可以從頭玩到四個結局。等作者驗過品質才會上架市集，目前還沒有公開可玩的版本。
 
+
+## 整部的結構
+
+七章共通線，第四、五章之間夾一個間章。第七章的好感三角依好感度與玩家的選擇分到四個結局：晨線、明線、詩線，或三個都要的夥伴結局。結局播完回到標題畫面。
+
+| Larch 白板 | 內容 | 劇本 |
+|---|---|---|
+| board-ch1～ch4 | 第一章到第四章 | `劇本/第一章.md`～`第四章.md` |
+| board-ch8 | 間章〈筆電裡的事〉 | `劇本/間章.md` |
+| board-ch5～ch7 | 第五章到第七章 | `劇本/第五章.md`～`第七章.md` |
+| board-ch9／10／11 | 晨線／明線／詩線 | `劇本/個人線_C.md`／`_M.md`／`_S.md` |
+| board-ch12 | 夥伴結局 | `劇本/夥伴結局.md` |
+
+每章有二到三組選項，選了當場有反應，也會加好感。九個小遊戲放在 `art/ui/minigame_*.html`。
 
 ## 這個 repo 放什麼
 
@@ -23,6 +37,10 @@ Larch 創作者挑戰「自由與限制」那三個禮拜，大學生茶語在�
 | `art/ref/` | 朋友提供的原始設定圖與海報，只算草稿，CG 不拿它們當參考 |
 | `sources/` | 取材用的公開資料：茶葉飲料的茶館貼文、市集留言、個人頁 |
 | `tools/` | 產圖、平面圖、確認頁、公開站的小工具 |
+| `art/prompts/`、`art/cg/` | 每張 CG 的提示詞與驗收過的成品（第一章在根目錄，其他章在 `chN/`）；分鏡寫在 `art/cg/chN_shots.py` |
+| `art/cg_paper/`、`art/video/` | 疊上紙紋的遊戲用版本、推鏡短片 |
+| `art/bgm/`、`art/ui/` | 配樂；標題畫面、對話框、選項與小遊戲的介面 |
+| `review/` | 每章的驗收紀錄與試玩問題 |
 | `docs/` | 公開站（由 `tools/build_site.py` 產生，不手改） |
 
 ## 工具
@@ -36,6 +54,19 @@ python3 tools/plans.py
 
 # 產生定稿確認頁
 python3 tools/review_page.py <輸出.html> <id>=<圖檔> ...
+
+# 組白板、推上 Larch 私人專案（CH 是白板編號，不給就是第一章）
+CH=2 python3 tools/larch_build.py [--push]
+
+# 分鏡檢查、產圖、疊紙紋、推鏡短片、素材 tag
+CH=2 python3 tools/board_lint.py
+CH=2 python3 tools/shots.py run masters   # 再 run vars 產差分
+python3 tools/paper.py
+python3 tools/motion.py [--upload]
+python3 tools/assets.py
+
+# 配樂（gemini-web 的 /api/music）
+python3 tools/music.py <名字>
 
 # 重產公開站（字幕檔用來把逐字稿行號換成錄影時間；沒有也能跑）
 python3 tools/build_site.py [逐字稿字幕.srt]

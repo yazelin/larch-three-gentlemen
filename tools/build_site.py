@@ -44,7 +44,7 @@ def kind(src, adapt):
 def img(src, dst, w):
     p = IMG / dst
     if not p.exists():
-        im = Image.open(ROOT / src).convert("RGB"); im.thumbnail((w, w)); im.save(p, "JPEG", quality=82)
+        im = Image.open(ROOT / src).convert("RGB"); im.thumbnail((w, w)); im.save(p, "JPEG", quality=76, optimize=True, progressive=True)
     return f"img/{dst}"
 
 # ---------- 讀來源 ----------
@@ -56,18 +56,20 @@ for row in design.splitlines():
     if m and m[1] not in roles: roles[m[1]] = {"title": m[2].strip(), "does": m[3].strip(), "who": m[4].strip()}
 
 chapters = []
-ORDER = [f"第{n}章.md" for n in "一二三四五六七"] + ["個人線_C.md", "個人線_M.md", "個人線_S.md", "夥伴結局.md"]
-for f in [ROOT / "劇本" / n for n in ORDER if (ROOT / "劇本" / n).exists()]:
+# 檔名 → 白板編號（跟 Larch 上的 board-chN 同號；照遊玩順序排）
+ORDER = [(f"第{n}章.md", i + 1) for i, n in enumerate("一二三四")] + [("間章.md", 8)] + [(f"第{n}章.md", i + 5) for i, n in enumerate("五六七")] \
+    + [("個人線_C.md", 9), ("個人線_M.md", 10), ("個人線_S.md", 11), ("夥伴結局.md", 12)]
+for f, no in [(ROOT / "劇本" / n, no) for n, no in ORDER if (ROOT / "劇本" / n).exists()]:
     t = f.read_text(encoding="utf-8")
     title = re.search(r"^# (.+)$", t, re.M)[1]
-    body = t.split("## CG 清單")[0]
+    body = t.split("## CG 清單")[0].split("## 取材對照")[0]
     table = []
     if "## 取材對照" in t:
         for row in t.split("## 取材對照")[1].splitlines():
             c = [x.strip() for x in row.strip().strip("|").split("|")]
             if len(c) == 3 and c[0] not in ("段落", "---") and not set(c[0]) <= {"-"}:
                 table.append(c)
-    chapters.append({"slug": f"ch{len(chapters)+1}", "title": title, "body": body, "table": table})
+    chapters.append({"slug": f"ch{no}", "title": title, "body": body, "table": table})
 
 # ---------- 共用版面 ----------
 CSS = """
@@ -93,6 +95,7 @@ h2{font-size:28px;margin:56px 0 14px}
 .hero img{display:block;width:100%;height:auto;-webkit-mask-image:radial-gradient(ellipse 95% 90% at 50% 45%,#000 70%,transparent 100%);mask-image:radial-gradient(ellipse 95% 90% at 50% 45%,#000 70%,transparent 100%)}
 .hero-copy{text-align:center;margin:-8px auto 0;max-width:640px}
 .hero-copy h1{font-size:clamp(34px,6vw,56px);margin:10px 0 4px;letter-spacing:.06em}
+.hero-copy h1 span{white-space:nowrap;display:inline-block}
 .hero-copy .q{font-family:var(--f-display);font-size:20px;color:var(--plum)}
 .note{font-family:var(--f-ui);font-size:14.5px;line-height:1.8;color:var(--ink-2);background:rgb(255 252 244/.6);border:0;box-shadow:inset 0 0 18px rgb(150 118 92/.35);border-radius:10px 4px 12px 6px/6px 12px 5px 10px;padding:14px 18px;margin:22px 0}
 .lede{max-width:40em}
@@ -154,13 +157,17 @@ def page(title, body, desc="", depth=0):
 """
 
 # ---------- 閱讀頁 ----------
-SPK = {"茶語": "T", "C": "C", "M": "M", "S": "S"}
+SPK = {"茶語": "T", "C": "C", "M": "M", "S": "S", "晨": "C", "明": "M", "詩": "S"}
 sys.path.insert(0, str(ROOT / "art/cg"))
-try:
-    from ch1_shots import S as _SH
-    VARIANTS = {k for k, v in _SH.items() if v["kind"] == "var"}
-except ImportError:
-    VARIANTS = set()
+import importlib
+VARIANTS = set()
+for f in (ROOT / "art/cg").glob("ch*_shots.py"):
+    VARIANTS |= {k for k, v in importlib.import_module(f.stem).S.items() if v["kind"] == "var"}
+
+def paper(cid):
+    """第一章的圖在 art/cg_paper/ 根目錄（01-…），其他章在 chN/（N-…）。"""
+    n = cid.split("-")[0]
+    return f"art/cg_paper/{cid}.jpg" if n.startswith("0") else f"art/cg_paper/ch{n}/{cid}.jpg"
 
 def render(body):
     out, choice = [], []
@@ -168,17 +175,17 @@ def render(body):
         if choice: out.append('<div class="choice">' + "".join(f"<div>{e(c)}</div>" for c in choice) + "</div>"); choice.clear()
     for raw in body.splitlines():
         l = raw.strip()
-        if not l or l.startswith((">", "---", "【背景", "【立繪", "# ", "【轉場", "【BGM", "【自動", "【音效")): continue
+        if not l or l.startswith((">", "---", "【背景", "【立繪", "# ", "【轉場", "【BGM", "【自動", "【音效", "【選項", "【運鏡")): continue
         if l.startswith("【小遊戲"):
-            flush(); out.append('<div class="cg todo">小遊戲：親手拉出第一條線（在 Larch 上玩）</div>'); continue
+            flush(); out.append(f'<div class="cg todo">小遊戲：{e(re.match(r"【小遊戲 ([^】（]+)", l)[1])}（在 Larch 上玩）</div>'); continue
         if l.startswith("₩"):
             choice.append(re.sub(r"（[CMS]＋1）", "", l[1:])); continue
         flush()
         if l.startswith("## "): out.append(f"<h2>{e(l[3:])}</h2>")
         elif l.startswith("【CG"):
-            cid = re.match(r"【CG ([^｜\s】]+)", l)[1]; f = ROOT / f"art/cg_paper/{cid}.jpg"
+            cid = re.match(r"【CG ([^｜\s】]+)", l)[1]; f = ROOT / paper(cid)
             if cid in VARIANTS: continue   # 表情差分只在 Larch 上看
-            if f.exists(): out.append(f'<figure class="cg"><img src="{img(f"art/cg_paper/{cid}.jpg", f"cg-{cid}.jpg", 1600)}" alt="CG {cid}" loading="lazy"></figure>')
+            if f.exists(): out.append(f'<figure class="cg"><img src="{img(paper(cid), f"cg-{cid}.jpg", 1200)}" alt="CG {cid}" loading="lazy"></figure>')
             else: out.append(f'<div class="cg todo">CG {e(cid)} 製作中</div>')
         elif l.startswith("〔"): out.append(f'<p class="narr">{e(l.strip("〔〕"))}</p>')
         elif re.match(r"（[CMS]）$|（共通）$", l): out.append(f'<div class="branch">{"選 " + l[1] + " 的話" if l[1] in "CMS" else "之後"}</div>')
@@ -196,7 +203,7 @@ if DOCS.exists(): shutil.rmtree(DOCS)
 IMG.mkdir(parents=True)
 (DOCS / "style.css").write_text(CSS, encoding="utf-8")
 (DOCS / ".nojekyll").write_text("")
-hero = img("canon/refs/style_anchor_full.jpg", "hero.jpg", 1800)
+hero = img("art/cg/title_kv.jpg", "hero.jpg", 1800)
 
 # 名字出自元稹〈一字至七字詩．茶〉（設計.md「三位先生的名字定案」）
 people = [("茶語", "tea", "茶語", "創作者，大學生，住在高雄", ""),
@@ -215,7 +222,7 @@ POEM = """<h2 id="names">名字的由來</h2>
 <p class="lede">「夜後邀陪明月，晨前命對朝霞」：入夜後是明陪著她，天亮前是晨陪著她。作品名《夜後明月．晨前朝霞．慕詩客》是從詩裡取字重組的：「慕詩客」是第三句原文，「邀明月」「對朝霞」取自第六句，三個動詞都是茶語做的事。詩只有七句，從一個字長到七個字，共通線的七章就用這七句當章名。作歌的人，就是詩客。詩見《全唐詩》卷 423，個別字句在不同版本有出入。</p>"""
 chl = "".join(f'<li><span class="t">{e(c["title"])}</span><a href="{c["slug"]}.html">線上閱讀</a><a href="sources.html#{c["slug"]}">這一章的取材</a></li>' for c in chapters)
 index = f"""<div class="hero"><img src="{hero}" alt="茶語與三位先生第一次在工作室，桌上浮著三把發光的鎖"></div>
-<div class="hero-copy"><h1>夜後明月．晨前朝霞．慕詩客</h1><p class="q">三位先生，都讓我心動</p></div>
+<div class="hero-copy"><h1><span>夜後明月．</span><span>晨前朝霞．</span><span>慕詩客</span></h1><p class="q">三位先生，都讓我心動</p></div>
 <p class="lede">Larch 創作者挑戰「自由與限制」那三個禮拜，大學生茶語在高雄的書桌前，做一部聖騎士與信仰的 RPG。她的三個 AI 夥伴升級之後有了人形介面：畫圖的 C 先生、寫程式的 M 先生、做音樂的 S 先生。她想說一個好故事。他們知道一件她不知道的事。</p>
 <div class="note">茶語是虛構角色。她的人設與製作經過取材自 Larch 創作者茶葉飲料（第三屆挑戰最佳作品《最後的聖戰》作者），經她本人同意。哪些情節是真的、哪些是改編，逐段寫在<a href="sources.html">取材對照</a>。作品製作中，還沒有可以玩的版本。</div>
 <h2 id="cast">角色</h2><div class="cast">{cards}</div>
