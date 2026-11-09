@@ -1,0 +1,11 @@
+REFERENCE IMAGES: Image 1 = S's CHIBI design (copy his chibi look exactly: face, hair, headphones, clothes, colours). Image 2 = S's full character sheet (the canonical design of every item he wears).
+
+A single character turnaround-style FRONT VIEW for 3D modelling: S as a TWO-HEADS-TALL chibi figure: his head (from the top of the hair to the chin) is exactly HALF of his total height, and his whole body from the neck to the soles of the shoes is the other half; short stubby limbs, short legs, small round hands and feet, like a small collectible vinyl figure, standing straight and facing the viewer, full body from the top of the hair to the soles of the shoes, centred, with a little empty space around him.
+
+Pose for rigging: a relaxed A-pose. Both arms hang down and angle slightly away from the body (about 20 degrees), so a clear gap of white shows between each arm and the torso. Both hands are OUT of the pockets, open and relaxed, palms facing the thighs, each with five small fingers. Feet are shoulder-width apart, toes pointing forward, both shoes fully visible.
+
+Face: eyes OPEN, looking straight at the viewer, bright AMBER-GOLD eyes, a wide happy grin showing one small fang.
+
+Hair and clothes exactly as the references: deep WINE-RED long messy hair with one thin braid at the front left tied with a wine-red cord; silver ear cuffs; WINE-RED over-ear headphones resting around his neck; black track jacket with thin white sleeve stripes and ONE small gold treble-clef emblem on the left chest, open over a heather-grey T-shirt; a thin silver chain; black cargo trousers scaled to his short chibi legs; black sneakers with white soles.
+
+Rendering: clean chibi illustration with even soft lighting, crisp outlines and flat clean colours that read well as textures; a pure plain WHITE background; a single very faint soft shadow under the feet. One character only, no text, no frame, no extra objects.

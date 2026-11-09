@@ -1,0 +1,13 @@
+REFERENCE IMAGES: Image 1 = the heroine's CHIBI design (copy her chibi look exactly: proportions, face, hair, glasses, earrings, necklace, clothes, shoes, colours). Image 2 = her full character sheet (the canonical design of every item she wears).
+
+A single character turnaround-style FRONT VIEW for 3D modelling: the heroine as a TWO-HEADS-TALL chibi figure: her head (from the top of the hair to the chin) is exactly HALF of her total height, and her whole body from the neck to the soles of the shoes is the other half; short stubby limbs, short legs, small round hands and feet, like a small collectible vinyl figure, standing straight and facing the viewer, full body from the top of the hair to the soles of the shoes, centred, with a little empty space around her.
+
+Pose for rigging: a relaxed A-pose. Both arms hang down and angle slightly away from the body (about 20 degrees), so a clear gap of white shows between each arm and the torso. Both hands are open, relaxed, palms facing the thighs, each with five small fingers. Feet are shoulder-width apart, toes pointing forward, both shoes fully visible.
+
+Face: eyes OPEN, looking straight at the viewer, warm light reddish-brown eyes behind the thin gold round glasses, a small gentle smile, soft blush.
+
+Hair: the same long messy wavy dark purple hair as the references, falling to the shoulders, with the gold drop earrings visible on both sides.
+
+Clothes exactly as the references: oversized cream short-sleeve T-shirt, gold crescent-moon necklace, beaded bracelets on both wrists, short wide grey-brown cargo trousers (scaled to her short chibi legs) with side pockets and a cream drawstring with tassels, white sneakers.
+
+Rendering: clean chibi illustration with even soft lighting, crisp outlines and flat clean colours that read well as textures; a pure plain WHITE background; a single very faint soft shadow under the feet. One character only, no text, no frame, no extra objects.

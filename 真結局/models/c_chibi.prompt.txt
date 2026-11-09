@@ -1,0 +1,11 @@
+REFERENCE IMAGES: Image 1 = C's CHIBI design (copy his chibi look exactly: face, hair, glasses, clothes, colours). Image 2 = C's full character sheet (the canonical design of every item he wears).
+
+A single character turnaround-style FRONT VIEW for 3D modelling: C as a TWO-HEADS-TALL chibi figure: his head (from the top of the hair to the chin) is exactly HALF of his total height, and his whole body from the neck to the soles of the shoes is the other half; short stubby limbs, short legs, small round hands and feet, like a small collectible vinyl figure, standing straight and facing the viewer, full body from the top of the hair to the soles of the shoes, centred, with a little empty space around him.
+
+Pose for rigging: a relaxed A-pose. Both arms hang down and angle slightly away from the body (about 20 degrees), so a clear gap of white shows between each arm and the torso. Both hands are OUT of the pockets, open and relaxed, palms facing the thighs, each with five small fingers. Feet are shoulder-width apart, toes pointing forward, both shoes fully visible.
+
+Face: eyes OPEN, looking straight at the viewer, gentle droopy WARM-BROWN eyes behind thin gold round glasses, a small soft smile.
+
+Hair and clothes exactly as the references: warm chestnut-brown fluffy curly hair; warm CAMEL-brown open knit cardigan with tiny paint speckles, a small gold leaf brooch enamelled YELLOW-GREEN on the left chest and one thin yellow-green stripe at each cuff; white shirt; brown belt; dark grey trousers scaled to his short chibi legs; white sneakers.
+
+Rendering: clean chibi illustration with even soft lighting, crisp outlines and flat clean colours that read well as textures; a pure plain WHITE background; a single very faint soft shadow under the feet. One character only, no text, no frame, no extra objects.

@@ -1,0 +1,11 @@
+REFERENCE IMAGES: Image 1 = M's CHIBI design (copy his chibi look exactly: face, hair, clothes, colours). Image 2 = M's full character sheet (the canonical design of every item he wears).
+
+A single character turnaround-style FRONT VIEW for 3D modelling: M as a TWO-HEADS-TALL chibi figure: his head (from the top of the hair to the chin) is exactly HALF of his total height, and his whole body from the neck to the soles of the shoes is the other half; short stubby limbs, short legs, small round hands and feet, like a small collectible vinyl figure, standing straight and facing the viewer, full body from the top of the hair to the soles of the shoes, centred, with a little empty space around him.
+
+Pose for rigging: a relaxed A-pose. Both arms hang down and angle slightly away from the body (about 20 degrees), so a clear gap of white shows between each arm and the torso. Both hands are OUT of the pockets, open and relaxed, palms facing the thighs, each with five small fingers. Feet are shoulder-width apart, toes pointing forward, both shoes fully visible.
+
+Face: eyes OPEN, looking straight at the viewer, calm narrow GREY-BROWN eyes, a small composed smile.
+
+Hair and clothes exactly as the references: near-black short tousled hair swept back with a faint cool blue sheen; charcoal suit jacket open, crisp white shirt with open collar, no tie; gold gear brooch with a short chain on the left lapel; a small DEEP BLUE pocket square; brown leather-strap watch on his LEFT wrist only; black belt; charcoal trousers scaled to his short chibi legs; black leather shoes.
+
+Rendering: clean chibi illustration with even soft lighting, crisp outlines and flat clean colours that read well as textures; a pure plain WHITE background; a single very faint soft shadow under the feet. One character only, no text, no frame, no extra objects.
