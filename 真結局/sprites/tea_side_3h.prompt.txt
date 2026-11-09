@@ -1,0 +1,7 @@
+REFERENCE IMAGES: Image 1 = the heroine's CHIBI design (face, hair, glasses, earrings, necklace, clothes, shoes and colours to copy exactly). Image 2 = her full character sheet (canonical design of everything she wears). Image 3 = the studio background she will walk in (match its TRANSPARENT WATERCOLOUR rendering, soft paper grain and delicate line art).
+
+A single game character sprite: the heroine as a 3-HEADS-TALL chibi figure (her head from the top of the hair to the chin is exactly 1/3 of her total height), seen in pure SIDE VIEW (profile) facing RIGHT, walking: mid-stride, the front foot stepping forward, arms swinging gently, a light happy expression, eyes open. Full body from the top of the hair to the soles of the shoes, centred, with empty space around her.
+
+Clothes exactly as the references: oversized cream short-sleeve T-shirt, gold crescent-moon necklace, beaded bracelets, wide grey-brown cargo trousers with side pockets and a cream drawstring with tassels, white sneakers; long wavy dark purple hair, thin gold round glasses, gold drop earrings.
+
+Rendering: transparent watercolour anime illustration matching Image 3, clean readable silhouette; a pure plain WHITE background; no shadow, no text, one character only.
